@@ -1,0 +1,12 @@
+[package]
+name = "fakefat"
+version = "0.1.0"
+authors = ["ischeinkman <scheinkman.ilan@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+mbr-nostd="0.1.0"
+
+byteorder = "1"
+bitflags = "1.0"
+log = "0.4"
