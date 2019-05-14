@@ -5,22 +5,22 @@ use crate::shortname::ShortName;
 use crate::datetime::{Date, Time};
 
 #[derive(Clone, Debug, Default, Copy)]
-pub struct DirFileEntryData {
-    name: ShortName,
-    attrs: FileAttributes,
-    create_time : Time,
-    create_date: Date,
-    access_date: Date,
-    first_cluster: u32,
-    modify_time: Time,
-    modify_date: Date,
-    size: u32,
+pub struct FileDirEntry {
+    pub(crate) name: ShortName,
+    pub(crate) attrs: FileAttributes,
+    pub(crate) create_time : Time,
+    pub(crate) create_date: Date,
+    pub(crate) access_date: Date,
+    pub(crate) first_cluster: u32,
+    pub(crate) modify_time: Time,
+    pub(crate) modify_date: Date,
+    pub(crate) size: u32,
 
     read_idx : usize,
 }
 
-impl DirFileEntryData {
-    fn read_byte(&self, idx : usize) -> u8 {
+impl FileDirEntry {
+    pub fn read_byte(&self, idx : usize) -> u8 {
         match idx {
             b @ 0..=10 => self.name.read_byte(b),
             11 => self.attrs.0, 
@@ -48,7 +48,7 @@ impl DirFileEntryData {
         }
     }
 }
-impl Read for DirFileEntryData {
+impl Read for FileDirEntry {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize, io::Error> {
         let mut offset = 0;
         while offset + self.read_idx < 32 && offset < buf.len() {
@@ -60,7 +60,7 @@ impl Read for DirFileEntryData {
     }
 }
 
-impl Seek for DirFileEntryData {
+impl Seek for FileDirEntry {
     fn seek(&mut self, pos : SeekFrom) -> Result<u64, io::Error> {
         match pos {
             SeekFrom::Start(abs) => {
@@ -83,11 +83,8 @@ impl Seek for DirFileEntryData {
     }
 }
 
-
-
-
-#[derive(Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Debug, Default)]
-struct FileAttributes(u8);
+#[derive(Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Debug, Default, Hash)]
+pub(crate) struct FileAttributes(u8);
 
 impl FileAttributes {
     const READ_ONLY : u8 = 0x01;
@@ -107,6 +104,10 @@ impl FileAttributes {
 
     pub fn volume_label() -> FileAttributes {
         FileAttributes(FileAttributes::VOLUME_ID)
+    }
+
+    pub fn lfn() -> FileAttributes {
+        FileAttributes::volume_label().and_read_only().and_hidden().and_system()
     }
     
     pub fn and_read_only(self) -> FileAttributes {
@@ -191,3 +192,41 @@ impl From<FileAttributes> for u8 {
         wrapped.0
     }
 }
+
+
+#[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
+pub struct LfnDirEntry {
+    pub(crate) entry_num : u8, 
+    attrs : FileAttributes,
+    pub(crate) checksum : u8, 
+    pub(crate) name_part : [u8 ; 13],
+}
+
+impl Default for LfnDirEntry {
+    fn default() -> LfnDirEntry {
+        LfnDirEntry {
+            entry_num : 0, 
+            attrs : FileAttributes::lfn(),
+            checksum : 0,
+            name_part : [0 ; 13],
+        }
+    }
+}
+
+impl LfnDirEntry {
+
+    pub fn read_byte(&self, idx : usize) -> u8 {
+        match idx {
+            0 => self.entry_num, 
+            b @ 1..=5 => self.name_part[b - 1],
+            6 => self.attrs.0,
+            7 => self.checksum,
+            b @ 8..=14 => self.name_part[b - 8 + 5],
+            15 => 0,
+            16 => 0,
+            b @ 17 ..= 19 => self.name_part[b - 17 + 11],
+            _ => 0,
+        }
+    }
+}
+
