@@ -1,3 +1,34 @@
+const NONLEAP_MONTH_RANGES: [u16; 13] = [
+    0,
+    31,
+    31 + 28,
+    31 + 28 + 31,
+    31 + 28 + 31 + 30,
+    31 + 28 + 31 + 30 + 31,
+    31 + 28 + 31 + 30 + 31 + 30,
+    31 + 28 + 31 + 30 + 31 + 30 + 31,
+    31 + 28 + 31 + 30 + 31 + 30 + 31 + 31,
+    31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30,
+    31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31,
+    31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30,
+    31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30 + 31,
+];
+const LEAP_MONTH_RANGES: [u16; 13] = [
+    0,
+    31,
+    31 + 29,
+    31 + 29 + 31,
+    31 + 29 + 31 + 30,
+    31 + 29 + 31 + 30 + 31,
+    31 + 29 + 31 + 30 + 31 + 30,
+    31 + 29 + 31 + 30 + 31 + 30 + 31,
+    31 + 29 + 31 + 30 + 31 + 30 + 31 + 31,
+    31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30,
+    31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31,
+    31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30,
+    31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30 + 31,
+];
+
 #[derive(Copy, Clone, Eq, PartialEq, Debug, Hash)]
 pub struct Date {
     year: u16,
@@ -62,6 +93,50 @@ impl Date {
             .with_month(month)
             .with_day(day)
     }
+
+    pub fn from_epoch_millis(millis : u64)-> Date {
+
+        let days_since_epoch = millis / (24 * 60 * 60 * 1000);
+        let unleaped_years_since_epoch = days_since_epoch / 365;
+        let leap_years = unleaped_years_since_epoch / 4;
+        let raw_year_offset = ((days_since_epoch as i32) % 365i32) - (leap_years as i32);
+        debug_assert!(
+            raw_year_offset < 365 && raw_year_offset > -365,
+            "Bad raw: {}",
+            raw_year_offset
+        );
+        let (years, year_offset) = if raw_year_offset < 0 {
+            (
+                (unleaped_years_since_epoch - 1) as u16,
+                (raw_year_offset + 365) as u16,
+            )
+        } else {
+            (unleaped_years_since_epoch as u16, raw_year_offset as u16)
+        };
+        let month_ranges = if years % 4 == 0 {
+            LEAP_MONTH_RANGES
+        } else {
+            NONLEAP_MONTH_RANGES
+        };
+        let mut month = 0;
+        let mut day = 0;
+        for idx in 0..13 {
+            if year_offset < month_ranges[idx] {
+                month = idx;
+                day = if idx == 0 {
+                    year_offset + 1
+                } else {
+                    year_offset - month_ranges[idx - 1] + 1
+                };
+                break;
+            }
+        }
+        Date::default()
+            .with_day(day as u8)
+            .with_month(month as u8)
+            .with_year(1970 + years)
+    }
+    
 }
 
 #[derive(Copy, Clone, Eq, PartialEq, Debug, Hash, Default)]
@@ -125,5 +200,20 @@ impl Time {
     pub fn fat_encode_hi_res(self) -> u8 {
         let second_mod_part = (self.second % 2) * 100;
         second_mod_part | self.tenths
+    }
+    pub fn from_epoch_millis(millis_since_epoch: u64) -> Time {
+        let secs_since_epoch = millis_since_epoch / 1000;
+        let time_part = secs_since_epoch % (24 * 60 * 60);
+        let hour = (time_part / 3600) as u8;
+        let minute = ((time_part / 60) % 60) as u8;
+        let second = (time_part % 60) as u8;
+        let tenths = ((millis_since_epoch % 1000) / 100) as u8;
+
+        let time = Time::default()
+            .with_hour(hour)
+            .with_minute(minute)
+            .with_second(second)
+            .with_tenths(tenths);
+        time
     }
 }

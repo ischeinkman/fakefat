@@ -1,7 +1,5 @@
-#![cfg(not(no_std))]
 use crate::datetime::{Date, Time};
 use crate::traits::{DirEntryOps, DirectoryOps, FileMetadata, FileOps, FileSystemOps};
-
 use std::fs::{self, DirEntry, File, Metadata};
 use std::io::{self, Read, Seek};
 use std::path::PathBuf;
@@ -98,96 +96,7 @@ fn sys_time_to_date_time(sys: SystemTime) -> (Date, Time) {
         .unwrap_or(0);
 
     (
-        extract_date_from_epoch_millis(millis_since_epoch),
-        extract_time_from_epoch_millis(millis_since_epoch),
+        Date::from_epoch_millis(millis_since_epoch),
+        Time::from_epoch_millis(millis_since_epoch),
     )
-}
-
-fn extract_time_from_epoch_millis(millis_since_epoch: u64) -> Time {
-    let secs_since_epoch = millis_since_epoch / 1000;
-    let time_part = secs_since_epoch % (24 * 60 * 60);
-    let hour = (time_part / 3600) as u8;
-    let minute = ((time_part / 60) % 60) as u8;
-    let second = (time_part % 60) as u8;
-    let tenths = ((millis_since_epoch % 1000) / 100) as u8;
-
-    let time = Time::default()
-        .with_hour(hour)
-        .with_minute(minute)
-        .with_second(second)
-        .with_tenths(tenths);
-    time
-}
-
-const NONLEAP_MONTH_RANGES: [u16; 13] = [
-    0,
-    31,
-    31 + 28,
-    31 + 28 + 31,
-    31 + 28 + 31 + 30,
-    31 + 28 + 31 + 30 + 31,
-    31 + 28 + 31 + 30 + 31 + 30,
-    31 + 28 + 31 + 30 + 31 + 30 + 31,
-    31 + 28 + 31 + 30 + 31 + 30 + 31 + 31,
-    31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30,
-    31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31,
-    31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30,
-    31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30 + 31,
-];
-const LEAP_MONTH_RANGES: [u16; 13] = [
-    0,
-    31,
-    31 + 29,
-    31 + 29 + 31,
-    31 + 29 + 31 + 30,
-    31 + 29 + 31 + 30 + 31,
-    31 + 29 + 31 + 30 + 31 + 30,
-    31 + 29 + 31 + 30 + 31 + 30 + 31,
-    31 + 29 + 31 + 30 + 31 + 30 + 31 + 31,
-    31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30,
-    31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31,
-    31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30,
-    31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30 + 31,
-];
-
-fn extract_date_from_epoch_millis(millis: u64) -> Date {
-    let days_since_epoch = millis / (24 * 60 * 60 * 1000);
-    let unleaped_years_since_epoch = days_since_epoch / 365;
-    let leap_years = unleaped_years_since_epoch / 4;
-    let raw_year_offset = ((days_since_epoch as i32) % 365i32) - (leap_years as i32);
-    debug_assert!(
-        raw_year_offset < 365 && raw_year_offset > -365,
-        "Bad raw: {}",
-        raw_year_offset
-    );
-    let (years, year_offset) = if raw_year_offset < 0 {
-        (
-            (unleaped_years_since_epoch - 1) as u16,
-            (raw_year_offset + 365) as u16,
-        )
-    } else {
-        (unleaped_years_since_epoch as u16, raw_year_offset as u16)
-    };
-    let month_ranges = if years % 4 == 0 {
-        LEAP_MONTH_RANGES
-    } else {
-        NONLEAP_MONTH_RANGES
-    };
-    let mut month = 0;
-    let mut day = 0;
-    for idx in 0..13 {
-        if year_offset < month_ranges[idx] {
-            month = idx;
-            day = if idx == 0 {
-                year_offset + 1
-            } else {
-                year_offset - month_ranges[idx - 1] + 1
-            };
-            break;
-        }
-    }
-    Date::default()
-        .with_day(day as u8)
-        .with_month(month as u8)
-        .with_year(1970 + years)
 }
