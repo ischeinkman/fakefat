@@ -7,6 +7,10 @@ edition = "2018"
 [dependencies]
 mbr-nostd="0.1.0"
 
-byteorder = "1"
+byteorder = {version = "1", default-features=false }
 bitflags = "1.0"
 log = "0.4"
+
+[features]
+default = ["std"]
+std = []

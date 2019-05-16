@@ -1,3 +1,6 @@
+#![cfg_attr(not(feature = "std"), no_std)]
+extern crate alloc;
+
 mod shortname;
 pub use shortname::*;
 
@@ -22,7 +25,9 @@ pub use fat::*;
 mod faker;
 pub use faker::*;
 
+#[cfg(features = "std")]
 mod stdimpl;
+#[cfg(features = "std")]
 pub use stdimpl::*;
 
 mod fsinfo;

@@ -1,3 +1,9 @@
+extern crate alloc;
+use alloc::string::String;
+use core::fmt;
+use core::str::from_utf8_unchecked;
+use core::cmp;
+
 #[derive(Copy, Clone, Debug)]
 pub struct ShortName {
     pub name: [u8; 8],
@@ -24,7 +30,6 @@ impl PartialEq<ShortName> for ShortName {
 }
 
 impl Eq for ShortName {}
-use std::cmp;
 
 impl PartialOrd for ShortName {
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
@@ -37,8 +42,6 @@ impl Ord for ShortName {
     }
 }
 
-use std::fmt;
-use std::str::from_utf8_unchecked;
 impl fmt::Display for ShortName {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let name_len = self
@@ -281,7 +284,6 @@ mod tests {
     fn test_basic_contersion() {
         let test_str = "testflb.txt";
         let gotten = ShortName::from_str(&test_str).unwrap();
-        println!("{:?}", gotten);
         assert_eq!(test_str, &gotten.to_string());
     }
 }

@@ -1,6 +1,6 @@
 use crate::dirent::{FileDirEntry, LfnDirEntry};
 use crate::shortname::ShortName;
-use std::vec::Vec;
+use alloc::vec::Vec;
 
 pub fn lfn_count_for_name(name: &str) -> usize {
     if ShortName::from_str(name).is_some() {
@@ -11,7 +11,7 @@ pub fn lfn_count_for_name(name: &str) -> usize {
 
 pub fn construct_name_entries(name: &str, base: FileDirEntry) -> Vec<LfnDirEntry> {
     let mut retval = Vec::new();
-    if name == &base.name.to_string() {
+    if name == base.name.to_string() {
         return retval;
     }
 

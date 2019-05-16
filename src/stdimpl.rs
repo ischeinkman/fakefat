@@ -1,10 +1,11 @@
+#![cfg(not(no_std))]
 use crate::datetime::{Date, Time};
 use crate::traits::{DirEntryOps, DirectoryOps, FileMetadata, FileOps, FileSystemOps};
 
 use std::fs::{self, DirEntry, File, Metadata};
 use std::io::{self, Read, Seek};
-use std::path::{PathBuf};
-use std::time::{SystemTime};
+use std::path::PathBuf;
+use std::time::SystemTime;
 
 impl FileOps for File {
     fn read_at(&mut self, offset: usize, buffer: &mut [u8]) -> usize {

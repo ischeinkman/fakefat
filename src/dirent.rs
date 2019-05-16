@@ -1,9 +1,6 @@
 use crate::datetime::{Date, Time};
 use crate::shortname::ShortName;
-use std::io;
-use std::io::{Read, Seek, SeekFrom};
-use std::ops::BitAnd;
-
+use core::ops::BitAnd;
 pub const ENTRY_SIZE: usize = 32;
 
 #[derive(Clone, Debug, Default, Copy)]
@@ -17,8 +14,6 @@ pub struct FileDirEntry {
     pub(crate) modify_time: Time,
     pub(crate) modify_date: Date,
     pub(crate) size: u32,
-
-    read_idx: usize,
 }
 
 impl FileDirEntry {
@@ -48,39 +43,6 @@ impl FileDirEntry {
             31 => ((self.size >> 24) & 0xFF) as u8,
             _ => 0,
         }
-    }
-}
-impl Read for FileDirEntry {
-    fn read(&mut self, buf: &mut [u8]) -> Result<usize, io::Error> {
-        let mut offset = 0;
-        while offset + self.read_idx < 32 && offset < buf.len() {
-            buf[offset] = self.read_byte(offset + self.read_idx);
-            offset += 1;
-        }
-        self.read_idx += offset;
-        Ok(offset)
-    }
-}
-
-impl Seek for FileDirEntry {
-    fn seek(&mut self, pos: SeekFrom) -> Result<u64, io::Error> {
-        match pos {
-            SeekFrom::Start(abs) => {
-                self.read_idx = abs as usize;
-            }
-            SeekFrom::End(back) => {
-                let abs = 32 - (back.abs() as usize);
-                self.read_idx = abs;
-            }
-            SeekFrom::Current(off) => {
-                if off < 0 {
-                    self.read_idx -= off.abs() as usize;
-                } else {
-                    self.read_idx += off.abs() as usize;
-                }
-            }
-        }
-        Ok(self.read_idx as u64)
     }
 }
 

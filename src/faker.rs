@@ -6,8 +6,14 @@ use crate::longname::{construct_name_entries, lfn_count_for_name};
 use crate::shortname::ShortName;
 use crate::traits::{DirEntryOps, DirectoryOps, FileMetadata, FileOps, FileSystemOps};
 
-use std::collections::BTreeMap;
-use std::vec::Vec;
+extern crate alloc;
+use alloc::collections::BTreeMap;
+use alloc::vec;
+use alloc::string::String;
+use alloc::vec::Vec;
+use alloc::*;
+use alloc::borrow::ToOwned;
+use core::num::Wrapping;
 
 pub struct FakeFat<T: FileSystemOps> {
     bpb: BiosParameterBlock,
@@ -16,8 +22,6 @@ pub struct FakeFat<T: FileSystemOps> {
     cluster_mapping: BTreeMap<u32, String>,
     path_mapping: BTreeMap<String, Vec<u32>>,
     metadata_cache: BTreeMap<String, FileMetadata>,
-    _path_prefix: String,
-
     read_idx: usize,
 }
 
@@ -88,7 +92,7 @@ impl<T: FileSystemOps> FakeFat<T> {
             }
             path_mapping.insert(cur.clone(), clusters);
         }
-        let total_clusters = (bpb.root_dir_first_cluster + cur_cluster + 1).max(0xABCDEF);
+        let total_clusters = (bpb.root_dir_first_cluster + cur_cluster + 1).max(0xAB_CDEF);
         let total_sectors = bpb.sectors_per_cluster as u32 * total_clusters;
         bpb.total_sectors_32 = total_sectors;
         let spf = default_sectors_per_fat(&bpb);
@@ -100,7 +104,6 @@ impl<T: FileSystemOps> FakeFat<T> {
             cluster_mapping,
             path_mapping,
             metadata_cache,
-            _path_prefix : path_prefix,
             read_idx: 0,
         };
 
@@ -119,10 +122,10 @@ impl<T: FileSystemOps> FakeFat<T> {
     pub fn read_byte(&mut self, idx: usize) -> u8 {
         if idx < BiosParameterBlock::SIZE {
             let retval = self.bpb.read_byte(idx);
-            return retval;
+            retval
         } else if idx < BiosParameterBlock::SIZE + FsInfoSector::SIZE {
             let retval = self.fsinfo.read_byte(idx - BiosParameterBlock::SIZE);
-            return retval;
+            retval
         } else if idx > self.fat_start() && idx < self.fat_end() {
             let cluster = idx_to_cluster(&self.bpb, idx);
             let cur_value = {
@@ -140,7 +143,7 @@ impl<T: FileSystemOps> FakeFat<T> {
             let offset = idx % 4;
             let shift = offset * 8;
             let retval = ((entry_bytes & (0xFF << shift)) >> shift) as u8;
-            return retval;
+            retval
         } else {
             let cluster_size = self.bpb.bytes_per_cluster() as usize;
             let data_begin_offset = self.fat_end();
@@ -197,7 +200,7 @@ impl<T: FileSystemOps> FakeFat<T> {
                         return name_ents[name_ents.len() - entry_offset - 1].read_byte(entry_byte);
                     }
                 }
-                return 0;
+                0
             } else {
                 let mut fl = self.fs.get_file(path).unwrap();
                 let mut buff = [0; 1];
@@ -207,58 +210,79 @@ impl<T: FileSystemOps> FakeFat<T> {
         }
     }
 }
+#[cfg(features = "std")]
+pub use stdio::*;
 
-use std::io::{self, Read, Seek, SeekFrom, Write};
+#[cfg(features = "std")]
+mod stdio {
+    use super::*;
+    use std::io::{self, Read, Seek, SeekFrom, Write};
+    use std::collections::hash_map::DefaultHasher;
+    use std::hash::{Hash, Hasher};
 
-impl<T: FileSystemOps> Read for FakeFat<T> {
-    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        let mut cur_idx = 0;
-        while cur_idx < buf.len() {
-            buf[cur_idx] = self.read_byte(cur_idx + self.read_idx);
-            cur_idx += 1;
+    impl<T: FileSystemOps> Read for FakeFat<T> {
+        fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+            let mut cur_idx = 0;
+            while cur_idx < buf.len() {
+                buf[cur_idx] = self.read_byte(cur_idx + self.read_idx);
+                cur_idx += 1;
+            }
+            self.read_idx += cur_idx;
+            Ok(cur_idx)
         }
-        self.read_idx += cur_idx;
-        Ok(cur_idx)
     }
-}
-impl<T: FileSystemOps> Seek for FakeFat<T> {
-    fn seek(&mut self, pos: SeekFrom) -> Result<u64, io::Error> {
-        match pos {
-            SeekFrom::Start(abs) => {
-                self.read_idx = abs as usize;
-            }
-            SeekFrom::End(_back) => {
-                return Err(io::Error::from(io::ErrorKind::InvalidInput));
-            }
-            SeekFrom::Current(off) => {
-                if off < 0 {
-                    self.read_idx -= off.abs() as usize;
-                } else {
-                    self.read_idx += off.abs() as usize;
+    impl<T: FileSystemOps> Seek for FakeFat<T> {
+        fn seek(&mut self, pos: SeekFrom) -> Result<u64, io::Error> {
+            match pos {
+                SeekFrom::Start(abs) => {
+                    self.read_idx = abs as usize;
+                }
+                SeekFrom::End(_back) => {
+                    return Err(io::Error::from(io::ErrorKind::InvalidInput));
+                }
+                SeekFrom::Current(off) => {
+                    if off < 0 {
+                        self.read_idx -= off.abs() as usize;
+                    } else {
+                        self.read_idx += off.abs() as usize;
+                    }
                 }
             }
+            Ok(self.read_idx as u64)
         }
-        Ok(self.read_idx as u64)
     }
-}
-impl<T: FileSystemOps> Write for FakeFat<T> {
-    fn write(&mut self, _buf: &[u8]) -> io::Result<usize> {
-        Err(io::ErrorKind::PermissionDenied.into())
+    impl<T: FileSystemOps> Write for FakeFat<T> {
+        fn write(&mut self, _buf: &[u8]) -> io::Result<usize> {
+            Err(io::ErrorKind::PermissionDenied.into())
+        }
+        fn flush(&mut self) -> io::Result<()> {
+            Err(io::ErrorKind::PermissionDenied.into())
+        }
     }
-    fn flush(&mut self) -> io::Result<()> {
-        Err(io::ErrorKind::PermissionDenied.into())
+
+    fn file_to_direntries(name: &str, meta: FileMetadata) -> (FileDirEntry, Vec<LfnDirEntry>) {
+        let mut hasher = DefaultHasher::new();
+        name.hash(&mut hasher);
+        let full_idx = hasher.finish();
+        let idx = full_idx % 256;
+        let mut fileent = meta.to_dirent();
+        let short_name = ShortName::convert_str(name, idx as u8);
+        fileent.name = short_name;
+        (fileent, construct_name_entries(name, fileent))
     }
+
 }
 
-use std::collections::hash_map::DefaultHasher;
-use std::hash::{Hash, Hasher};
 fn file_to_direntries(name: &str, meta: FileMetadata) -> (FileDirEntry, Vec<LfnDirEntry>) {
-    let mut hasher = DefaultHasher::new();
-    name.hash(&mut hasher);
-    let full_idx = hasher.finish();
-    let idx = full_idx % 256;
     let mut fileent = meta.to_dirent();
-    let short_name = ShortName::convert_str(name, idx as u8);
+    let mut idx = Wrapping(0);
+    for (_charnum, bt) in name.as_bytes().iter().enumerate() {
+        let offset = bt.wrapping_sub(b'A');
+        let bottom_bits = offset & 0xF;
+        idx <<= 1;
+        idx ^= Wrapping(bottom_bits);
+    }
+    let short_name = ShortName::convert_str(name, idx.0);
     fileent.name = short_name;
     (fileent, construct_name_entries(name, fileent))
 }

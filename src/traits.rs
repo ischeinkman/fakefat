@@ -1,5 +1,7 @@
 use crate::datetime::{Date, Time};
 use crate::dirent::{FileAttributes, FileDirEntry};
+extern crate alloc;
+use alloc::vec::Vec;
 
 #[derive(Copy, Clone, Debug, Default)]
 pub struct FileMetadata {
@@ -13,6 +15,7 @@ pub struct FileMetadata {
     pub modify_date: Date,
     pub size: u32,
 }
+
 impl FileMetadata {
     pub fn to_dirent(&self) -> FileDirEntry {
         let mut retval = FileDirEntry::default();

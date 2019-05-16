@@ -1,5 +1,3 @@
-use std::io::{self, Read, Seek, SeekFrom};
-
 const FAT_32_LABEL: [u8; 8] = [b'F', b'A', b'T', b'3', b'2', b' ', b' ', b' '];
 const FAT_COUNT: u8 = 2;
 const RESERVED_SECTORS: u16 = 8;
@@ -161,38 +159,4 @@ pub fn default_sectors_per_fat(bpb: &BiosParameterBlock) -> u32 {
     let t2 = u64::from(bytes_per_cluster / 4 + u32::from(bpb.fats));
     let sectors_per_fat = (t1 + t2 - 1) / t2;
     sectors_per_fat as u32
-}
-
-impl Read for BiosParameterBlock {
-    fn read(&mut self, buf: &mut [u8]) -> Result<usize, io::Error> {
-        let mut offset = 0;
-        while offset + self.read_idx < 81 && offset < buf.len() {
-            buf[offset] = self.read_byte(offset + self.read_idx);
-            offset += 1;
-        }
-        self.read_idx += offset;
-        Ok(offset)
-    }
-}
-
-impl Seek for BiosParameterBlock {
-    fn seek(&mut self, pos: SeekFrom) -> Result<u64, io::Error> {
-        match pos {
-            SeekFrom::Start(abs) => {
-                self.read_idx = abs as usize;
-            }
-            SeekFrom::End(back) => {
-                let abs = 78 - (back.abs() as usize);
-                self.read_idx = abs;
-            }
-            SeekFrom::Current(off) => {
-                if off < 0 {
-                    self.read_idx -= off.abs() as usize;
-                } else {
-                    self.read_idx += off.abs() as usize;
-                }
-            }
-        }
-        Ok(self.read_idx as u64)
-    }
 }
