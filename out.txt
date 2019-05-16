@@ -1,512 +1,3274 @@
-0000 : 00 DL|EM 00      
-0001 : 02 DL|EM 02      
-0002 : 08 DL|EM 08      
-0003 : 08 DL|EM 08      
-0004 : 00 DL|EM 00      
-0005 : 02 DL|EM 02      
-0006 : 00 DL|EM 00      
-0007 : 00 DL|EM 00      
-0008 : 00 DL|EM 00      
-0009 : 00 DL|EM 00      
-0010 : f8 DL|EM f8      
-0011 : 00 DL|EM 00      
-0012 : 00 DL|EM 00      
-0013 : 20 DL|EM 20      
-0014 : 00 DL|EM 00      
-0015 : 40 DL|EM 40      
-0016 : 00 DL|EM 00      
-0017 : 00 DL|EM 00      
-0018 : 00 DL|EM 00      
-0019 : 00 DL|EM 00      
-0020 : 00 DL|EM 00      
-0021 : 00 DL|EM 00      
-0022 : 00 DL|EM 00      
-0023 : 20 DL|EM 20      
-0024 : 00 DL|EM 00      
-0025 : fd DL|EM fd      
-0026 : 07 DL|EM 07      
-0027 : 00 DL|EM 00      
-0028 : 00 DL|EM 00      
-0029 : 00 DL|EM 00      
-0030 : 00 DL|EM 00      
-0031 : 00 DL|EM 00      
-0032 : 00 DL|EM 00      
-0033 : 02 DL|EM 02      
-0034 : 00 DL|EM 00      
-0035 : 00 DL|EM 00      
-0036 : 00 DL|EM 00      
-0037 : 01 DL|EM 01      
-0038 : 00 DL|EM 00      
-0039 : 06 DL|EM 06      
-0040 : 00 DL|EM 00      
-0041 : 00 DL|EM 00      
-0042 : 00 DL|EM 00      
-0043 : 00 DL|EM 00      
-0044 : 00 DL|EM 00      
-0045 : 00 DL|EM 00      
-0046 : 00 DL|EM 00      
-0047 : 00 DL|EM 00      
-0048 : 00 DL|EM 00      
-0049 : 00 DL|EM 00      
-0050 : 00 DL|EM 00      
-0051 : 00 DL|EM 00      
-0052 : 00 DL|EM 00      
-0053 : 80 DL|EM 80      
-0054 : 00 DL|EM 00      
-0055 : 29 DL|EM 29      
-0056 : bb DL|EM bb      
-0057 : bb DL|EM bb      
-0058 : bb DL|EM bb      
-0059 : bb DL|EM bb      
-0060 : aa DL|EM aa      
-0061 : aa DL|EM aa      
-0062 : aa DL|EM aa      
-0063 : aa DL|EM aa      
-0064 : aa DL|EM aa      
-0065 : aa DL|EM aa      
-0066 : aa DL|EM aa      
-0067 : aa DL|EM aa      
-0068 : aa DL|EM aa      
-0069 : aa DL|EM aa      
-0070 : aa DL|EM aa      
-0071 : 46 DL|EM 46      
-0072 : 41 DL|EM 41      
-0073 : 54 DL|EM 54      
-0074 : 33 DL|EM 33      
-0075 : 32 DL|EM 32      
-0076 : 20 DL|EM 20      
-0077 : 20 DL|EM 20      
-0078 : 20 DL|EM 20      
-0079 : 0e DL|EM 00     F
-0080 : 1f DL|EM 00     F
-0081 : be DL|EM 00     F
-0082 : 77 DL|EM 00     F
-0083 : 7c DL|EM 00     F
-0084 : ac DL|EM 00     F
-0085 : 22 DL|EM 00     F
-0086 : c0 DL|EM 00     F
-0087 : 74 DL|EM 00     F
-0088 : 0b DL|EM 00     F
-0089 : 56 DL|EM 00     F
-0090 : b4 DL|EM 00     F
-0091 : 0e DL|EM 00     F
-0092 : bb DL|EM 00     F
-0093 : 07 DL|EM 00     F
-0094 : 00 DL|EM 00      
-0095 : cd DL|EM 00     F
-0096 : 10 DL|EM 00     F
-0097 : 5e DL|EM 00     F
-0098 : eb DL|EM 00     F
-0099 : f0 DL|EM 00     F
-0100 : 32 DL|EM 00     F
-0101 : e4 DL|EM 00     F
-0102 : cd DL|EM 00     F
-0103 : 16 DL|EM 00     F
-0104 : cd DL|EM 00     F
-0105 : 19 DL|EM 00     F
-0106 : eb DL|EM 00     F
-0107 : fe DL|EM 00     F
-0108 : 54 DL|EM 00     F
-0109 : 68 DL|EM 00     F
-0110 : 69 DL|EM 00     F
-0111 : 73 DL|EM 00     F
-0112 : 20 DL|EM 00     F
-0113 : 69 DL|EM 00     F
-0114 : 73 DL|EM 00     F
-0115 : 20 DL|EM 00     F
-0116 : 6e DL|EM 00     F
-0117 : 6f DL|EM 00     F
-0118 : 74 DL|EM 00     F
-0119 : 20 DL|EM 00     F
-0120 : 61 DL|EM 00     F
-0121 : 20 DL|EM 00     F
-0122 : 62 DL|EM 00     F
-0123 : 6f DL|EM 00     F
-0124 : 6f DL|EM 00     F
-0125 : 74 DL|EM 00     F
-0126 : 61 DL|EM 00     F
-0127 : 62 DL|EM 00     F
-0128 : 6c DL|EM 00     F
-0129 : 65 DL|EM 00     F
-0130 : 20 DL|EM 00     F
-0131 : 64 DL|EM 00     F
-0132 : 69 DL|EM 00     F
-0133 : 73 DL|EM 00     F
-0134 : 6b DL|EM 00     F
-0135 : 2e DL|EM 00     F
-0136 : 20 DL|EM 00     F
-0137 : 20 DL|EM 00     F
-0138 : 50 DL|EM 00     F
-0139 : 6c DL|EM 00     F
-0140 : 65 DL|EM 00     F
-0141 : 61 DL|EM 00     F
-0142 : 73 DL|EM 00     F
-0143 : 65 DL|EM 00     F
-0144 : 20 DL|EM 00     F
-0145 : 69 DL|EM 00     F
-0146 : 6e DL|EM 00     F
-0147 : 73 DL|EM 00     F
-0148 : 65 DL|EM 00     F
-0149 : 72 DL|EM 00     F
-0150 : 74 DL|EM 00     F
-0151 : 20 DL|EM 00     F
-0152 : 61 DL|EM 00     F
-0153 : 20 DL|EM 00     F
-0154 : 62 DL|EM 00     F
-0155 : 6f DL|EM 00     F
-0156 : 6f DL|EM 00     F
-0157 : 74 DL|EM 00     F
-0158 : 61 DL|EM 00     F
-0159 : 62 DL|EM 00     F
-0160 : 6c DL|EM 00     F
-0161 : 65 DL|EM 00     F
-0162 : 20 DL|EM 00     F
-0163 : 66 DL|EM 00     F
-0164 : 6c DL|EM 00     F
-0165 : 6f DL|EM 00     F
-0166 : 70 DL|EM 00     F
-0167 : 70 DL|EM 00     F
-0168 : 79 DL|EM 00     F
-0169 : 20 DL|EM 00     F
-0170 : 61 DL|EM 00     F
-0171 : 6e DL|EM 00     F
-0172 : 64 DL|EM 00     F
-0173 : 0d DL|EM 00     F
-0174 : 0a DL|EM 00     F
-0175 : 70 DL|EM 00     F
-0176 : 72 DL|EM 00     F
-0177 : 65 DL|EM 00     F
-0178 : 73 DL|EM 00     F
-0179 : 73 DL|EM 00     F
-0180 : 20 DL|EM 00     F
-0181 : 61 DL|EM 00     F
-0182 : 6e DL|EM 00     F
-0183 : 79 DL|EM 00     F
-0184 : 20 DL|EM 00     F
-0185 : 6b DL|EM 00     F
-0186 : 65 DL|EM 00     F
-0187 : 79 DL|EM 00     F
-0188 : 20 DL|EM 00     F
-0189 : 74 DL|EM 00     F
-0190 : 6f DL|EM 00     F
-0191 : 20 DL|EM 00     F
-0192 : 74 DL|EM 00     F
-0193 : 72 DL|EM 00     F
-0194 : 79 DL|EM 00     F
-0195 : 20 DL|EM 00     F
-0196 : 61 DL|EM 00     F
-0197 : 67 DL|EM 00     F
-0198 : 61 DL|EM 00     F
-0199 : 69 DL|EM 00     F
-0200 : 6e DL|EM 00     F
-0201 : 20 DL|EM 00     F
-0202 : 2e DL|EM 00     F
-0203 : 2e DL|EM 00     F
-0204 : 2e DL|EM 00     F
-0205 : 20 DL|EM 00     F
-0206 : 0d DL|EM 00     F
-0207 : 0a DL|EM 00     F
-0208 : 00 DL|EM 00      
-0209 : 00 DL|EM 00      
-0210 : 00 DL|EM 00      
-0211 : 00 DL|EM 00      
-0212 : 00 DL|EM 00      
-0213 : 00 DL|EM 00      
-0214 : 00 DL|EM 00      
-0215 : 00 DL|EM 00      
-0216 : 00 DL|EM 00      
-0217 : 00 DL|EM 00      
-0218 : 00 DL|EM 00      
-0219 : 00 DL|EM 00      
-0220 : 00 DL|EM 00      
-0221 : 00 DL|EM 00      
-0222 : 00 DL|EM 00      
-0223 : 00 DL|EM 00      
-0224 : 00 DL|EM 00      
-0225 : 00 DL|EM 00      
-0226 : 00 DL|EM 00      
-0227 : 00 DL|EM 00      
-0228 : 00 DL|EM 00      
-0229 : 00 DL|EM 00      
-0230 : 00 DL|EM 00      
-0231 : 00 DL|EM 00      
-0232 : 00 DL|EM 00      
-0233 : 00 DL|EM 00      
-0234 : 00 DL|EM 00      
-0235 : 00 DL|EM 00      
-0236 : 00 DL|EM 00      
-0237 : 00 DL|EM 00      
-0238 : 00 DL|EM 00      
-0239 : 00 DL|EM 00      
-0240 : 00 DL|EM 00      
-0241 : 00 DL|EM 00      
-0242 : 00 DL|EM 00      
-0243 : 00 DL|EM 00      
-0244 : 00 DL|EM 00      
-0245 : 00 DL|EM 00      
-0246 : 00 DL|EM 00      
-0247 : 00 DL|EM 00      
-0248 : 00 DL|EM 00      
-0249 : 00 DL|EM 00      
-0250 : 00 DL|EM 00      
-0251 : 00 DL|EM 00      
-0252 : 00 DL|EM 00      
-0253 : 00 DL|EM 00      
-0254 : 00 DL|EM 00      
-0255 : 00 DL|EM 00      
-0256 : 00 DL|EM 00      
-0257 : 00 DL|EM 00      
-0258 : 00 DL|EM 00      
-0259 : 00 DL|EM 00      
-0260 : 00 DL|EM 00      
-0261 : 00 DL|EM 00      
-0262 : 00 DL|EM 00      
-0263 : 00 DL|EM 00      
-0264 : 00 DL|EM 00      
-0265 : 00 DL|EM 00      
-0266 : 00 DL|EM 00      
-0267 : 00 DL|EM 00      
-0268 : 00 DL|EM 00      
-0269 : 00 DL|EM 00      
-0270 : 00 DL|EM 00      
-0271 : 00 DL|EM 00      
-0272 : 00 DL|EM 00      
-0273 : 00 DL|EM 00      
-0274 : 00 DL|EM 00      
-0275 : 00 DL|EM 00      
-0276 : 00 DL|EM 00      
-0277 : 00 DL|EM 00      
-0278 : 00 DL|EM 00      
-0279 : 00 DL|EM 00      
-0280 : 00 DL|EM 00      
-0281 : 00 DL|EM 00      
-0282 : 00 DL|EM 00      
-0283 : 00 DL|EM 00      
-0284 : 00 DL|EM 00      
-0285 : 00 DL|EM 00      
-0286 : 00 DL|EM 00      
-0287 : 00 DL|EM 00      
-0288 : 00 DL|EM 00      
-0289 : 00 DL|EM 00      
-0290 : 00 DL|EM 00      
-0291 : 00 DL|EM 00      
-0292 : 00 DL|EM 00      
-0293 : 00 DL|EM 00      
-0294 : 00 DL|EM 00      
-0295 : 00 DL|EM 00      
-0296 : 00 DL|EM 00      
-0297 : 00 DL|EM 00      
-0298 : 00 DL|EM 00      
-0299 : 00 DL|EM 00      
-0300 : 00 DL|EM 00      
-0301 : 00 DL|EM 00      
-0302 : 00 DL|EM 00      
-0303 : 00 DL|EM 00      
-0304 : 00 DL|EM 00      
-0305 : 00 DL|EM 00      
-0306 : 00 DL|EM 00      
-0307 : 00 DL|EM 00      
-0308 : 00 DL|EM 00      
-0309 : 00 DL|EM 00      
-0310 : 00 DL|EM 00      
-0311 : 00 DL|EM 00      
-0312 : 00 DL|EM 00      
-0313 : 00 DL|EM 00      
-0314 : 00 DL|EM 00      
-0315 : 00 DL|EM 00      
-0316 : 00 DL|EM 00      
-0317 : 00 DL|EM 00      
-0318 : 00 DL|EM 00      
-0319 : 00 DL|EM 00      
-0320 : 00 DL|EM 00      
-0321 : 00 DL|EM 00      
-0322 : 00 DL|EM 00      
-0323 : 00 DL|EM 00      
-0324 : 00 DL|EM 00      
-0325 : 00 DL|EM 00      
-0326 : 00 DL|EM 00      
-0327 : 00 DL|EM 00      
-0328 : 00 DL|EM 00      
-0329 : 00 DL|EM 00      
-0330 : 00 DL|EM 00      
-0331 : 00 DL|EM 00      
-0332 : 00 DL|EM 00      
-0333 : 00 DL|EM 00      
-0334 : 00 DL|EM 00      
-0335 : 00 DL|EM 00      
-0336 : 00 DL|EM 00      
-0337 : 00 DL|EM 00      
-0338 : 00 DL|EM 00      
-0339 : 00 DL|EM 00      
-0340 : 00 DL|EM 00      
-0341 : 00 DL|EM 00      
-0342 : 00 DL|EM 00      
-0343 : 00 DL|EM 00      
-0344 : 00 DL|EM 00      
-0345 : 00 DL|EM 00      
-0346 : 00 DL|EM 00      
-0347 : 00 DL|EM 00      
-0348 : 00 DL|EM 00      
-0349 : 00 DL|EM 00      
-0350 : 00 DL|EM 00      
-0351 : 00 DL|EM 00      
-0352 : 00 DL|EM 00      
-0353 : 00 DL|EM 00      
-0354 : 00 DL|EM 00      
-0355 : 00 DL|EM 00      
-0356 : 00 DL|EM 00      
-0357 : 00 DL|EM 00      
-0358 : 00 DL|EM 00      
-0359 : 00 DL|EM 00      
-0360 : 00 DL|EM 00      
-0361 : 00 DL|EM 00      
-0362 : 00 DL|EM 00      
-0363 : 00 DL|EM 00      
-0364 : 00 DL|EM 00      
-0365 : 00 DL|EM 00      
-0366 : 00 DL|EM 00      
-0367 : 00 DL|EM 00      
-0368 : 00 DL|EM 00      
-0369 : 00 DL|EM 00      
-0370 : 00 DL|EM 00      
-0371 : 00 DL|EM 00      
-0372 : 00 DL|EM 00      
-0373 : 00 DL|EM 00      
-0374 : 00 DL|EM 00      
-0375 : 00 DL|EM 00      
-0376 : 00 DL|EM 00      
-0377 : 00 DL|EM 00      
-0378 : 00 DL|EM 00      
-0379 : 00 DL|EM 00      
-0380 : 00 DL|EM 00      
-0381 : 00 DL|EM 00      
-0382 : 00 DL|EM 00      
-0383 : 00 DL|EM 00      
-0384 : 00 DL|EM 00      
-0385 : 00 DL|EM 00      
-0386 : 00 DL|EM 00      
-0387 : 00 DL|EM 00      
-0388 : 00 DL|EM 00      
-0389 : 00 DL|EM 00      
-0390 : 00 DL|EM 00      
-0391 : 00 DL|EM 00      
-0392 : 00 DL|EM 00      
-0393 : 00 DL|EM 00      
-0394 : 00 DL|EM 00      
-0395 : 00 DL|EM 00      
-0396 : 00 DL|EM 00      
-0397 : 00 DL|EM 00      
-0398 : 00 DL|EM 00      
-0399 : 00 DL|EM 00      
-0400 : 00 DL|EM 00      
-0401 : 00 DL|EM 00      
-0402 : 00 DL|EM 00      
-0403 : 00 DL|EM 00      
-0404 : 00 DL|EM 00      
-0405 : 00 DL|EM 00      
-0406 : 00 DL|EM 00      
-0407 : 00 DL|EM 00      
-0408 : 00 DL|EM 00      
-0409 : 00 DL|EM 00      
-0410 : 00 DL|EM 00      
-0411 : 00 DL|EM 00      
-0412 : 00 DL|EM 00      
-0413 : 00 DL|EM 00      
-0414 : 00 DL|EM 00      
-0415 : 00 DL|EM 00      
-0416 : 00 DL|EM 00      
-0417 : 00 DL|EM 00      
-0418 : 00 DL|EM 00      
-0419 : 00 DL|EM 00      
-0420 : 00 DL|EM 00      
-0421 : 00 DL|EM 00      
-0422 : 00 DL|EM 00      
-0423 : 00 DL|EM 00      
-0424 : 00 DL|EM 00      
-0425 : 00 DL|EM 00      
-0426 : 00 DL|EM 00      
-0427 : 00 DL|EM 00      
-0428 : 00 DL|EM 00      
-0429 : 00 DL|EM 00      
-0430 : 00 DL|EM 00      
-0431 : 00 DL|EM 00      
-0432 : 00 DL|EM 00      
-0433 : 00 DL|EM 00      
-0434 : 00 DL|EM 00      
-0435 : 00 DL|EM 00      
-0436 : 00 DL|EM 00      
-0437 : 00 DL|EM 00      
-0438 : 00 DL|EM 00      
-0439 : 00 DL|EM 00      
-0440 : 00 DL|EM 00      
-0441 : 00 DL|EM 00      
-0442 : 00 DL|EM 00      
-0443 : 00 DL|EM 00      
-0444 : 00 DL|EM 00      
-0445 : 00 DL|EM 00      
-0446 : 00 DL|EM 00      
-0447 : 00 DL|EM 00      
-0448 : 00 DL|EM 00      
-0449 : 00 DL|EM 00      
-0450 : 00 DL|EM 00      
-0451 : 00 DL|EM 00      
-0452 : 00 DL|EM 00      
-0453 : 00 DL|EM 00      
-0454 : 00 DL|EM 00      
-0455 : 00 DL|EM 00      
-0456 : 00 DL|EM 00      
-0457 : 00 DL|EM 00      
-0458 : 00 DL|EM 00      
-0459 : 00 DL|EM 00      
-0460 : 00 DL|EM 00      
-0461 : 00 DL|EM 00      
-0462 : 00 DL|EM 00      
-0463 : 00 DL|EM 00      
-0464 : 00 DL|EM 00      
-0465 : 00 DL|EM 00      
-0466 : 00 DL|EM 00      
-0467 : 00 DL|EM 00      
-0468 : 00 DL|EM 00      
-0469 : 00 DL|EM 00      
-0470 : 00 DL|EM 00      
-0471 : 00 DL|EM 00      
-0472 : 00 DL|EM 00      
-0473 : 00 DL|EM 00      
-0474 : 00 DL|EM 00      
-0475 : 00 DL|EM 00      
-0476 : 00 DL|EM 00      
-0477 : 00 DL|EM 00      
-0478 : 00 DL|EM 00      
-0479 : 00 DL|EM 00      
-0480 : 00 DL|EM 00      
-0481 : 00 DL|EM 00      
-0482 : 00 DL|EM 00      
-0483 : 00 DL|EM 00      
-0484 : 00 DL|EM 00      
-0485 : 00 DL|EM 00      
-0486 : 00 DL|EM 00      
-0487 : 00 DL|EM 00      
-0488 : 00 DL|EM 00      
-0489 : 00 DL|EM 00      
-0490 : 00 DL|EM 00      
-0491 : 00 DL|EM 00      
-0492 : 00 DL|EM 00      
-0493 : 00 DL|EM 00      
-0494 : 00 DL|EM 00      
-0495 : 00 DL|EM 00      
-0496 : 00 DL|EM 00      
-0497 : 00 DL|EM 00      
-0498 : 00 DL|EM 00      
-0499 : 55 DL|EM 00     F
-0500 : aa DL|EM 00     F
-0501 : 52 DL|EM 00     F
-0502 : 52 DL|EM 00     F
-0503 : 61 DL|EM 00     F
-0504 : 41 DL|EM 00     F
-0505 : 00 DL|EM 00      
-0506 : 00 DL|EM 00      
-0507 : 00 DL|EM 00      
-0508 : 00 DL|EM 00      
-0509 : 00 DL|EM 00      
-0510 : 00 DL|EM 00      
-0511 : 00 DL|EM 00      
+Adding entry testfla.txt
+Adding /home/ilan/testfata/testfla.txt to mappings
+Adding entry testflb.txt
+Adding /home/ilan/testfata/testflb.txt to mappings
+Adding entry testfatb
+Pushing /home/ilan/testfata/testfatb/ to queue
+Adding entry testfatc
+Pushing /home/ilan/testfata/testfatc/ to queue
+Adding /home/ilan/testfata// to mappings
+Adding /home/ilan/testfata/testfatc// to mappings
+Adding entry testflba.txt
+Adding /home/ilan/testfata/testfatb/testflba.txt to mappings
+Adding /home/ilan/testfata/testfatb// to mappings
+{0: "/home/ilan/testfata/", 1: "/home/ilan/testfata/testfatc/", 2: "/home/ilan/testfata/testfatb/", 12: "/home/ilan/testfata/testfla.txt", 13: "/home/ilan/testfata/testflb.txt", 14: "/home/ilan/testfata/testfatb/testflba.txt"}
+{"/home/ilan/testfata/": [0], "/home/ilan/testfata/testfatb/": [2], "/home/ilan/testfata/testfatb/testflba.txt": [14], "/home/ilan/testfata/testfatc/": [1], "/home/ilan/testfata/testfla.txt": [12], "/home/ilan/testfata/testflb.txt": [13]}
+{"/home/ilan/testfata/": FileMetadata { is_directory: true, is_hidden: false, is_read_only: false, create_time: Time { hour: 0, minute: 0, second: 0, tenths: 0 }, create_date: Date { year: 1980, month: 1, day: 1 }, access_date: Date { year: 1980, month: 1, day: 1 }, modify_time: Time { hour: 0, minute: 0, second: 0, tenths: 0 }, modify_date: Date { year: 1980, month: 1, day: 1 }, size: 0 }, "/home/ilan/testfata/testfatb": FileMetadata { is_directory: true, is_hidden: false, is_read_only: false, create_time: Time { hour: 0, minute: 0, second: 0, tenths: 0 }, create_date: Date { year: 1980, month: 1, day: 1 }, access_date: Date { year: 2019, month: 5, day: 16 }, modify_time: Time { hour: 1, minute: 33, second: 36, tenths: 8 }, modify_date: Date { year: 2019, month: 5, day: 16 }, size: 0 }, "/home/ilan/testfata/testfatb/testflba.txt": FileMetadata { is_directory: false, is_hidden: false, is_read_only: false, create_time: Time { hour: 0, minute: 0, second: 0, tenths: 0 }, create_date: Date { year: 1980, month: 1, day: 1 }, access_date: Date { year: 2019, month: 5, day: 16 }, modify_time: Time { hour: 1, minute: 33, second: 36, tenths: 8 }, modify_date: Date { year: 2019, month: 5, day: 16 }, size: 13 }, "/home/ilan/testfata/testfatc": FileMetadata { is_directory: true, is_hidden: false, is_read_only: false, create_time: Time { hour: 0, minute: 0, second: 0, tenths: 0 }, create_date: Date { year: 1980, month: 1, day: 1 }, access_date: Date { year: 2019, month: 5, day: 16 }, modify_time: Time { hour: 1, minute: 32, second: 34, tenths: 3 }, modify_date: Date { year: 2019, month: 5, day: 16 }, size: 0 }, "/home/ilan/testfata/testfla.txt": FileMetadata { is_directory: false, is_hidden: false, is_read_only: false, create_time: Time { hour: 0, minute: 0, second: 0, tenths: 0 }, create_date: Date { year: 1980, month: 1, day: 1 }, access_date: Date { year: 2019, month: 5, day: 16 }, modify_time: Time { hour: 1, minute: 32, second: 51, tenths: 6 }, modify_date: Date { year: 2019, month: 5, day: 16 }, size: 5 }, "/home/ilan/testfata/testflb.txt": FileMetadata { is_directory: false, is_hidden: false, is_read_only: false, create_time: Time { hour: 0, minute: 0, second: 0, tenths: 0 }, create_date: Date { year: 1980, month: 1, day: 1 }, access_date: Date { year: 2019, month: 5, day: 16 }, modify_time: Time { hour: 1, minute: 33, second: 8, tenths: 5 }, modify_date: Date { year: 2019, month: 5, day: 16 }, size: 5 }}
+400
+BiosParameterBlock { bytes_per_sector: 512, sectors_per_cluster: 1, reserved_sectors: 8, fats: 2, media: 248, sectors_per_track: 32, heads: 64, hidden_sectors: 0, total_sectors_32: 11259375, sectors_per_fat_32: 86611, extended_flags: 0, root_dir_first_cluster: 2, fs_info_sector: 1, backup_boot_sector: 6, drive_num: 128, volume_id: 0, volume_label: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], read_idx: 0 }
+4096, 88693760
+bpb: 0 => 61
+bpb: 1 => 61
+bpb: 2 => 61
+bpb: 3 => 61
+bpb: 4 => 61
+bpb: 5 => 61
+bpb: 6 => 61
+bpb: 7 => 61
+bpb: 8 => 61
+bpb: 9 => 61
+bpb: 10 => 61
+bpb: 11 => 0
+bpb: 12 => 2
+bpb: 13 => 1
+bpb: 14 => 8
+bpb: 15 => 0
+bpb: 16 => 2
+bpb: 17 => 0
+bpb: 18 => 0
+bpb: 19 => 0
+bpb: 20 => 0
+bpb: 21 => f8
+bpb: 22 => 0
+bpb: 23 => 0
+bpb: 24 => 20
+bpb: 25 => 0
+bpb: 26 => 40
+bpb: 27 => 0
+bpb: 28 => 0
+bpb: 29 => 0
+bpb: 30 => 0
+bpb: 31 => 0
+bpb: 32 => ef
+bpb: 33 => cd
+bpb: 34 => ab
+bpb: 35 => 0
+bpb: 36 => 53
+bpb: 37 => 52
+bpb: 38 => 1
+bpb: 39 => 0
+bpb: 40 => 0
+bpb: 41 => 0
+bpb: 42 => 0
+bpb: 43 => 0
+bpb: 44 => 2
+bpb: 45 => 0
+bpb: 46 => 0
+bpb: 47 => 0
+bpb: 48 => 1
+bpb: 49 => 0
+bpb: 50 => 6
+bpb: 51 => 0
+bpb: 52 => 0
+bpb: 53 => 0
+bpb: 54 => 0
+bpb: 55 => 0
+bpb: 56 => 0
+bpb: 57 => 0
+bpb: 58 => 0
+bpb: 59 => 0
+bpb: 60 => 0
+bpb: 61 => 0
+bpb: 62 => 0
+bpb: 63 => 0
+bpb: 64 => 80
+bpb: 65 => 0
+bpb: 66 => 29
+bpb: 67 => 0
+bpb: 68 => 0
+bpb: 69 => 0
+bpb: 70 => 0
+bpb: 71 => 0
+bpb: 72 => 0
+bpb: 73 => 0
+bpb: 74 => 0
+bpb: 75 => 0
+bpb: 76 => 0
+bpb: 77 => 0
+bpb: 78 => 0
+bpb: 79 => 0
+bpb: 80 => 0
+bpb: 81 => 0
+bpb: 82 => 46
+bpb: 83 => 41
+bpb: 84 => 54
+bpb: 85 => 33
+bpb: 86 => 32
+bpb: 87 => 20
+bpb: 88 => 20
+bpb: 89 => 20
+bpb: 90 => 0
+bpb: 91 => 0
+bpb: 92 => 0
+bpb: 93 => 0
+bpb: 94 => 0
+bpb: 95 => 0
+bpb: 96 => 0
+bpb: 97 => 0
+bpb: 98 => 0
+bpb: 99 => 0
+bpb: 100 => 0
+bpb: 101 => 0
+bpb: 102 => 0
+bpb: 103 => 0
+bpb: 104 => 0
+bpb: 105 => 0
+bpb: 106 => 0
+bpb: 107 => 0
+bpb: 108 => 0
+bpb: 109 => 0
+bpb: 110 => 0
+bpb: 111 => 0
+bpb: 112 => 0
+bpb: 113 => 0
+bpb: 114 => 0
+bpb: 115 => 0
+bpb: 116 => 0
+bpb: 117 => 0
+bpb: 118 => 0
+bpb: 119 => 0
+bpb: 120 => 0
+bpb: 121 => 0
+bpb: 122 => 0
+bpb: 123 => 0
+bpb: 124 => 0
+bpb: 125 => 0
+bpb: 126 => 0
+bpb: 127 => 0
+bpb: 128 => 0
+bpb: 129 => 0
+bpb: 130 => 0
+bpb: 131 => 0
+bpb: 132 => 0
+bpb: 133 => 0
+bpb: 134 => 0
+bpb: 135 => 0
+bpb: 136 => 0
+bpb: 137 => 0
+bpb: 138 => 0
+bpb: 139 => 0
+bpb: 140 => 0
+bpb: 141 => 0
+bpb: 142 => 0
+bpb: 143 => 0
+bpb: 144 => 0
+bpb: 145 => 0
+bpb: 146 => 0
+bpb: 147 => 0
+bpb: 148 => 0
+bpb: 149 => 0
+bpb: 150 => 0
+bpb: 151 => 0
+bpb: 152 => 0
+bpb: 153 => 0
+bpb: 154 => 0
+bpb: 155 => 0
+bpb: 156 => 0
+bpb: 157 => 0
+bpb: 158 => 0
+bpb: 159 => 0
+bpb: 160 => 0
+bpb: 161 => 0
+bpb: 162 => 0
+bpb: 163 => 0
+bpb: 164 => 0
+bpb: 165 => 0
+bpb: 166 => 0
+bpb: 167 => 0
+bpb: 168 => 0
+bpb: 169 => 0
+bpb: 170 => 0
+bpb: 171 => 0
+bpb: 172 => 0
+bpb: 173 => 0
+bpb: 174 => 0
+bpb: 175 => 0
+bpb: 176 => 0
+bpb: 177 => 0
+bpb: 178 => 0
+bpb: 179 => 0
+bpb: 180 => 0
+bpb: 181 => 0
+bpb: 182 => 0
+bpb: 183 => 0
+bpb: 184 => 0
+bpb: 185 => 0
+bpb: 186 => 0
+bpb: 187 => 0
+bpb: 188 => 0
+bpb: 189 => 0
+bpb: 190 => 0
+bpb: 191 => 0
+bpb: 192 => 0
+bpb: 193 => 0
+bpb: 194 => 0
+bpb: 195 => 0
+bpb: 196 => 0
+bpb: 197 => 0
+bpb: 198 => 0
+bpb: 199 => 0
+bpb: 200 => 0
+bpb: 201 => 0
+bpb: 202 => 0
+bpb: 203 => 0
+bpb: 204 => 0
+bpb: 205 => 0
+bpb: 206 => 0
+bpb: 207 => 0
+bpb: 208 => 0
+bpb: 209 => 0
+bpb: 210 => 0
+bpb: 211 => 0
+bpb: 212 => 0
+bpb: 213 => 0
+bpb: 214 => 0
+bpb: 215 => 0
+bpb: 216 => 0
+bpb: 217 => 0
+bpb: 218 => 0
+bpb: 219 => 0
+bpb: 220 => 0
+bpb: 221 => 0
+bpb: 222 => 0
+bpb: 223 => 0
+bpb: 224 => 0
+bpb: 225 => 0
+bpb: 226 => 0
+bpb: 227 => 0
+bpb: 228 => 0
+bpb: 229 => 0
+bpb: 230 => 0
+bpb: 231 => 0
+bpb: 232 => 0
+bpb: 233 => 0
+bpb: 234 => 0
+bpb: 235 => 0
+bpb: 236 => 0
+bpb: 237 => 0
+bpb: 238 => 0
+bpb: 239 => 0
+bpb: 240 => 0
+bpb: 241 => 0
+bpb: 242 => 0
+bpb: 243 => 0
+bpb: 244 => 0
+bpb: 245 => 0
+bpb: 246 => 0
+bpb: 247 => 0
+bpb: 248 => 0
+bpb: 249 => 0
+bpb: 250 => 0
+bpb: 251 => 0
+bpb: 252 => 0
+bpb: 253 => 0
+bpb: 254 => 0
+bpb: 255 => 0
+bpb: 256 => 0
+bpb: 257 => 0
+bpb: 258 => 0
+bpb: 259 => 0
+bpb: 260 => 0
+bpb: 261 => 0
+bpb: 262 => 0
+bpb: 263 => 0
+bpb: 264 => 0
+bpb: 265 => 0
+bpb: 266 => 0
+bpb: 267 => 0
+bpb: 268 => 0
+bpb: 269 => 0
+bpb: 270 => 0
+bpb: 271 => 0
+bpb: 272 => 0
+bpb: 273 => 0
+bpb: 274 => 0
+bpb: 275 => 0
+bpb: 276 => 0
+bpb: 277 => 0
+bpb: 278 => 0
+bpb: 279 => 0
+bpb: 280 => 0
+bpb: 281 => 0
+bpb: 282 => 0
+bpb: 283 => 0
+bpb: 284 => 0
+bpb: 285 => 0
+bpb: 286 => 0
+bpb: 287 => 0
+bpb: 288 => 0
+bpb: 289 => 0
+bpb: 290 => 0
+bpb: 291 => 0
+bpb: 292 => 0
+bpb: 293 => 0
+bpb: 294 => 0
+bpb: 295 => 0
+bpb: 296 => 0
+bpb: 297 => 0
+bpb: 298 => 0
+bpb: 299 => 0
+bpb: 300 => 0
+bpb: 301 => 0
+bpb: 302 => 0
+bpb: 303 => 0
+bpb: 304 => 0
+bpb: 305 => 0
+bpb: 306 => 0
+bpb: 307 => 0
+bpb: 308 => 0
+bpb: 309 => 0
+bpb: 310 => 0
+bpb: 311 => 0
+bpb: 312 => 0
+bpb: 313 => 0
+bpb: 314 => 0
+bpb: 315 => 0
+bpb: 316 => 0
+bpb: 317 => 0
+bpb: 318 => 0
+bpb: 319 => 0
+bpb: 320 => 0
+bpb: 321 => 0
+bpb: 322 => 0
+bpb: 323 => 0
+bpb: 324 => 0
+bpb: 325 => 0
+bpb: 326 => 0
+bpb: 327 => 0
+bpb: 328 => 0
+bpb: 329 => 0
+bpb: 330 => 0
+bpb: 331 => 0
+bpb: 332 => 0
+bpb: 333 => 0
+bpb: 334 => 0
+bpb: 335 => 0
+bpb: 336 => 0
+bpb: 337 => 0
+bpb: 338 => 0
+bpb: 339 => 0
+bpb: 340 => 0
+bpb: 341 => 0
+bpb: 342 => 0
+bpb: 343 => 0
+bpb: 344 => 0
+bpb: 345 => 0
+bpb: 346 => 0
+bpb: 347 => 0
+bpb: 348 => 0
+bpb: 349 => 0
+bpb: 350 => 0
+bpb: 351 => 0
+bpb: 352 => 0
+bpb: 353 => 0
+bpb: 354 => 0
+bpb: 355 => 0
+bpb: 356 => 0
+bpb: 357 => 0
+bpb: 358 => 0
+bpb: 359 => 0
+bpb: 360 => 0
+bpb: 361 => 0
+bpb: 362 => 0
+bpb: 363 => 0
+bpb: 364 => 0
+bpb: 365 => 0
+bpb: 366 => 0
+bpb: 367 => 0
+bpb: 368 => 0
+bpb: 369 => 0
+bpb: 370 => 0
+bpb: 371 => 0
+bpb: 372 => 0
+bpb: 373 => 0
+bpb: 374 => 0
+bpb: 375 => 0
+bpb: 376 => 0
+bpb: 377 => 0
+bpb: 378 => 0
+bpb: 379 => 0
+bpb: 380 => 0
+bpb: 381 => 0
+bpb: 382 => 0
+bpb: 383 => 0
+bpb: 384 => 0
+bpb: 385 => 0
+bpb: 386 => 0
+bpb: 387 => 0
+bpb: 388 => 0
+bpb: 389 => 0
+bpb: 390 => 0
+bpb: 391 => 0
+bpb: 392 => 0
+bpb: 393 => 0
+bpb: 394 => 0
+bpb: 395 => 0
+bpb: 396 => 0
+bpb: 397 => 0
+bpb: 398 => 0
+bpb: 399 => 0
+bpb: 400 => 0
+bpb: 401 => 0
+bpb: 402 => 0
+bpb: 403 => 0
+bpb: 404 => 0
+bpb: 405 => 0
+bpb: 406 => 0
+bpb: 407 => 0
+bpb: 408 => 0
+bpb: 409 => 0
+bpb: 410 => 0
+bpb: 411 => 0
+bpb: 412 => 0
+bpb: 413 => 0
+bpb: 414 => 0
+bpb: 415 => 0
+bpb: 416 => 0
+bpb: 417 => 0
+bpb: 418 => 0
+bpb: 419 => 0
+bpb: 420 => 0
+bpb: 421 => 0
+bpb: 422 => 0
+bpb: 423 => 0
+bpb: 424 => 0
+bpb: 425 => 0
+bpb: 426 => 0
+bpb: 427 => 0
+bpb: 428 => 0
+bpb: 429 => 0
+bpb: 430 => 0
+bpb: 431 => 0
+bpb: 432 => 0
+bpb: 433 => 0
+bpb: 434 => 0
+bpb: 435 => 0
+bpb: 436 => 0
+bpb: 437 => 0
+bpb: 438 => 0
+bpb: 439 => 0
+bpb: 440 => 0
+bpb: 441 => 0
+bpb: 442 => 0
+bpb: 443 => 0
+bpb: 444 => 0
+bpb: 445 => 0
+bpb: 446 => 0
+bpb: 447 => 0
+bpb: 448 => 0
+bpb: 449 => 0
+bpb: 450 => 0
+bpb: 451 => 0
+bpb: 452 => 0
+bpb: 453 => 0
+bpb: 454 => 0
+bpb: 455 => 0
+bpb: 456 => 0
+bpb: 457 => 0
+bpb: 458 => 0
+bpb: 459 => 0
+bpb: 460 => 0
+bpb: 461 => 0
+bpb: 462 => 0
+bpb: 463 => 0
+bpb: 464 => 0
+bpb: 465 => 0
+bpb: 466 => 0
+bpb: 467 => 0
+bpb: 468 => 0
+bpb: 469 => 0
+bpb: 470 => 0
+bpb: 471 => 0
+bpb: 472 => 0
+bpb: 473 => 0
+bpb: 474 => 0
+bpb: 475 => 0
+bpb: 476 => 0
+bpb: 477 => 0
+bpb: 478 => 0
+bpb: 479 => 0
+bpb: 480 => 0
+bpb: 481 => 0
+bpb: 482 => 0
+bpb: 483 => 0
+bpb: 484 => 0
+bpb: 485 => 0
+bpb: 486 => 0
+bpb: 487 => 0
+bpb: 488 => 0
+bpb: 489 => 0
+bpb: 490 => 0
+bpb: 491 => 0
+bpb: 492 => 0
+bpb: 493 => 0
+bpb: 494 => 0
+bpb: 495 => 0
+bpb: 496 => 0
+bpb: 497 => 0
+bpb: 498 => 0
+bpb: 499 => 0
+bpb: 500 => 0
+bpb: 501 => 0
+bpb: 502 => 0
+bpb: 503 => 0
+bpb: 504 => 0
+bpb: 505 => 0
+bpb: 506 => 0
+bpb: 507 => 0
+bpb: 508 => 0
+bpb: 509 => 0
+bpb: 510 => 55
+bpb: 511 => aa
+fsinfo: 512 => 52
+fsinfo: 513 => 52
+fsinfo: 514 => 61
+fsinfo: 515 => 41
+fsinfo: 516 => 0
+fsinfo: 517 => 0
+fsinfo: 518 => 0
+fsinfo: 519 => 0
+fsinfo: 520 => 0
+fsinfo: 521 => 0
+fsinfo: 522 => 0
+fsinfo: 523 => 0
+fsinfo: 524 => 0
+fsinfo: 525 => 0
+fsinfo: 526 => 0
+fsinfo: 527 => 0
+fsinfo: 528 => 0
+fsinfo: 529 => 0
+fsinfo: 530 => 0
+fsinfo: 531 => 0
+fsinfo: 532 => 0
+fsinfo: 533 => 0
+fsinfo: 534 => 0
+fsinfo: 535 => 0
+fsinfo: 536 => 0
+fsinfo: 537 => 0
+fsinfo: 538 => 0
+fsinfo: 539 => 0
+fsinfo: 540 => 0
+fsinfo: 541 => 0
+fsinfo: 542 => 0
+fsinfo: 543 => 0
+fsinfo: 544 => 0
+fsinfo: 545 => 0
+fsinfo: 546 => 0
+fsinfo: 547 => 0
+fsinfo: 548 => 0
+fsinfo: 549 => 0
+fsinfo: 550 => 0
+fsinfo: 551 => 0
+fsinfo: 552 => 0
+fsinfo: 553 => 0
+fsinfo: 554 => 0
+fsinfo: 555 => 0
+fsinfo: 556 => 0
+fsinfo: 557 => 0
+fsinfo: 558 => 0
+fsinfo: 559 => 0
+fsinfo: 560 => 0
+fsinfo: 561 => 0
+fsinfo: 562 => 0
+fsinfo: 563 => 0
+fsinfo: 564 => 0
+fsinfo: 565 => 0
+fsinfo: 566 => 0
+fsinfo: 567 => 0
+fsinfo: 568 => 0
+fsinfo: 569 => 0
+fsinfo: 570 => 0
+fsinfo: 571 => 0
+fsinfo: 572 => 0
+fsinfo: 573 => 0
+fsinfo: 574 => 0
+fsinfo: 575 => 0
+fsinfo: 576 => 0
+fsinfo: 577 => 0
+fsinfo: 578 => 0
+fsinfo: 579 => 0
+fsinfo: 580 => 0
+fsinfo: 581 => 0
+fsinfo: 582 => 0
+fsinfo: 583 => 0
+fsinfo: 584 => 0
+fsinfo: 585 => 0
+fsinfo: 586 => 0
+fsinfo: 587 => 0
+fsinfo: 588 => 0
+fsinfo: 589 => 0
+fsinfo: 590 => 0
+fsinfo: 591 => 0
+fsinfo: 592 => 0
+fsinfo: 593 => 0
+fsinfo: 594 => 0
+fsinfo: 595 => 0
+fsinfo: 596 => 0
+fsinfo: 597 => 0
+fsinfo: 598 => 0
+fsinfo: 599 => 0
+fsinfo: 600 => 0
+fsinfo: 601 => 0
+fsinfo: 602 => 0
+fsinfo: 603 => 0
+fsinfo: 604 => 0
+fsinfo: 605 => 0
+fsinfo: 606 => 0
+fsinfo: 607 => 0
+fsinfo: 608 => 0
+fsinfo: 609 => 0
+fsinfo: 610 => 0
+fsinfo: 611 => 0
+fsinfo: 612 => 0
+fsinfo: 613 => 0
+fsinfo: 614 => 0
+fsinfo: 615 => 0
+fsinfo: 616 => 0
+fsinfo: 617 => 0
+fsinfo: 618 => 0
+fsinfo: 619 => 0
+fsinfo: 620 => 0
+fsinfo: 621 => 0
+fsinfo: 622 => 0
+fsinfo: 623 => 0
+fsinfo: 624 => 0
+fsinfo: 625 => 0
+fsinfo: 626 => 0
+fsinfo: 627 => 0
+fsinfo: 628 => 0
+fsinfo: 629 => 0
+fsinfo: 630 => 0
+fsinfo: 631 => 0
+fsinfo: 632 => 0
+fsinfo: 633 => 0
+fsinfo: 634 => 0
+fsinfo: 635 => 0
+fsinfo: 636 => 0
+fsinfo: 637 => 0
+fsinfo: 638 => 0
+fsinfo: 639 => 0
+fsinfo: 640 => 0
+fsinfo: 641 => 0
+fsinfo: 642 => 0
+fsinfo: 643 => 0
+fsinfo: 644 => 0
+fsinfo: 645 => 0
+fsinfo: 646 => 0
+fsinfo: 647 => 0
+fsinfo: 648 => 0
+fsinfo: 649 => 0
+fsinfo: 650 => 0
+fsinfo: 651 => 0
+fsinfo: 652 => 0
+fsinfo: 653 => 0
+fsinfo: 654 => 0
+fsinfo: 655 => 0
+fsinfo: 656 => 0
+fsinfo: 657 => 0
+fsinfo: 658 => 0
+fsinfo: 659 => 0
+fsinfo: 660 => 0
+fsinfo: 661 => 0
+fsinfo: 662 => 0
+fsinfo: 663 => 0
+fsinfo: 664 => 0
+fsinfo: 665 => 0
+fsinfo: 666 => 0
+fsinfo: 667 => 0
+fsinfo: 668 => 0
+fsinfo: 669 => 0
+fsinfo: 670 => 0
+fsinfo: 671 => 0
+fsinfo: 672 => 0
+fsinfo: 673 => 0
+fsinfo: 674 => 0
+fsinfo: 675 => 0
+fsinfo: 676 => 0
+fsinfo: 677 => 0
+fsinfo: 678 => 0
+fsinfo: 679 => 0
+fsinfo: 680 => 0
+fsinfo: 681 => 0
+fsinfo: 682 => 0
+fsinfo: 683 => 0
+fsinfo: 684 => 0
+fsinfo: 685 => 0
+fsinfo: 686 => 0
+fsinfo: 687 => 0
+fsinfo: 688 => 0
+fsinfo: 689 => 0
+fsinfo: 690 => 0
+fsinfo: 691 => 0
+fsinfo: 692 => 0
+fsinfo: 693 => 0
+fsinfo: 694 => 0
+fsinfo: 695 => 0
+fsinfo: 696 => 0
+fsinfo: 697 => 0
+fsinfo: 698 => 0
+fsinfo: 699 => 0
+fsinfo: 700 => 0
+fsinfo: 701 => 0
+fsinfo: 702 => 0
+fsinfo: 703 => 0
+fsinfo: 704 => 0
+fsinfo: 705 => 0
+fsinfo: 706 => 0
+fsinfo: 707 => 0
+fsinfo: 708 => 0
+fsinfo: 709 => 0
+fsinfo: 710 => 0
+fsinfo: 711 => 0
+fsinfo: 712 => 0
+fsinfo: 713 => 0
+fsinfo: 714 => 0
+fsinfo: 715 => 0
+fsinfo: 716 => 0
+fsinfo: 717 => 0
+fsinfo: 718 => 0
+fsinfo: 719 => 0
+fsinfo: 720 => 0
+fsinfo: 721 => 0
+fsinfo: 722 => 0
+fsinfo: 723 => 0
+fsinfo: 724 => 0
+fsinfo: 725 => 0
+fsinfo: 726 => 0
+fsinfo: 727 => 0
+fsinfo: 728 => 0
+fsinfo: 729 => 0
+fsinfo: 730 => 0
+fsinfo: 731 => 0
+fsinfo: 732 => 0
+fsinfo: 733 => 0
+fsinfo: 734 => 0
+fsinfo: 735 => 0
+fsinfo: 736 => 0
+fsinfo: 737 => 0
+fsinfo: 738 => 0
+fsinfo: 739 => 0
+fsinfo: 740 => 0
+fsinfo: 741 => 0
+fsinfo: 742 => 0
+fsinfo: 743 => 0
+fsinfo: 744 => 0
+fsinfo: 745 => 0
+fsinfo: 746 => 0
+fsinfo: 747 => 0
+fsinfo: 748 => 0
+fsinfo: 749 => 0
+fsinfo: 750 => 0
+fsinfo: 751 => 0
+fsinfo: 752 => 0
+fsinfo: 753 => 0
+fsinfo: 754 => 0
+fsinfo: 755 => 0
+fsinfo: 756 => 0
+fsinfo: 757 => 0
+fsinfo: 758 => 0
+fsinfo: 759 => 0
+fsinfo: 760 => 0
+fsinfo: 761 => 0
+fsinfo: 762 => 0
+fsinfo: 763 => 0
+fsinfo: 764 => 0
+fsinfo: 765 => 0
+fsinfo: 766 => 0
+fsinfo: 767 => 0
+fsinfo: 768 => 0
+fsinfo: 769 => 0
+fsinfo: 770 => 0
+fsinfo: 771 => 0
+fsinfo: 772 => 0
+fsinfo: 773 => 0
+fsinfo: 774 => 0
+fsinfo: 775 => 0
+fsinfo: 776 => 0
+fsinfo: 777 => 0
+fsinfo: 778 => 0
+fsinfo: 779 => 0
+fsinfo: 780 => 0
+fsinfo: 781 => 0
+fsinfo: 782 => 0
+fsinfo: 783 => 0
+fsinfo: 784 => 0
+fsinfo: 785 => 0
+fsinfo: 786 => 0
+fsinfo: 787 => 0
+fsinfo: 788 => 0
+fsinfo: 789 => 0
+fsinfo: 790 => 0
+fsinfo: 791 => 0
+fsinfo: 792 => 0
+fsinfo: 793 => 0
+fsinfo: 794 => 0
+fsinfo: 795 => 0
+fsinfo: 796 => 0
+fsinfo: 797 => 0
+fsinfo: 798 => 0
+fsinfo: 799 => 0
+fsinfo: 800 => 0
+fsinfo: 801 => 0
+fsinfo: 802 => 0
+fsinfo: 803 => 0
+fsinfo: 804 => 0
+fsinfo: 805 => 0
+fsinfo: 806 => 0
+fsinfo: 807 => 0
+fsinfo: 808 => 0
+fsinfo: 809 => 0
+fsinfo: 810 => 0
+fsinfo: 811 => 0
+fsinfo: 812 => 0
+fsinfo: 813 => 0
+fsinfo: 814 => 0
+fsinfo: 815 => 0
+fsinfo: 816 => 0
+fsinfo: 817 => 0
+fsinfo: 818 => 0
+fsinfo: 819 => 0
+fsinfo: 820 => 0
+fsinfo: 821 => 0
+fsinfo: 822 => 0
+fsinfo: 823 => 0
+fsinfo: 824 => 0
+fsinfo: 825 => 0
+fsinfo: 826 => 0
+fsinfo: 827 => 0
+fsinfo: 828 => 0
+fsinfo: 829 => 0
+fsinfo: 830 => 0
+fsinfo: 831 => 0
+fsinfo: 832 => 0
+fsinfo: 833 => 0
+fsinfo: 834 => 0
+fsinfo: 835 => 0
+fsinfo: 836 => 0
+fsinfo: 837 => 0
+fsinfo: 838 => 0
+fsinfo: 839 => 0
+fsinfo: 840 => 0
+fsinfo: 841 => 0
+fsinfo: 842 => 0
+fsinfo: 843 => 0
+fsinfo: 844 => 0
+fsinfo: 845 => 0
+fsinfo: 846 => 0
+fsinfo: 847 => 0
+fsinfo: 848 => 0
+fsinfo: 849 => 0
+fsinfo: 850 => 0
+fsinfo: 851 => 0
+fsinfo: 852 => 0
+fsinfo: 853 => 0
+fsinfo: 854 => 0
+fsinfo: 855 => 0
+fsinfo: 856 => 0
+fsinfo: 857 => 0
+fsinfo: 858 => 0
+fsinfo: 859 => 0
+fsinfo: 860 => 0
+fsinfo: 861 => 0
+fsinfo: 862 => 0
+fsinfo: 863 => 0
+fsinfo: 864 => 0
+fsinfo: 865 => 0
+fsinfo: 866 => 0
+fsinfo: 867 => 0
+fsinfo: 868 => 0
+fsinfo: 869 => 0
+fsinfo: 870 => 0
+fsinfo: 871 => 0
+fsinfo: 872 => 0
+fsinfo: 873 => 0
+fsinfo: 874 => 0
+fsinfo: 875 => 0
+fsinfo: 876 => 0
+fsinfo: 877 => 0
+fsinfo: 878 => 0
+fsinfo: 879 => 0
+fsinfo: 880 => 0
+fsinfo: 881 => 0
+fsinfo: 882 => 0
+fsinfo: 883 => 0
+fsinfo: 884 => 0
+fsinfo: 885 => 0
+fsinfo: 886 => 0
+fsinfo: 887 => 0
+fsinfo: 888 => 0
+fsinfo: 889 => 0
+fsinfo: 890 => 0
+fsinfo: 891 => 0
+fsinfo: 892 => 0
+fsinfo: 893 => 0
+fsinfo: 894 => 0
+fsinfo: 895 => 0
+fsinfo: 896 => 0
+fsinfo: 897 => 0
+fsinfo: 898 => 0
+fsinfo: 899 => 0
+fsinfo: 900 => 0
+fsinfo: 901 => 0
+fsinfo: 902 => 0
+fsinfo: 903 => 0
+fsinfo: 904 => 0
+fsinfo: 905 => 0
+fsinfo: 906 => 0
+fsinfo: 907 => 0
+fsinfo: 908 => 0
+fsinfo: 909 => 0
+fsinfo: 910 => 0
+fsinfo: 911 => 0
+fsinfo: 912 => 0
+fsinfo: 913 => 0
+fsinfo: 914 => 0
+fsinfo: 915 => 0
+fsinfo: 916 => 0
+fsinfo: 917 => 0
+fsinfo: 918 => 0
+fsinfo: 919 => 0
+fsinfo: 920 => 0
+fsinfo: 921 => 0
+fsinfo: 922 => 0
+fsinfo: 923 => 0
+fsinfo: 924 => 0
+fsinfo: 925 => 0
+fsinfo: 926 => 0
+fsinfo: 927 => 0
+fsinfo: 928 => 0
+fsinfo: 929 => 0
+fsinfo: 930 => 0
+fsinfo: 931 => 0
+fsinfo: 932 => 0
+fsinfo: 933 => 0
+fsinfo: 934 => 0
+fsinfo: 935 => 0
+fsinfo: 936 => 0
+fsinfo: 937 => 0
+fsinfo: 938 => 0
+fsinfo: 939 => 0
+fsinfo: 940 => 0
+fsinfo: 941 => 0
+fsinfo: 942 => 0
+fsinfo: 943 => 0
+fsinfo: 944 => 0
+fsinfo: 945 => 0
+fsinfo: 946 => 0
+fsinfo: 947 => 0
+fsinfo: 948 => 0
+fsinfo: 949 => 0
+fsinfo: 950 => 0
+fsinfo: 951 => 0
+fsinfo: 952 => 0
+fsinfo: 953 => 0
+fsinfo: 954 => 0
+fsinfo: 955 => 0
+fsinfo: 956 => 0
+fsinfo: 957 => 0
+fsinfo: 958 => 0
+fsinfo: 959 => 0
+fsinfo: 960 => 0
+fsinfo: 961 => 0
+fsinfo: 962 => 0
+fsinfo: 963 => 0
+fsinfo: 964 => 0
+fsinfo: 965 => 0
+fsinfo: 966 => 0
+fsinfo: 967 => 0
+fsinfo: 968 => 0
+fsinfo: 969 => 0
+fsinfo: 970 => 0
+fsinfo: 971 => 0
+fsinfo: 972 => 0
+fsinfo: 973 => 0
+fsinfo: 974 => 0
+fsinfo: 975 => 0
+fsinfo: 976 => 0
+fsinfo: 977 => 0
+fsinfo: 978 => 0
+fsinfo: 979 => 0
+fsinfo: 980 => 0
+fsinfo: 981 => 0
+fsinfo: 982 => 0
+fsinfo: 983 => 0
+fsinfo: 984 => 0
+fsinfo: 985 => 0
+fsinfo: 986 => 0
+fsinfo: 987 => 0
+fsinfo: 988 => 0
+fsinfo: 989 => 0
+fsinfo: 990 => 0
+fsinfo: 991 => 0
+fsinfo: 992 => 0
+fsinfo: 993 => 0
+fsinfo: 994 => 0
+fsinfo: 995 => 0
+fsinfo: 996 => 72
+fsinfo: 997 => 72
+fsinfo: 998 => 41
+fsinfo: 999 => 61
+fsinfo: 1000 => ff
+fsinfo: 1001 => ff
+fsinfo: 1002 => ff
+fsinfo: 1003 => ff
+fsinfo: 1004 => ff
+fsinfo: 1005 => ff
+fsinfo: 1006 => ff
+fsinfo: 1007 => ff
+fsinfo: 1008 => 0
+fsinfo: 1009 => 0
+fsinfo: 1010 => 0
+fsinfo: 1011 => 0
+fsinfo: 1012 => 0
+fsinfo: 1013 => 0
+fsinfo: 1014 => 0
+fsinfo: 1015 => 0
+fsinfo: 1016 => 0
+fsinfo: 1017 => 0
+fsinfo: 1018 => 0
+fsinfo: 1019 => 0
+fsinfo: 1020 => 0
+fsinfo: 1021 => 0
+fsinfo: 1022 => 55
+fsinfo: 1023 => aa
+HELLO!
+HELLO!
+cluster: 88693760/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693761/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693762/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693763/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693764/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693765/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693766/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693767/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693768/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693769/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693770/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693771/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693772/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693773/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693774/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693775/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693776/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693777/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693778/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693779/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693780/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693781/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693782/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693783/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693784/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693785/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693786/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693787/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693788/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693789/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693790/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+cluster: 88693791/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+1 > 0
+Getting entry 0
+EOF: /home/ilan/testfata/testfla.txt
+
+
+Found entry: testfla.txt
+
+
+cluster: 88693792/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693793/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693794/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693795/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693796/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693797/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693798/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693799/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693800/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693801/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693802/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693803/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693804/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693805/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693806/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693807/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693808/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693809/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693810/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693811/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693812/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693813/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693814/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693815/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693816/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693817/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693818/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693819/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693820/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693821/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693822/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+cluster: 88693823/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+2 > 1
+Getting entry 0
+EOF: /home/ilan/testfata/testflb.txt
+
+
+Found entry: testflb.txt
+
+
+cluster: 88693824/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693825/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693826/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693827/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693828/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693829/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693830/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693831/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693832/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693833/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693834/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693835/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693836/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693837/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693838/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693839/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693840/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693841/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693842/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693843/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693844/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693845/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693846/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693847/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693848/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693849/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693850/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693851/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693852/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693853/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693854/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693855/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 2
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693856/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693857/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693858/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693859/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693860/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693861/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693862/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693863/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693864/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693865/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693866/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693867/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693868/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693869/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693870/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693871/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693872/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693873/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693874/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693875/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693876/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693877/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693878/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693879/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693880/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693881/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693882/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693883/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693884/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693885/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693886/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+cluster: 88693887/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+4 > 3
+Getting entry 1
+EOF: /home/ilan/testfata/testfatb/
+
+
+Found entry: testfatb
+
+
+cluster: 88693888/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693889/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693890/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693891/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693892/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693893/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693894/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693895/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693896/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693897/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693898/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693899/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693900/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693901/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693902/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693903/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693904/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693905/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693906/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693907/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693908/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693909/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693910/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693911/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693912/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693913/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693914/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693915/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693916/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693917/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693918/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693919/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 4
+Getting entry 0
+Reading name ent idx 0
+cluster: 88693920/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693921/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693922/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693923/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693924/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693925/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693926/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693927/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693928/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693929/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693930/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693931/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693932/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693933/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693934/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693935/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693936/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693937/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693938/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693939/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693940/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693941/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693942/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693943/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693944/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693945/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693946/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693947/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693948/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693949/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693950/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+cluster: 88693951/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+6 > 5
+Getting entry 1
+EOF: /home/ilan/testfata/testfatc/
+
+
+Found entry: testfatc
+
+
+cluster: 88693952/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693953/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693954/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693955/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693956/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693957/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693958/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693959/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693960/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693961/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693962/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693963/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693964/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693965/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693966/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693967/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693968/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693969/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693970/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693971/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693972/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693973/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693974/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693975/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693976/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693977/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693978/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693979/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693980/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693981/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693982/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+cluster: 88693983/88693760 -> 0/abcdef
+Path: /home/ilan/testfata/
+Trying testfla.txt: 0
+Skpping testfla.txt => 1
+Trying testflb.txt: 1
+Skpping testflb.txt => 2
+Trying testfatb: 2
+Skpping testfatb => 4
+Trying testfatc: 4
+Skpping testfatc => 6
+Reading past last entry!
+HELLO!
