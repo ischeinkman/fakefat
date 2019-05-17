@@ -21,7 +21,7 @@ pub fn construct_name_entries<EntryType : From<LfnDirEntry>, BuffType : AsMut<[E
 
     for (idx, part) in name.as_bytes().chunks(13).enumerate() {
         let mut newent = LfnDirEntry::default();
-        newent.entry_num = if idx == 0 { 0x40 | (entries_len as u8) } else { entries_len as u8 - idx as u8} ;
+        newent.entry_num = if idx == entries_len - 1 { 0x40 | (1 + idx as u8) } else { 1 + idx as u8} ;
         newent.checksum = checksum;
 
         let part_len = part.len();
