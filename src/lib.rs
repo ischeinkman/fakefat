@@ -25,25 +25,48 @@ pub use fat::*;
 mod faker;
 pub use faker::*;
 
-#[cfg(features = "std")]
+#[cfg(feature = "std")]
 mod stdimpl;
-#[cfg(features = "std")]
-pub use stdimpl::*;
+#[cfg(feature = "std")]
+pub use stdimpl::{StdFileSystem};
 
 mod fsinfo;
 pub use fsinfo::*;
 
 /*
+#[cfg(feature="std")]
 use fatfs;
+#[cfg(feature="std")]
 pub fn main() {
+    simple_logger::init_with_level(log::Level::max())
+        .unwrap();
     let test_faker = FakeFat::new(StdFileSystem{}, "/home/ilan/testfata/".to_owned());
     let test_fs = fatfs::FileSystem::new(test_faker, fatfs::FsOptions::new()).unwrap();
     println!("HELLO!");
-    let mut root = test_fs.root_dir();
+    let root = test_fs.root_dir();
     println!("HELLO!");
-    for itm in root.iter() {
-        let ent = itm.unwrap();
-        println!("\n\nFound entry: {}\n\n", ent.file_name());
+    utils::transverse("/".to_owned(), root);
+    println!("HELLO!");
+}
+#[cfg(feature="std")]
+mod utils {
+    pub fn transverse<'a, T : fatfs::ReadWriteSeek>(cur_path : String, start : fatfs::Dir<'a, T>) {
+        let mut queue = vec![(cur_path, start)];
+        while let Some((path, dir)) = queue.pop() {
+            println!("\n\n ---  Traversing {}  --- \n\n", path);
+            for entres in dir.iter() {
+                let itm = entres.unwrap();
+                println!("\n\nEntry:    {}/{}\n\n", path, itm.file_name());
+                if itm.is_dir() {
+                    queue.push(((format!("{}/{}", path, itm.file_name())), itm.to_dir()));
+                }
+            }
+        }
     }
-    println!("HELLO!");
-}*/
+}
+
+
+
+#[cfg(not(feature="std"))]
+pub fn main() {}
+*/
