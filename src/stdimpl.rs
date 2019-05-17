@@ -53,7 +53,6 @@ impl FileSystemOps for StdFileSystem {
         }
     }
     fn get_dir(&mut self, path: &str) -> Option<PathBuf> {
-        //println!("{}", path);
         let retval = PathBuf::from(path);
         let dir_read_res = fs::read_dir(path);
         match dir_read_res {
