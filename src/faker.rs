@@ -1,5 +1,5 @@
 use crate::bpb::{default_sectors_per_fat, BiosParameterBlock};
-use crate::dirent::{FileDirEntry, LfnDirEntry, ENTRY_SIZE};
+use crate::dirent::{FileDirEntry, LfnDirEntry, EmptyDirEntry, ENTRY_SIZE};
 use crate::fat::{idx_to_cluster, FatEntryValue};
 use crate::fsinfo::FsInfoSector;
 use crate::longname::{construct_name_entries, lfn_count_for_name};
@@ -51,10 +51,11 @@ impl<T: FileSystemOps> FakeFat<T> {
                 let name = ent.name().as_ref().to_owned();
                 let path = format!("{}{}", cur, name);
                 let meta = ent.meta();
-                metadata_cache.insert(path.clone(), meta);
                 entry_count += 1 + lfn_count_for_name(&name);
                 if meta.is_directory {
-                    path_queue.push(format!("{}/", path));
+                    let true_path = format!("{}/", path);
+                    metadata_cache.insert(true_path.clone(), meta);
+                    path_queue.push(true_path);
                 } else {
                     let needed_clusters = meta.size / bpb.bytes_per_cluster()
                         + if meta.size % bpb.bytes_per_cluster() == 0 {
@@ -71,6 +72,7 @@ impl<T: FileSystemOps> FakeFat<T> {
                         clusters.push(my_offset);
                         cluster_mapping.insert(my_offset, path.clone());
                     }
+                    metadata_cache.insert(path.clone(), meta);
                     path_mapping.insert(path.clone(), clusters);
                 }
             }
@@ -106,7 +108,6 @@ impl<T: FileSystemOps> FakeFat<T> {
             metadata_cache,
             read_idx: 0,
         };
-
         retval
     }
 
@@ -154,7 +155,6 @@ impl<T: FileSystemOps> FakeFat<T> {
                     return 0;
                 }
             };
-
             let cluster_chain = self.path_mapping.get(path).unwrap();
             let clusters_previous = cluster_chain.iter().take_while(|c| **c != cluster).count();
             let byte_offset =
@@ -164,14 +164,14 @@ impl<T: FileSystemOps> FakeFat<T> {
             if meta.is_directory {
                 let dir = self.fs.get_dir(path).unwrap();
                 let sys_entries = dir.entries();
-                let fat_entries = sys_entries.iter().map(|ent| {
+                let fat_entries = sys_entries.into_iter().map(|ent| {
                     let stripped_name: String = ent.name().as_ref().to_owned();
                     (
                         stripped_name.clone(),
                         file_to_direntries(&stripped_name, ent.meta()),
                     )
                 });
-                let entry_num = byte_offset / ENTRY_SIZE;
+                let entry_num = (byte_offset)/ENTRY_SIZE;
                 let mut cur_idx = 0;
                 for (full_name, (mut file_ent, name_ents)) in fat_entries {
                     if 1 + name_ents.len() + cur_idx <= entry_num {
@@ -180,27 +180,37 @@ impl<T: FileSystemOps> FakeFat<T> {
                     }
                     let entry_offset = entry_num - cur_idx;
                     let entry_byte = byte_offset % ENTRY_SIZE;
-
+                    if name_ents.len() == 0 {
+                        let tshort = ShortName::from_str(&full_name);
+                        debug_assert!(tshort.is_some());
+                        debug_assert_eq!(tshort.unwrap(), file_ent.name);
+                    }
+                    else {
+                        debug_assert!(ShortName::from_str(&full_name).is_none());
+                    }
                     if entry_offset == name_ents.len() {
                         let full_path = if file_ent.attrs.is_directory() {
                             format!("{}{}/", path, full_name)
                         } else {
                             format!("{}{}", path, full_name)
                         };
-                        file_ent.first_cluster = *self
+                        file_ent.first_cluster = self
                             .path_mapping
                             .get(&full_path)
                             .and_then(|v| v.get(0))
+                            .map(|c| c + 2 as u32)
                             .unwrap();
                         return file_ent.read_byte(entry_byte);
                     } else {
                         let name_ent_idx = name_ents.len() - entry_offset - 1;
-                        assert!(name_ents[name_ent_idx].attrs.is_long_file_name());
-                        assert_eq!(name_ents[name_ent_idx].entry_num & 0x3f, name_ent_idx as u8);
+                        debug_assert!(name_ents[name_ent_idx].attrs.is_long_file_name());
+                        debug_assert!(name_ents[name_ent_idx].checksum == file_ent.name.lfn_checksum());
                         return name_ents[name_ents.len() - entry_offset - 1].read_byte(entry_byte);
                     }
                 }
-                0
+                let entry_byte = byte_offset % ENTRY_SIZE;
+                EmptyDirEntry::default().read_byte(entry_byte)
+
             } else {
                 let mut fl = self.fs.get_file(path).unwrap();
                 let mut buff = [0; 1];
@@ -210,15 +220,14 @@ impl<T: FileSystemOps> FakeFat<T> {
         }
     }
 }
-#[cfg(features = "std")]
 pub use stdio::*;
+#[cfg(not(feature = "std"))]
+pub mod stdio {}
 
-#[cfg(features = "std")]
-mod stdio {
+#[cfg(feature = "std")]
+pub mod stdio {
     use super::*;
     use std::io::{self, Read, Seek, SeekFrom, Write};
-    use std::collections::hash_map::DefaultHasher;
-    use std::hash::{Hash, Hasher};
 
     impl<T: FileSystemOps> Read for FakeFat<T> {
         fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
@@ -260,20 +269,10 @@ mod stdio {
         }
     }
 
-    fn file_to_direntries(name: &str, meta: FileMetadata) -> (FileDirEntry, Vec<LfnDirEntry>) {
-        let mut hasher = DefaultHasher::new();
-        name.hash(&mut hasher);
-        let full_idx = hasher.finish();
-        let idx = full_idx % 256;
-        let mut fileent = meta.to_dirent();
-        let short_name = ShortName::convert_str(name, idx as u8);
-        fileent.name = short_name;
-        (fileent, construct_name_entries(name, fileent))
-    }
-
 }
 
 fn file_to_direntries(name: &str, meta: FileMetadata) -> (FileDirEntry, Vec<LfnDirEntry>) {
+    //TODO: check for duplications.
     let mut fileent = meta.to_dirent();
     let mut idx = Wrapping(0);
     for (_charnum, bt) in name.as_bytes().iter().enumerate() {
@@ -284,5 +283,9 @@ fn file_to_direntries(name: &str, meta: FileMetadata) -> (FileDirEntry, Vec<LfnD
     }
     let short_name = ShortName::convert_str(name, idx.0);
     fileent.name = short_name;
-    (fileent, construct_name_entries(name, fileent))
+    let lfn_length = lfn_count_for_name(name);
+    let mut allocation = Vec::with_capacity(lfn_length);
+    allocation.resize(lfn_length, Default::default());
+    construct_name_entries(name, fileent, &mut allocation);
+    (fileent, allocation)
 }

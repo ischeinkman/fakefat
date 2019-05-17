@@ -200,3 +200,15 @@ impl LfnDirEntry {
         }
     }
 }
+
+#[derive(Copy, Clone, Default, Eq, PartialEq, Debug)]
+pub struct EmptyDirEntry {}
+impl EmptyDirEntry {
+    pub fn read_byte(&self, idx: usize) -> u8 {
+        match idx {
+            0 => 0x00,
+            11 => 0x40,
+            _ => 0,
+        }
+    }
+}
