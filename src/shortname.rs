@@ -29,12 +29,12 @@ impl Eq for ShortName {}
 
 impl PartialOrd for ShortName {
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
-        self.to_string().partial_cmp(&other.to_string())
+        self.to_str().partial_cmp(&other.to_str())
     }
 }
 impl Ord for ShortName {
     fn cmp(&self, other: &Self) -> cmp::Ordering {
-        self.to_string().cmp(&other.to_string())
+        self.to_str().cmp(&other.to_str())
     }
 }
 
