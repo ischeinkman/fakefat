@@ -160,12 +160,18 @@ impl ShortName {
         for c in name_part {
             retval.data[name_part_idx] = char_to_byte(c);
             name_part_idx += 1;
+            if name_part_idx > 7 {
+                break;
+            }
         }
         let ext_part = to_valid_shortname(ext_part_raw);
         let mut ext_part_idx = 0;
         for c in ext_part {
             retval.data[ext_part_idx + 8] = char_to_byte(c);
             ext_part_idx += 1;
+            if ext_part_idx + 8 >= retval.data.len() {
+                break;
+            }
         }
         if duplicate_count == 0 {
             retval.data[6] = b'~';
