@@ -24,6 +24,7 @@ impl DirEntryOps for DirEntry {
 
 impl DirectoryOps for PathBuf {
     type EntryType = DirEntry;
+    type IterType = Vec<DirEntry>;
     fn entries(&self) -> Vec<DirEntry> {
         fs::read_dir(&self)
             .map(|iter| iter.map(Result::unwrap).collect())

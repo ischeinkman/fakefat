@@ -1,7 +1,5 @@
 use crate::datetime::{Date, Time};
 use crate::dirent::{FileAttributes, FileDirEntry};
-extern crate alloc;
-use alloc::vec::Vec;
 
 #[derive(Copy, Clone, Debug, Default)]
 pub struct FileMetadata {
@@ -53,7 +51,8 @@ pub trait DirEntryOps {
 
 pub trait DirectoryOps {
     type EntryType: DirEntryOps;
-    fn entries(&self) -> Vec<Self::EntryType>;
+    type IterType : IntoIterator<Item=Self::EntryType>;
+    fn entries(&self) -> Self::IterType;
 }
 
 pub trait FileOps {
