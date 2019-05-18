@@ -6,12 +6,10 @@ use crate::longname::{construct_name_entries, lfn_count_for_name};
 use crate::shortname::ShortName;
 use crate::traits::{DirEntryOps, DirectoryOps, FileMetadata, FileOps, FileSystemOps};
 
-extern crate alloc;
 use alloc::collections::BTreeMap;
 use alloc::vec;
 use alloc::string::String;
 use alloc::vec::Vec;
-use alloc::*;
 use alloc::borrow::ToOwned;
 use core::num::Wrapping;
 
@@ -21,7 +19,6 @@ pub struct FakeFat<T: FileSystemOps> {
     fs: T,
     cluster_mapping: BTreeMap<u32, String>,
     path_mapping: BTreeMap<String, Vec<u32>>,
-    metadata_cache: BTreeMap<String, FileMetadata>,
     read_idx: usize,
 }
 
@@ -29,15 +26,6 @@ impl<T: FileSystemOps> FakeFat<T> {
     pub fn new(mut fs: T, path_prefix: String) -> Self {
         let mut cluster_mapping: BTreeMap<u32, String> = BTreeMap::new();
         let mut path_mapping: BTreeMap<String, Vec<u32>> = BTreeMap::new();
-        let mut metadata_cache: BTreeMap<String, FileMetadata> = BTreeMap::new();
-        metadata_cache.insert(
-            path_prefix.clone(),
-            FileMetadata {
-                is_directory: true,
-                ..Default::default()
-            },
-        );
-
         let mut bpb = BiosParameterBlock::default();
         bpb.bytes_per_sector = 512;
         bpb.sectors_per_cluster = 1;
@@ -54,7 +42,6 @@ impl<T: FileSystemOps> FakeFat<T> {
                 entry_count += 1 + lfn_count_for_name(&name);
                 if meta.is_directory {
                     let true_path = format!("{}/", path);
-                    metadata_cache.insert(true_path.clone(), meta);
                     path_queue.push(true_path);
                 } else {
                     let needed_clusters = meta.size / bpb.bytes_per_cluster()
@@ -72,7 +59,6 @@ impl<T: FileSystemOps> FakeFat<T> {
                         clusters.push(my_offset);
                         cluster_mapping.insert(my_offset, path.clone());
                     }
-                    metadata_cache.insert(path.clone(), meta);
                     path_mapping.insert(path.clone(), clusters);
                 }
             }
@@ -105,7 +91,6 @@ impl<T: FileSystemOps> FakeFat<T> {
             fs,
             cluster_mapping,
             path_mapping,
-            metadata_cache,
             read_idx: 0,
         };
         retval
@@ -121,33 +106,55 @@ impl<T: FileSystemOps> FakeFat<T> {
                 * (self.bpb.bytes_per_sector as usize)
     }
     pub fn read_byte(&mut self, idx: usize) -> u8 {
+
+        // The first 1024 bytes are the BPB and the FSInfo
         if idx < BiosParameterBlock::SIZE {
             let retval = self.bpb.read_byte(idx);
             retval
         } else if idx < BiosParameterBlock::SIZE + FsInfoSector::SIZE {
             let retval = self.fsinfo.read_byte(idx - BiosParameterBlock::SIZE);
             retval
-        } else if idx > self.fat_start() && idx < self.fat_end() {
+        } 
+        
+        // Next comes the table of allocations and chains, aka the File Allocation Table.
+        else if idx > self.fat_start() && idx < self.fat_end() {
+
+            // Gets the cluster that we need to get the entry of. 
             let cluster = idx_to_cluster(&self.bpb, idx);
             let cur_value = {
+
+                // Is it associated to a path?
                 let cur_path = self.cluster_mapping.get(&cluster);
                 if let Some(cp) = cur_path {
+                    // If so, get the path's chain and find the next link, if there is one. 
+                    // Otherwise return the Chain End marker value. 
                     let cur_chain = self.path_mapping.get(cp);
                     let next_link = cur_chain
                         .and_then(|chain| chain.iter().skip_while(|l| **l != cluster).next());
-                    next_link.map(|&c| c.into()).unwrap_or(FatEntryValue::Bad)
+                    next_link.map(|&c| c.into()).unwrap_or(FatEntryValue::End)
                 } else {
+
+                    // If not, the cluster is free. 
                     FatEntryValue::Free
                 }
             };
+
+            // Get the actual byte we need from the 4 byte entry. 
             let entry_bytes: u32 = cur_value.into();
             let offset = idx % 4;
             let shift = offset * 8;
             let retval = ((entry_bytes & (0xFF << shift)) >> shift) as u8;
             retval
-        } else {
+        } 
+        
+        // Finally comes the raw data itself.
+        else {
             let cluster_size = self.bpb.bytes_per_cluster() as usize;
+
+            // Our data starts where the FAT ends. 
             let data_begin_offset = self.fat_end();
+
+            // The cluster and path we are reading from. 
             let cluster = ((idx - data_begin_offset) / cluster_size) as u32;
             let path = match self.cluster_mapping.get(&cluster) {
                 Some(p) => p,
@@ -155,13 +162,23 @@ impl<T: FileSystemOps> FakeFat<T> {
                     return 0;
                 }
             };
+
+            // We need to go from offset in the fake device to offset in the real file or directory. 
+            // To do so, we first convert from device offset to offset in this cluster chain. 
+
             let cluster_chain = self.path_mapping.get(path).unwrap();
             let clusters_previous = cluster_chain.iter().take_while(|c| **c != cluster).count();
             let byte_offset =
                 clusters_previous * cluster_size + ((idx - data_begin_offset) % cluster_size);
 
-            let meta = self.metadata_cache.get(path).unwrap();
+            // Next, we actually iterate through the data based on what the data is. 
+            let meta = self.fs.get_metadata(path).unwrap();
             if meta.is_directory {
+
+                // Directories are composed of 1 shortname-styled entry per subitem 
+                // Plus an arbitrary number of LFN entries. 
+                // We "build" all of them here to figure out which of all the entries we are reading from. 
+                // Note that thanks to how Rust iterators work, this is done lazily even without an std!
                 let dir = self.fs.get_dir(path).unwrap();
                 let sys_entries = dir.entries();
                 let fat_entries = sys_entries.into_iter().map(|ent| {
@@ -173,13 +190,23 @@ impl<T: FileSystemOps> FakeFat<T> {
                 });
                 let entry_num = (byte_offset)/ENTRY_SIZE;
                 let mut cur_idx = 0;
+                eprintln!("Reading Cluster {}, offset {} => directory {}, entry {}.", cluster, byte_offset, path, entry_num);
+
+                // Go through each subitems combined entries
                 for (full_name, (mut file_ent, name_ents)) in fat_entries {
+
+                    // Skip until we reach the correct LFN-shortname combo
                     if 1 + name_ents.len() + cur_idx <= entry_num {
                         cur_idx += 1 + name_ents.len();
                         continue;
                     }
+
+                    // Calculate the entry in this lfn-shortname list we need, 
+                    // and the byte within that entry.
                     let entry_offset = entry_num - cur_idx;
                     let entry_byte = byte_offset % ENTRY_SIZE;
+
+                    // Just some debug checks.
                     if name_ents.len() == 0 {
                         let tshort = ShortName::from_str(&full_name);
                         debug_assert!(tshort.is_some());
@@ -188,7 +215,9 @@ impl<T: FileSystemOps> FakeFat<T> {
                     else {
                         debug_assert!(ShortName::from_str(&full_name).is_none());
                     }
+
                     if entry_offset == name_ents.len() {
+                        // The shortname entry is considered to be 1 after the final lfn entry. 
                         let full_path = if file_ent.attrs.is_directory() {
                             format!("{}{}/", path, full_name)
                         } else {
@@ -198,20 +227,27 @@ impl<T: FileSystemOps> FakeFat<T> {
                             .path_mapping
                             .get(&full_path)
                             .and_then(|v| v.get(0))
-                            .map(|c| c + 2 as u32)
+                            .map(|c| c + 2 as u32) // Add 2 since FAT32 has 2 reserved clusters? I think?
                             .unwrap();
+                        eprintln!("    Resolved to shortname entry {}.", file_ent.name.to_str());
                         return file_ent.read_byte(entry_byte);
                     } else {
+                        // The LFN entries are actually in reverse order to the string itself. 
                         let name_ent_idx = name_ents.len() - entry_offset - 1;
                         debug_assert!(name_ents[name_ent_idx].attrs.is_long_file_name());
                         debug_assert!(name_ents[name_ent_idx].checksum == file_ent.name.lfn_checksum());
-                        return name_ents[name_ents.len() - entry_offset - 1].read_byte(entry_byte);
+                        eprintln!("    Resolved to lfn entry {} (order {:x})", name_ent_idx, name_ents[name_ent_idx].entry_num);
+                        return name_ents[name_ent_idx].read_byte(entry_byte);
                     }
                 }
+
+                // If we couldn't find the path for the entry, the entry is empty. 
                 let entry_byte = byte_offset % ENTRY_SIZE;
+                eprintln!("    Resolved to nothing.");
                 EmptyDirEntry::default().read_byte(entry_byte)
 
             } else {
+                // Read the file at the correct byte. 
                 let mut fl = self.fs.get_file(path).unwrap();
                 let mut buff = [0; 1];
                 let _read = fl.read_at(byte_offset, &mut buff);

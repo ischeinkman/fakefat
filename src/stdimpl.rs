@@ -66,6 +66,19 @@ impl FileSystemOps for StdFileSystem {
             },
         }
     }
+
+    fn get_metadata(&mut self, path: &str) -> Option<FileMetadata> {
+        match fs::metadata(path) {
+            Ok(mt) => Some(get_metadata(mt)),
+            Err(e) => match e.kind() {
+                io::ErrorKind::NotFound => None,
+                _ => {
+                    Result::<(), io::Error>::Err(e).unwrap();
+                    panic!();
+                }
+            },
+        }
+    }
 }
 
 fn get_metadata(mt: Metadata) -> FileMetadata {

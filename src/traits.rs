@@ -66,4 +66,5 @@ pub trait FileSystemOps {
 
     fn get_file(&mut self, path: &str) -> Option<Self::FileType>;
     fn get_dir(&mut self, path: &str) -> Option<Self::DirectoryType>;
+    fn get_metadata(&mut self, path:&str) -> Option<FileMetadata>;
 }
