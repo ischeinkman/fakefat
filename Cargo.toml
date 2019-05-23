@@ -4,13 +4,25 @@ version = "0.1.0"
 authors = ["ischeinkman <scheinkman.ilan@gmail.com>"]
 edition = "2018"
 
-[dependencies]
-mbr-nostd="0.1.0"
+#[[bin]]
+#name = "ff"
+#path = "src/lib.rs"
 
-byteorder = {version = "1", default-features=false }
-bitflags = "1.0"
-log = "0.4"
+#[bin.ff.features]
+#default = ["std"]
+#std = []
+
+[dependencies]
+#mbr-nostd="0.1.0"
+
+#byteorder = {version = "1", default-features=false }
+#bitflags = "1.0"
+#log = "0.4"
+
+#fatfs = "0.3"
+#simple_logger = "1.2"
 
 [features]
 default = ["std"]
-std = []
+std = ["alloc"]
+alloc = []

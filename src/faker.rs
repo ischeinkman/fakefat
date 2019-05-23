@@ -5,82 +5,101 @@ use crate::fsinfo::FsInfoSector;
 use crate::longname::{construct_name_entries, lfn_count_for_name};
 use crate::shortname::ShortName;
 use crate::traits::{DirEntryOps, DirectoryOps, FileMetadata, FileOps, FileSystemOps};
+use crate::clustermapping::{ClusterMapper, ClusterMapperOps};
+use crate::pathbuffer::PathBuff;
 
-use alloc::collections::BTreeMap;
-use alloc::vec;
-use alloc::string::String;
-use alloc::vec::Vec;
-use alloc::borrow::ToOwned;
 use core::num::Wrapping;
 
 pub struct FakeFat<T: FileSystemOps> {
     bpb: BiosParameterBlock,
     fsinfo: FsInfoSector,
     fs: T,
-    cluster_mapping: BTreeMap<u32, String>,
-    path_mapping: BTreeMap<String, Vec<u32>>,
+    mapper : ClusterMapper, 
     read_idx: usize,
 }
 
+use core::ops::Index;
+
+fn traverse<T : FileSystemOps>(mapper : &mut ClusterMapper, cur : &PathBuff, fs : &mut T, bytes_per_cluster : usize) -> u32 {
+
+    let entry_count : usize = fs.get_dir(cur.to_str()).unwrap().entries().into_iter().map(|ent| {
+        1 + lfn_count_for_name(ent.name().as_ref())
+    }).sum();
+    let needed_bytes = entry_count.max(1) * ENTRY_SIZE;
+    let needed_clusters = needed_bytes / bytes_per_cluster
+        + if needed_bytes % bytes_per_cluster == 0 {
+            0
+        } else {
+            1
+        };
+    let mut cur_cluster = 0;
+    let mut clusters = 0;
+    while clusters < needed_clusters {
+        while mapper.is_allocated(cur_cluster) {
+            cur_cluster += 1;
+        }
+        mapper.add_cluster_to_path(cur.to_str(), cur_cluster);
+        clusters += 1;
+    }
+
+    let mut max_cluster = cur_cluster;
+    
+    let subdirs = fs.get_dir(cur.to_str()).unwrap().entries().into_iter().filter(|ent| ent.meta().is_directory);
+    let subfiles = fs.get_dir(cur.to_str()).unwrap().entries().into_iter().filter(|ent| !ent.meta().is_directory);
+    for ent in subfiles {
+        let nh = ent.name();
+        let path = {
+            let mut r = PathBuff::default();
+            r.add_subdir(cur.to_str());
+            r.add_file(nh.as_ref());
+            r
+        };
+        let meta = ent.meta();
+        let needed_clusters = meta.size as usize / bytes_per_cluster
+            + if meta.size as usize % bytes_per_cluster == 0 {
+                0
+            } else {
+                1
+            };
+        let mut clusters = 0;
+        while clusters < needed_clusters {
+            let mut my_offset = cur_cluster + 12;
+            while mapper.is_allocated(my_offset) {
+                my_offset += 1;
+            }
+            clusters += 1;
+            mapper.add_cluster_to_path(path.to_str(), my_offset);
+            max_cluster = max_cluster.max(my_offset);
+        }
+    }
+
+    for dir in subdirs {
+        let path_comp = dir.name();
+        let path = {
+            let mut r = PathBuff::default();
+            r.add_subdir(cur.to_str());
+            r.add_subdir(path_comp.as_ref());
+            r
+        };
+        max_cluster = max_cluster.max(traverse(mapper, &path, fs, bytes_per_cluster));
+    }
+    max_cluster
+}
+
 impl<T: FileSystemOps> FakeFat<T> {
-    pub fn new(mut fs: T, path_prefix: String) -> Self {
-        let mut cluster_mapping: BTreeMap<u32, String> = BTreeMap::new();
-        let mut path_mapping: BTreeMap<String, Vec<u32>> = BTreeMap::new();
+    pub fn new(mut fs: T, path_prefix: &str) -> Self {
+        let path_prefix = {
+            let mut r = PathBuff::default();
+            r.add_subdir(path_prefix);
+            r
+        };
         let mut bpb = BiosParameterBlock::default();
         bpb.bytes_per_sector = 512;
-        bpb.sectors_per_cluster = 1;
+        bpb.sectors_per_cluster = 8;
+        let mut mapper = ClusterMapper::new();
 
-        let mut cur_cluster = 0;
-        let mut path_queue = vec![path_prefix.clone()];
-        while let Some(cur) = path_queue.pop() {
-            let mut entry_count = 0;
-            let subentries = fs.get_dir(&cur).unwrap().entries();
-            for ent in subentries {
-                let name = ent.name().as_ref().to_owned();
-                let path = format!("{}{}", cur, name);
-                let meta = ent.meta();
-                entry_count += 1 + lfn_count_for_name(&name);
-                if meta.is_directory {
-                    let true_path = format!("{}/", path);
-                    path_queue.push(true_path);
-                } else {
-                    let needed_clusters = meta.size / bpb.bytes_per_cluster()
-                        + if meta.size % bpb.bytes_per_cluster() == 0 {
-                            0
-                        } else {
-                            1
-                        };
-                    let mut clusters = Vec::new();
-                    while (clusters.len() as u32) < needed_clusters {
-                        let mut my_offset = cur_cluster + 12;
-                        while cluster_mapping.get(&(my_offset)).is_some() {
-                            my_offset += 1;
-                        }
-                        clusters.push(my_offset);
-                        cluster_mapping.insert(my_offset, path.clone());
-                    }
-                    path_mapping.insert(path.clone(), clusters);
-                }
-            }
-
-            let needed_bytes = entry_count.max(1) * ENTRY_SIZE;
-            let needed_clusters = needed_bytes / (bpb.bytes_per_cluster() as usize)
-                + if needed_bytes % (bpb.bytes_per_cluster() as usize) == 0 {
-                    0
-                } else {
-                    1
-                };
-            let mut clusters = Vec::new();
-            while clusters.len() < needed_clusters {
-                while cluster_mapping.get(&cur_cluster).is_some() {
-                    cur_cluster += 1;
-                }
-                clusters.push(cur_cluster);
-                cluster_mapping.insert(cur_cluster, cur.clone());
-            }
-            path_mapping.insert(cur.clone(), clusters);
-        }
-        let total_clusters = (bpb.root_dir_first_cluster + cur_cluster + 1).max(0xAB_CDEF);
+        let max_cluster = traverse(&mut mapper, &path_prefix, &mut fs, bpb.bytes_per_cluster() as usize);
+        let total_clusters = (bpb.root_dir_first_cluster + max_cluster + 1).max(0xAB_CDEF);
         let total_sectors = bpb.sectors_per_cluster as u32 * total_clusters;
         bpb.total_sectors_32 = total_sectors;
         let spf = default_sectors_per_fat(&bpb);
@@ -89,8 +108,7 @@ impl<T: FileSystemOps> FakeFat<T> {
             bpb,
             fsinfo: FsInfoSector::default(),
             fs,
-            cluster_mapping,
-            path_mapping,
+            mapper,
             read_idx: 0,
         };
         retval
@@ -124,14 +142,13 @@ impl<T: FileSystemOps> FakeFat<T> {
             let cur_value = {
 
                 // Is it associated to a path?
-                let cur_path = self.cluster_mapping.get(&cluster);
+                let cur_path = self.mapper.get_path_for_cluster(cluster);
                 if let Some(cp) = cur_path {
                     // If so, get the path's chain and find the next link, if there is one. 
                     // Otherwise return the Chain End marker value. 
-                    let cur_chain = self.path_mapping.get(cp);
-                    let next_link = cur_chain
-                        .and_then(|chain| chain.iter().skip_while(|l| **l != cluster).next());
-                    next_link.map(|&c| c.into()).unwrap_or(FatEntryValue::End)
+                    let cur_chain = self.mapper.get_chain_for_path(cp);
+                    let next_link = cur_chain.into_iter().skip_while(|&l| l != cluster).next();
+                    next_link.map(|c| c.into()).unwrap_or(FatEntryValue::End)
                 } else {
 
                     // If not, the cluster is free. 
@@ -156,7 +173,7 @@ impl<T: FileSystemOps> FakeFat<T> {
 
             // The cluster and path we are reading from. 
             let cluster = ((idx - data_begin_offset) / cluster_size) as u32;
-            let path = match self.cluster_mapping.get(&cluster) {
+            let path = match self.mapper.get_path_for_cluster(cluster) {
                 Some(p) => p,
                 None => {
                     return 0;
@@ -166,8 +183,8 @@ impl<T: FileSystemOps> FakeFat<T> {
             // We need to go from offset in the fake device to offset in the real file or directory. 
             // To do so, we first convert from device offset to offset in this cluster chain. 
 
-            let cluster_chain = self.path_mapping.get(path).unwrap();
-            let clusters_previous = cluster_chain.iter().take_while(|c| **c != cluster).count();
+            let cluster_chain = self.mapper.get_chain_for_path(path);
+            let clusters_previous = cluster_chain.into_iter().take_while(|&c| c != cluster).count();
             let byte_offset =
                 clusters_previous * cluster_size + ((idx - data_begin_offset) % cluster_size);
 
@@ -182,18 +199,22 @@ impl<T: FileSystemOps> FakeFat<T> {
                 let dir = self.fs.get_dir(path).unwrap();
                 let sys_entries = dir.entries();
                 let fat_entries = sys_entries.into_iter().map(|ent| {
-                    let stripped_name: String = ent.name().as_ref().to_owned();
+                    let meta = ent.meta();
+                    let nh = ent.name();
+                    let dirents = file_to_direntries(nh.as_ref(), meta);
                     (
-                        stripped_name.clone(),
-                        file_to_direntries(&stripped_name, ent.meta()),
+                        ent,
+                        dirents,
                     )
                 });
                 let entry_num = (byte_offset)/ENTRY_SIZE;
                 let mut cur_idx = 0;
-                eprintln!("Reading Cluster {}, offset {} => directory {}, entry {}.", cluster, byte_offset, path, entry_num);
+                //eprintln!("Reading Cluster {}, offset {} => directory {}, entry {}.", cluster, byte_offset, path, entry_num);
 
                 // Go through each subitems combined entries
-                for (full_name, (mut file_ent, name_ents)) in fat_entries {
+                for (ent, (mut file_ent, name_ents)) in fat_entries {
+                    let nh = ent.name();
+                    let full_name = nh.as_ref();
 
                     // Skip until we reach the correct LFN-shortname combo
                     if 1 + name_ents.len() + cur_idx <= entry_num {
@@ -219,31 +240,38 @@ impl<T: FileSystemOps> FakeFat<T> {
                     if entry_offset == name_ents.len() {
                         // The shortname entry is considered to be 1 after the final lfn entry. 
                         let full_path = if file_ent.attrs.is_directory() {
-                            format!("{}{}/", path, full_name)
+                            let mut r = PathBuff::default();
+                            r.add_subdir(path);
+                            r.add_subdir(full_name);
+                            r
                         } else {
-                            format!("{}{}", path, full_name)
+                            let mut r = PathBuff::default();
+                            r.add_subdir(path);
+                            r.add_file(full_name);
+                            r
                         };
-                        file_ent.first_cluster = self
-                            .path_mapping
-                            .get(&full_path)
-                            .and_then(|v| v.get(0))
+                        
+                        file_ent.first_cluster = self.mapper
+                            .get_chain_for_path(full_path.to_str())
+                            .into_iter()
+                            .next()
                             .map(|c| c + 2 as u32) // Add 2 since FAT32 has 2 reserved clusters? I think?
                             .unwrap();
-                        eprintln!("    Resolved to shortname entry {}.", file_ent.name.to_str());
+                        //eprintln!("    Resolved to shortname entry {}.", file_ent.name.to_str());
                         return file_ent.read_byte(entry_byte);
                     } else {
                         // The LFN entries are actually in reverse order to the string itself. 
                         let name_ent_idx = name_ents.len() - entry_offset - 1;
                         debug_assert!(name_ents[name_ent_idx].attrs.is_long_file_name());
                         debug_assert!(name_ents[name_ent_idx].checksum == file_ent.name.lfn_checksum());
-                        eprintln!("    Resolved to lfn entry {} (order {:x})", name_ent_idx, name_ents[name_ent_idx].entry_num);
+                        //eprintln!("    Resolved to lfn entry {} (order {:x})", name_ent_idx, name_ents[name_ent_idx].entry_num);
                         return name_ents[name_ent_idx].read_byte(entry_byte);
                     }
                 }
 
                 // If we couldn't find the path for the entry, the entry is empty. 
                 let entry_byte = byte_offset % ENTRY_SIZE;
-                eprintln!("    Resolved to nothing.");
+                //eprintln!("    Resolved to nothing.");
                 EmptyDirEntry::default().read_byte(entry_byte)
 
             } else {
@@ -307,7 +335,7 @@ pub mod stdio {
 
 }
 
-fn file_to_direntries(name: &str, meta: FileMetadata) -> (FileDirEntry, Vec<LfnDirEntry>) {
+fn file_to_direntries(name: &str, meta: FileMetadata) -> (FileDirEntry, LfnChain) {
     //TODO: check for duplications.
     let mut fileent = meta.to_dirent();
     let mut idx = Wrapping(0);
@@ -320,8 +348,35 @@ fn file_to_direntries(name: &str, meta: FileMetadata) -> (FileDirEntry, Vec<LfnD
     let short_name = ShortName::convert_str(name, idx.0);
     fileent.name = short_name;
     let lfn_length = lfn_count_for_name(name);
-    let mut allocation = Vec::with_capacity(lfn_length);
-    allocation.resize(lfn_length, Default::default());
+    let mut allocation = LfnChain::default();
     construct_name_entries(name, fileent, &mut allocation);
+    allocation.len = lfn_length;
     (fileent, allocation)
+}
+
+
+#[derive(Copy, Clone, Default)]
+struct LfnChain {
+    len : usize, 
+    allocation : [LfnDirEntry ; 32],
+}
+
+impl LfnChain {
+    fn len(&self) -> usize {
+        self.len
+    }
+}
+
+impl Index<usize> for LfnChain {
+    type Output = LfnDirEntry;
+
+    fn index(&self, idx : usize) -> &LfnDirEntry {
+        &self.allocation[idx]
+    }
+}
+
+impl AsMut<[LfnDirEntry]> for LfnChain {
+    fn as_mut(&mut self) -> &mut [LfnDirEntry] {
+        &mut self.allocation
+    }
 }

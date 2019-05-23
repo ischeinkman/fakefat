@@ -1,0 +1,215 @@
+
+
+pub trait ClusterMapperOps {
+    type ChainIterator : IntoIterator<Item=u32>;
+
+    fn new() -> Self;
+    fn get_path_for_cluster(&self, cluster : u32) -> Option<&str> ;
+    fn get_chain_for_path(&self, path : &str) -> Self::ChainIterator;
+
+    fn add_cluster_to_path(&mut self, path : &str, cluster : u32) ; 
+    fn is_allocated(&self, cluster : u32) -> bool;
+}
+
+#[cfg(not(feature="alloc"))]
+pub use nop_mapper::*;
+#[cfg(not(feature="alloc"))]
+pub type ClusterMapper = NopClusterMapper;
+#[cfg(not(feature="alloc"))]
+mod nop_mapper {
+    use core::str::from_utf8_unchecked;
+    use super::*;
+    use crate::fat::FatEntryValue;
+
+    mod size_constants {
+        pub const MAX_ENTRIES : usize = 1024;
+        pub const MAX_CHAIN_LENGTH : usize = 1024;
+        pub const MAX_PATH_LENGTH : usize = 1024;
+    }
+
+    pub struct NopClusterMapper {
+        entries : [FileEntry ; size_constants::MAX_ENTRIES],
+    }
+
+    #[derive(Copy, Clone)]
+    struct FileEntry {
+        path : [u8 ; size_constants::MAX_PATH_LENGTH],
+        chain : [u32 ; size_constants::MAX_CHAIN_LENGTH],
+    }
+
+    impl FileEntry {
+        pub fn from_path(path : &str) -> FileEntry {
+            let mut retval = FileEntry::default();
+            let path_bytes = path.as_bytes();
+            for (idx, bt) in path_bytes.iter().enumerate() {
+                retval.path[idx] = *bt;
+            }
+            retval
+        }
+        pub fn path_strlen(&self) -> usize {
+            self.path.iter().take_while(|&&c| c != 0).count()
+        }
+        pub fn path_str(&self) -> &str {
+            unsafe {
+                from_utf8_unchecked(&self.path[0..self.path_strlen()])
+            }
+        }
+
+        pub fn chain_count(&self) -> usize {
+            (&self.chain).iter().take_while(|&&c| FatEntryValue::from(c) != FatEntryValue::Bad).count()
+        }
+
+        pub fn add_cluster(&mut self, cluster : u32) {
+            self.chain[self.chain_count()] = cluster;
+        }
+    }
+
+    impl Default for FileEntry {
+        fn default() -> FileEntry {
+            FileEntry {
+                path : [0 ; size_constants::MAX_PATH_LENGTH],
+                chain : [u32::max_value() ; size_constants::MAX_CHAIN_LENGTH],
+            }
+        }
+    }
+
+    pub struct ChainIter {
+        chain : [u32 ; size_constants::MAX_CHAIN_LENGTH],
+        idx : usize,
+    }
+
+    impl Iterator for ChainIter {
+        type Item = u32;
+        fn next(&mut self) -> Option<u32> {
+            if self.idx >= self.chain.len() {
+                return None;
+            }
+            let itm = self.chain[self.idx];
+            self.idx += 1;
+            match FatEntryValue::from(itm) {
+                FatEntryValue::Next(n) => Some(n),
+                _ => None,
+            }
+        }
+    }
+
+    impl NopClusterMapper {
+        fn find_path_entry(&self, path : &str) -> Option<usize> {
+            let path_bytes = path.as_bytes();
+            if path_bytes.len() > size_constants::MAX_PATH_LENGTH {
+                return None;
+            }
+            (&self.entries).iter()
+                .enumerate()
+                .find(|(_, ent)| (&ent.path[..path_bytes.len()]) == path_bytes)
+                .map(|(idx, _)| idx)
+        }
+
+        fn find_cluster_entry(&self, cluster : u32) -> Option<(usize, usize)> {
+            (&self.entries).iter()
+                .enumerate()
+                .find_map(|(path_idx, ent)| {
+                    let mut chain = (&ent.chain).iter().enumerate().take_while(|(_, c)| FatEntryValue::from(**c) != FatEntryValue::Bad);
+                    let cluster_idx = chain.find(|(_, c)| **c == cluster);
+                    match cluster_idx {
+                        Some((cidx, _)) => Some((path_idx, cidx)),
+                        None => None, 
+                    }
+                })
+        }
+
+        fn entry_count(&self) -> usize {
+            (&self.entries).iter().take_while(|e| e.path_strlen() > 0).count()
+        }
+    }
+
+    impl ClusterMapperOps for NopClusterMapper {
+        type ChainIterator = ChainIter;
+
+        fn new () -> Self {
+            Self {
+                entries : [Default::default() ; size_constants::MAX_ENTRIES],
+            }
+        }
+        fn get_path_for_cluster(&self, cluster: u32) -> Option<&str> {
+            let (pidx, _) = self.find_cluster_entry(cluster)?;
+            Some(self.entries[pidx].path_str())
+        }
+        fn get_chain_for_path(&self, path : &str) -> Self::ChainIterator {
+            if let Some(ent_idx) = self.find_path_entry(path) {
+                let ent = self.entries[ent_idx];
+                ChainIter {
+                    chain : ent.chain,
+                    idx : 0,
+                }
+            }
+            else {
+                ChainIter {
+                    chain : [FatEntryValue::Bad.into() ; size_constants::MAX_CHAIN_LENGTH],
+                    idx : 0, 
+                }
+            }
+        }
+        fn add_cluster_to_path(&mut self, path : &str, cluster : u32) {
+            let existing = self.find_path_entry(path);
+            let entry = match existing {
+                Some(eidx) => &mut self.entries[eidx],
+                None => {
+                    self.entries[self.entry_count()] = FileEntry::from_path(path);
+                    &mut self.entries[self.entry_count()]                
+                },
+            };
+            entry.add_cluster(cluster);
+        }
+
+        fn is_allocated(&self, cluster : u32) -> bool {
+            self.find_cluster_entry(cluster).is_some()
+        }
+    }
+}
+#[cfg(feature="alloc")]
+pub use alloc_mapper::*;
+#[cfg(feature="alloc")]
+pub type ClusterMapper = AllocClusterMapper;
+#[cfg(feature="alloc")]
+mod alloc_mapper {
+    use super::*;
+
+
+    use alloc::collections::BTreeMap;
+    use alloc::string::String; 
+    use alloc::borrow::ToOwned;
+    use alloc::vec::Vec;
+    pub struct AllocClusterMapper {
+        cluster_mapping: BTreeMap<u32, String>,
+        path_mapping: BTreeMap<String, Vec<u32>>,
+    }
+
+    impl ClusterMapperOps for AllocClusterMapper {
+        type ChainIterator = Vec<u32>;
+
+        fn new () -> Self {
+            AllocClusterMapper {
+                cluster_mapping : BTreeMap::new(),
+                path_mapping : BTreeMap::new(),
+            }
+        }
+        fn get_path_for_cluster(&self, cluster: u32) -> Option<&str> {
+            self.cluster_mapping.get(&cluster).map(|s| s.as_ref())
+        }
+        fn get_chain_for_path(&self, path : &str) -> Self::ChainIterator {
+            self.path_mapping.get(path).map_or(Vec::new(), |v| v.clone())
+        }
+        fn add_cluster_to_path(&mut self, path : &str, cluster : u32) {
+            if !self.path_mapping.contains_key(path) {
+                self.path_mapping.insert(path.to_owned(), Vec::new());
+            }
+            self.path_mapping.get_mut(path).map(|v| v.push(cluster));
+            self.cluster_mapping.insert(cluster, path.to_owned());
+        }
+
+        fn is_allocated(&self, cluster : u32) -> bool {
+            self.cluster_mapping.contains_key(&cluster)
+        }
+    }
+}

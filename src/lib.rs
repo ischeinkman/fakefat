@@ -1,4 +1,6 @@
 #![cfg_attr(not(feature = "std"), no_std)]
+//#[macro_use]
+#[cfg(feature="alloc")]
 extern crate alloc;
 
 mod shortname;
@@ -33,6 +35,10 @@ pub use stdimpl::{StdFileSystem};
 mod fsinfo;
 pub use fsinfo::*;
 
+mod clustermapping;
+
+mod pathbuffer;
+
 /*
 #[cfg(feature="std")]
 use fatfs;
@@ -40,7 +46,7 @@ use fatfs;
 pub fn main() {
     simple_logger::init_with_level(log::Level::max())
         .unwrap();
-    let test_faker = FakeFat::new(StdFileSystem{}, "/home/ilan/testfata/".to_owned());
+    let test_faker = FakeFat::new(StdFileSystem{}, "/home/ilan/testfata/");
     let test_fs = fatfs::FileSystem::new(test_faker, fatfs::FsOptions::new()).unwrap();
     println!("HELLO!");
     let root = test_fs.root_dir();

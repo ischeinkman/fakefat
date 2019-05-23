@@ -1,4 +1,3 @@
-use core::fmt;
 use core::str::from_utf8_unchecked;
 use core::cmp;
 
@@ -35,14 +34,6 @@ impl PartialOrd for ShortName {
 impl Ord for ShortName {
     fn cmp(&self, other: &Self) -> cmp::Ordering {
         self.to_str().cmp(&other.to_str())
-    }
-}
-
-impl fmt::Display for ShortName {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let name = if self.lower_name { self.name().to_ascii_lowercase() } else { self.name().to_ascii_uppercase() };
-        let ext = if self.lower_ext { self.ext().to_ascii_lowercase() } else { self.ext().to_ascii_uppercase() };
-        write!(f, "ShortName{{ name: {}, ext : {} }}", name, ext)
     }
 }
 
