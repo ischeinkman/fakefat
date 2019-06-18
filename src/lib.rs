@@ -1,6 +1,6 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 //#[macro_use]
-#[cfg(feature="alloc")]
+#[cfg(all(feature="alloc", not(feature="std")))]
 extern crate alloc;
 
 mod shortname;

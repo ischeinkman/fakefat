@@ -3,7 +3,13 @@
 pub use with_alloc::PathBuff;
 #[cfg(feature="alloc")]
 mod with_alloc {
+    
+    #[cfg(all(feature="alloc", not(feature="std")))]
     extern crate alloc; 
+
+    #[cfg(feature = "std")]
+    use std as alloc;
+
     use alloc::vec::Vec;
     use core::str::from_utf8_unchecked;
 

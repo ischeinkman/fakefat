@@ -175,6 +175,8 @@ pub type ClusterMapper = AllocClusterMapper;
 mod alloc_mapper {
     use super::*;
 
+    #[cfg(feature = "std")]
+    use std as alloc;
 
     use alloc::collections::BTreeMap;
     use alloc::string::String; 
