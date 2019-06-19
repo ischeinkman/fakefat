@@ -1,3 +1,5 @@
+use super::ReadByte;
+
 const FAT_32_LABEL: [u8; 8] = [b'F', b'A', b'T', b'3', b'2', b' ', b' ', b' '];
 const FAT_COUNT: u8 = 2;
 const RESERVED_SECTORS: u16 = 8;
@@ -38,6 +40,7 @@ pub struct BiosParameterBlock {
     pub sectors_per_track: u16,
     /// Not sure; defaults to 64.
     pub heads: u16,
+    /// Not sure; defaults to 0. 
     pub hidden_sectors: u32,
 
     /// The size of the filesystem in sectors, including all FATs and the preamble.
@@ -47,7 +50,9 @@ pub struct BiosParameterBlock {
     /// By default calculated using `default_sectors_per_fat`.
     pub sectors_per_fat_32: u32,
 
-    // Extended BIOS Parameter Block
+    /// Extra filesystem flags. 
+    /// 
+    /// Currently only the mirroring flag bit (`0x80`) is used by this crate.
     pub extended_flags: u16,
 
     /// The first cluster of the root directory, usually equal to `reserved_sectors/sectors_per_cluster + 1`.
@@ -56,8 +61,16 @@ pub struct BiosParameterBlock {
     /// The sector to find the informational struct containing information about
     /// the free clusters.
     pub fs_info_sector: u16,
+
+    /// Not sure; defaults to 6. 
+    /// 
+    /// Since the first 8 sectors are allocated as the filesystem header, this 
+    /// may be a copy of the raw BIOS bytes that are located at the head of all
+    /// single-partition SCSI drive, but this is not yet confirmed. 
     pub backup_boot_sector: u16,
+    /// Not sure; defaults to `0x80`.  
     pub drive_num: u8,
+    /// Not sure; defaults to 0. 
     pub volume_id: u32,
 
     /// The label of this filesystem volume.
@@ -93,20 +106,9 @@ impl Default for BiosParameterBlock {
     }
 }
 
-impl BiosParameterBlock {
-    pub const SIZE: usize = 512;
-    pub fn from_sector_information(
-        total_sectors: u32,
-        bytes_per_sector: u16,
-    ) -> BiosParameterBlock {
-        let mut retval = BiosParameterBlock::default();
-        retval.bytes_per_sector = bytes_per_sector;
-        retval.total_sectors_32 = total_sectors;
-        let spf = default_sectors_per_fat(&retval);
-        retval.sectors_per_fat_32 = spf;
-        retval
-    }
-    pub fn read_byte(&self, idx: usize) -> u8 {
+impl ReadByte for BiosParameterBlock {
+    const SIZE: usize = 512;
+    fn read_byte(&self, idx: usize) -> u8 {
         if idx < 11 {
             return b'a';
         } else if idx == 510 {
@@ -175,7 +177,29 @@ impl BiosParameterBlock {
 
         retval
     }
+}
 
+impl BiosParameterBlock {
+
+    /// Constructs a new `BiosParameterBlock` with the given values for 
+    /// `total_sectors` and `bytes_per_sector` and default values for everything else. 
+    /// 
+    /// The value of `sectors_per_fat_32` is calculated via the `default_sectors_per_fat`
+    /// function and the provided values. 
+    pub fn from_sector_information(
+        total_sectors: u32,
+        bytes_per_sector: u16,
+    ) -> BiosParameterBlock {
+        let mut retval = BiosParameterBlock::default();
+        retval.bytes_per_sector = bytes_per_sector;
+        retval.total_sectors_32 = total_sectors;
+        let spf = default_sectors_per_fat(&retval);
+        retval.sectors_per_fat_32 = spf;
+        retval
+    }
+
+    /// Assuming a preamble with more than 1 File Allocation Table, returns whether
+    /// writes to 1 FAT are automatically duplicated across all other FATs. 
     pub fn is_mirroring_enabled(&self) -> bool {
         self.extended_flags & 0x80 == 0
     }

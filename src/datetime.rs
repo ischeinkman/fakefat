@@ -172,33 +172,48 @@ pub struct Time {
 }
 
 impl Time {
+
+    /// Constructs a copy of `self` with the hour set to `hour`. 
     pub fn with_hour(self, hour: u8) -> Time {
         debug_assert!(hour <= 23);
         Time { hour, ..self }
     }
+    
+    /// Constructs a copy of `self` with the minute set to `minute`. 
     pub fn with_minute(self, minute: u8) -> Time {
         debug_assert!(minute <= 59);
         Time { minute, ..self }
     }
+    /// Constructs a copy of `self` with the second set to `second`. 
     pub fn with_second(self, second: u8) -> Time {
         debug_assert!(second <= 59);
         Time { second, ..self }
     }
+    /// Constructs a copy of `self` with the tenths of second field set to `tenths`. 
     pub fn with_tenths(self, tenths: u8) -> Time {
         debug_assert!(tenths < 10);
         Time { tenths, ..self }
     }
 
+    /// The whole hours since midnight, between 0 and 23 inclusive. 
     pub fn hour(self) -> u8 {
         self.hour
     }
+
+    /// The minute passed the hour, between 0 and 59 inclusive. 
     pub fn minute(self) -> u8 {
         self.minute
     }
+
+    /// The seconds since the minute, between 0 and 59 inclusive. 
     pub fn second(self) -> u8 {
         self.second
     }
 
+    /// Decodes a low-precision FAT-encoded clock time into a `Time` value. 
+    /// 
+    /// Due to FAT precision limitations, this means that the resulting `second()`
+    /// will always be even and the resulting `tenths()` will always be 0. 
     pub fn decode(encoded: u16) -> Self {
         let hour = (encoded >> 11) as u8;
         let min = ((encoded >> 5) & 0x3F) as u8;
@@ -208,8 +223,14 @@ impl Time {
             .with_minute(min)
             .with_second(sec)
     }
+
+    /// Constructs a copy of `self` modified to include the information included
+    /// in the supplied FAT32 high-resolution-time byte. 
+    /// 
+    /// This byte includes information for both tenths of a second and for `self.second % 2`. 
     pub fn with_hi_res(mut self, hi_res_info: u8) -> Self {
         debug_assert!((hi_res_info <= 9) || (hi_res_info >= 100 && hi_res_info <= 109));
+        self.second -= self.second % 2;
         self.second += hi_res_info / 100;
         self.tenths = hi_res_info % 100;
         self

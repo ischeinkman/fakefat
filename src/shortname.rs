@@ -1,6 +1,8 @@
 use core::cmp;
 use core::str::from_utf8_unchecked;
 
+use super::ReadByte;
+
 /// Represents a single name allowable in a normal directory entry, which is
 /// an 8 ASCII character name and a 3 ASCII character extention.
 #[derive(Copy, Clone, Debug)]
@@ -44,12 +46,10 @@ impl Ord for ShortName {
     }
 }
 
-impl ShortName {
-    pub const SHORT_NAME_LENGTH: usize = 8;
-    pub const SHORT_NAME_EXT_LENGTH: usize = 3;
-    pub const SHORT_NAME_FULL_LENGTH: usize = Self::SHORT_NAME_EXT_LENGTH + Self::SHORT_NAME_LENGTH;
+impl ReadByte for ShortName {
+    const SIZE: usize = ShortName::SHORT_NAME_FULL_LENGTH;
 
-    pub fn read_byte(self, idx: usize) -> u8 {
+    fn read_byte(&self, idx: usize) -> u8 {
         if idx == 0 && self.data[0] == 0xE5 {
             0x05
         } else if idx < self.data.len() {
@@ -58,6 +58,16 @@ impl ShortName {
             0
         }
     }
+}
+
+impl ShortName {
+
+    /// The maximum length of the name section of a FAT32 ShortName. 
+    pub const SHORT_NAME_LENGTH: usize = 8;
+    /// The maximum length of the extension section of a FAT32 ShortName. 
+    pub const SHORT_NAME_EXT_LENGTH: usize = 3;
+    /// The maximum length of a FAT32 ShortName. 
+    pub const SHORT_NAME_FULL_LENGTH: usize = Self::SHORT_NAME_EXT_LENGTH + Self::SHORT_NAME_LENGTH;
 
     /// The length of the non-extension portion of this `ShortName`.
     pub fn name_len(self) -> usize {
@@ -85,6 +95,7 @@ impl ShortName {
         unsafe { from_utf8_unchecked(&self.data[8..8 + self.ext_len()]) }
     }
 
+    /// Returns the FAT32 flag byte for this `ShortName`'s cases. 
     pub fn case_flag(self) -> u8 {
         match (self.lower_name, self.lower_ext) {
             (true, true) => 0x18,
@@ -94,6 +105,10 @@ impl ShortName {
         }
     }
 
+    /// Converts the **raw** shortname into a `&str`. 
+    /// 
+    /// This means that the returned value will always be exactly 11 ASCII capital,
+    /// with both the name and extension portion being padded by spaces. 
     pub fn to_str(&self) -> &str {
         unsafe { from_utf8_unchecked(&self.data) }
     }

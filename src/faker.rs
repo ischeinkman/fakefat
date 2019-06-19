@@ -7,6 +7,7 @@ use crate::longname::{construct_name_entries, lfn_count_for_name};
 use crate::pathbuffer::PathBuff;
 use crate::shortname::ShortName;
 use crate::traits::{DirEntryOps, DirectoryOps, FileMetadata, FileOps, FileSystemOps};
+use crate::ReadByte;
 
 use core::num::Wrapping;
 

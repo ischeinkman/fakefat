@@ -1,10 +1,11 @@
 use crate::datetime::{Date, Time};
 use crate::shortname::ShortName;
+use crate::ReadByte;
 use core::ops::BitAnd;
 
 /// All directory entries, whether a child entry, Long File Name chain link,
 /// or just empty, span exactly 32 bytes.
-pub const ENTRY_SIZE: usize = 32;
+pub(crate) const ENTRY_SIZE: usize = 32;
 
 /// An entry in a directory that represents a child item, as opposed to a Long
 /// File Name.
@@ -21,8 +22,9 @@ pub struct FileDirEntry {
     pub(crate) size: u32,
 }
 
-impl FileDirEntry {
-    pub fn read_byte(&self, idx: usize) -> u8 {
+impl ReadByte for FileDirEntry {
+    const SIZE: usize = ENTRY_SIZE;
+    fn read_byte(&self, idx: usize) -> u8 {
         match idx {
             b @ 0..=10 => self.name.read_byte(b),
             11 => self.attrs.0,
@@ -182,8 +184,9 @@ impl Default for LfnDirEntry {
     }
 }
 
-impl LfnDirEntry {
-    pub fn read_byte(&self, idx: usize) -> u8 {
+impl ReadByte for LfnDirEntry {
+    const SIZE: usize = ENTRY_SIZE;
+    fn read_byte(&self, idx: usize) -> u8 {
         match idx {
             0 => self.entry_num,
             1 => self.name_part[0],
@@ -211,8 +214,9 @@ impl LfnDirEntry {
 /// been filled with either a child entry or part of a Long File Name chain.
 #[derive(Copy, Clone, Default, Eq, PartialEq, Debug)]
 pub struct EmptyDirEntry {}
-impl EmptyDirEntry {
-    pub fn read_byte(&self, idx: usize) -> u8 {
+impl ReadByte for EmptyDirEntry {
+    const SIZE: usize = ENTRY_SIZE;
+    fn read_byte(&self, idx: usize) -> u8 {
         match idx {
             0 => 0x00,
             11 => 0x40,

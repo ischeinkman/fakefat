@@ -31,6 +31,11 @@ pub struct FileMetadata {
 }
 
 impl FileMetadata {
+
+    /// Constructs a `FileDirEntry` out of this metadata.
+    /// 
+    /// By default the returned `FileDirEntry` will have an empty `ShortName`; 
+    /// be sure to set it to the correct value before use. 
     pub fn to_dirent(&self) -> FileDirEntry {
         let mut retval = FileDirEntry::default();
         retval.create_time = self.create_time;
@@ -59,9 +64,24 @@ impl FileMetadata {
     }
 }
 
+/// Operations that need to be implemented by structs returned by a directory's
+/// `entries()` iterator. 
 pub trait DirEntryOps {
+
+    /// The string-like type that the directory entry uses for `name()`s. 
+    /// 
+    /// Generally systems with an `alloc` implementation can use `String`. 
+    /// 
+    /// In `alloc`-less systems, this can be implemented as `Self` 
+    /// with the name value being an inline fixed-length array buffer and the `as_ref()`
+    /// function returning that buffer wrapped by a `&str`. 
     type NameType: AsRef<str>;
+
+    /// Returns the name of the item that this entry represents. 
     fn name(&self) -> Self::NameType;
+
+    /// Returns the metadata of the item this entry represents without needing
+    /// too look up the item's data itself. 
     fn meta(&self) -> FileMetadata;
 }
 
@@ -86,12 +106,34 @@ pub trait FileOps {
     fn read_at(&mut self, offset: usize, buffer: &mut [u8]) -> usize;
 }
 
+/// Operations that must be implemented by the real "file system" that will be exposed
+/// as a FAT32 file system. 
 pub trait FileSystemOps {
+
+    /// The directory entry struct that this FileSystem uses. 
     type DirEntryType: DirEntryOps;
+    
+    /// The directory struct that this FileSystem uses. 
     type DirectoryType: DirectoryOps<EntryType = Self::DirEntryType>;
+    
+    /// The file struct that this FileSystem uses. 
     type FileType: FileOps;
 
+    /// Attempts to find a file with the given path.
+    /// 
+    /// Returns `None` if `path` does not represent an already existing 
+    /// non-directory file. 
     fn get_file(&mut self, path: &str) -> Option<Self::FileType>;
+    /// Attempts to find a directory with the given path.
+    /// 
+    /// Returns `None` if `path` does not represent an already existing 
+    /// non-file directory. 
     fn get_dir(&mut self, path: &str) -> Option<Self::DirectoryType>;
+
+
+    /// Attempts to find metadata about an item with the given path.
+    /// 
+    /// Returns `None` if `path` does not represent an already existing 
+    /// file or directory. 
     fn get_metadata(&mut self, path: &str) -> Option<FileMetadata>;
 }

@@ -1,6 +1,11 @@
+#![deny(missing_docs)]
 #![cfg_attr(not(feature = "std"), no_std)]
+
+//! This crate allows any filesystem-like entity to be exposed as a FAT32-formated
+//! disk image on the fly. 
+
 //#[macro_use]
-#[cfg(all(feature="alloc", not(feature="std")))]
+#[cfg(all(feature = "alloc", not(feature = "std")))]
 extern crate alloc;
 
 mod shortname;
@@ -30,7 +35,7 @@ pub use faker::*;
 #[cfg(feature = "std")]
 mod stdimpl;
 #[cfg(feature = "std")]
-pub use stdimpl::{StdFileSystem};
+pub use stdimpl::StdFileSystem;
 
 mod fsinfo;
 pub use fsinfo::*;
@@ -38,6 +43,20 @@ pub use fsinfo::*;
 mod clustermapping;
 
 mod pathbuffer;
+
+
+/// Allows to use the structs that represent the sections of the fake filesystem
+/// as a byte slice without having to actually generate the byte slice, since 
+/// much of the time the array the section represents is mostly empty space. 
+pub trait ReadByte {
+
+    /// The number of bytes this struct represents if it was backed by a literal
+    /// byte array.
+    const SIZE: usize;
+
+    /// Gets a byte out of the "array" at the specified index. 
+    fn read_byte(&self, idx: usize) -> u8;
+}
 
 /*
 #[cfg(feature="std")]
