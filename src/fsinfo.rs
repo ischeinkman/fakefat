@@ -1,3 +1,5 @@
+/// The second part of the FAT filesystem preamble, containing information
+/// about the free space in the filesystem.
 pub struct FsInfoSector {
     free_count: u32,
     next_free: u32,
@@ -13,6 +15,7 @@ impl Default for FsInfoSector {
 }
 
 impl FsInfoSector {
+    /// The `FsInfoSector` takes up exactly 512 bytes in the FAT32 filesystem.
     pub const SIZE: usize = 512;
 
     pub fn read_byte(&self, idx: usize) -> u8 {

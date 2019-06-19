@@ -32,6 +32,7 @@ impl DirectoryOps for PathBuf {
     }
 }
 
+/// An implementation of `FileSystemOps` using Rust's `std::fs` module.
 pub struct StdFileSystem {}
 
 impl FileSystemOps for StdFileSystem {

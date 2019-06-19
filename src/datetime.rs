@@ -29,10 +29,19 @@ const LEAP_MONTH_RANGES: [u16; 13] = [
     31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30 + 31,
 ];
 
+/// Represents a standard Gregorian date.
+///
+/// Note that while technically the struct would seem to be compatible with
+/// dates pre-unix epoch, they are still considered incompatible.
 #[derive(Copy, Clone, Eq, PartialEq, Debug, Hash)]
 pub struct Date {
+    /// Year AD.
     year: u16,
+
+    /// Month, with January = 1.
     month: u8,
+
+    /// Day of the month, from 1 - 31.
     day: u8,
 }
 
@@ -47,29 +56,43 @@ impl Default for Date {
 }
 
 impl Date {
+    /// Constructs a new `Date` out of `self`'s month and day combined with the
+    /// passed `year` value.
     pub fn with_year(self, year: u16) -> Date {
         debug_assert!(year >= 1980);
         Date { year, ..self }
     }
+
+    /// Constructs a new `Date` out of `self`'s year and day combined with the
+    /// passed `month` value.
     pub fn with_month(self, month: u8) -> Date {
         debug_assert!(month <= 12 && month > 0);
         Date { month, ..self }
     }
+
+    /// Constructs a new `Date` out of `self`'s year and month combined with the
+    /// passed `day` value.
     pub fn with_day(self, day: u8) -> Date {
         debug_assert!(day <= 31 && day > 0, "Bad day: {:?}", day);
         Date { day, ..self }
     }
 
+    /// Year AD.
     pub fn year(self) -> u16 {
         self.year
     }
+
+    /// Month of the year, with January = 1.
     pub fn month(self) -> u8 {
         self.month
     }
+
+    /// Day of the month, from 1 - 31.
     pub fn day(self) -> u8 {
         self.day
     }
 
+    /// Converts a human-readable date into a FAT filesystem compatible format.
     pub fn fat_encode(self) -> u16 {
         let epoch_year = self.year - 1980;
         let year_part = epoch_year << 9;
@@ -81,6 +104,7 @@ impl Date {
         year_part | month_part | day_part
     }
 
+    /// Converts a FAT filesystem-encoded date into a human readable format.
     pub fn fat_decode(encoded: u16) -> Date {
         let epoch_year = encoded >> 9;
         let year = epoch_year + 1980;
@@ -94,8 +118,8 @@ impl Date {
             .with_day(day)
     }
 
-    pub fn from_epoch_millis(millis : u64)-> Date {
-
+    /// Extracts the date from the number of milliseconds since the Unix Epoch.
+    pub fn from_epoch_millis(millis: u64) -> Date {
         let days_since_epoch = millis / (24 * 60 * 60 * 1000);
         let unleaped_years_since_epoch = days_since_epoch / 365;
         let leap_years = unleaped_years_since_epoch / 4;
@@ -136,9 +160,9 @@ impl Date {
             .with_month(month as u8)
             .with_year(1970 + years)
     }
-    
 }
 
+/// Represents a standard time in 24 hour format with precision up to 0.1 second.
 #[derive(Copy, Clone, Eq, PartialEq, Debug, Hash, Default)]
 pub struct Time {
     hour: u8,
@@ -191,16 +215,23 @@ impl Time {
         self
     }
 
+    /// Encodes the standard portion of this time's FAT filesystem-encoded
+    /// representation.
     pub fn fat_encode_simple(self) -> u16 {
         let hour_part = (self.hour as u16) << 11;
         let min_part = (self.minute as u16) << 5;
         let sec_part = (self.second / 2) as u16;
         hour_part | min_part | sec_part
     }
+
+    /// Encodes the high resolution portion of this time's FAT filesystem-encoded
+    /// representation.
     pub fn fat_encode_hi_res(self) -> u8 {
         let second_mod_part = (self.second % 2) * 100;
         second_mod_part | self.tenths
     }
+
+    /// Extracts the time from the number of milliseconds since the Unix Epoch.
     pub fn from_epoch_millis(millis_since_epoch: u64) -> Time {
         let secs_since_epoch = millis_since_epoch / 1000;
         let time_part = secs_since_epoch % (24 * 60 * 60);

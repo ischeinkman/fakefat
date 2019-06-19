@@ -8,28 +8,62 @@ const HEADS: u16 = 64; //WHY?
 const BACKUP_BOOT_SECTOR: u16 = 6; //See above
 const DRIVE_NUM: u8 = 0x80; //Endpoint related?
 
+/// Represents the metadata present at the head of every FAT32 filesystem.
+///
+/// While it is possible to create one by hand, the values provided by
+/// `BiosParameterBlock::from_sector_information` should suffice for most use cases; generally it is recommended
+/// to use the default as a base and modify specific fields instead of creating the
+/// entire preamble from scratch.
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct BiosParameterBlock {
+    /// The number of bytes that the virtual "backing device" reads and writes
+    /// at a time; defaults to 512.
     pub bytes_per_sector: u16,
+
+    /// The number of "device sectors" that each of the fake FAT clusters represents;
+    /// defaults to 8.
     pub sectors_per_cluster: u8,
+
+    /// The number of sectors which are set aside for the File Allocation Tables and
+    /// preamble. Defaults to 8, since we want to round to the nearest cluster count.
     pub reserved_sectors: u16,
+
+    /// The number of mirrored File Allocation Tables to use in this fake filesystem;
+    /// defaults to 2 since many hosts only support that number.
     pub fats: u8,
+
+    /// Not sure; defaults to 0xf8.
     pub media: u8,
+    /// Not sure; defaults to 32.
     pub sectors_per_track: u16,
+    /// Not sure; defaults to 64.
     pub heads: u16,
     pub hidden_sectors: u32,
+
+    /// The size of the filesystem in sectors, including all FATs and the preamble.
     pub total_sectors_32: u32,
+
+    /// The number of sectors that a single File Allocation Table uses.
+    /// By default calculated using `default_sectors_per_fat`.
     pub sectors_per_fat_32: u32,
 
     // Extended BIOS Parameter Block
     pub extended_flags: u16,
+
+    /// The first cluster of the root directory, usually equal to `reserved_sectors/sectors_per_cluster + 1`.
     pub root_dir_first_cluster: u32,
+
+    /// The sector to find the informational struct containing information about
+    /// the free clusters.
     pub fs_info_sector: u16,
     pub backup_boot_sector: u16,
     pub drive_num: u8,
     pub volume_id: u32,
+
+    /// The label of this filesystem volume.
     pub volume_label: [u8; 11],
 
+    /// The current location of the filesystem for the purposes of `Read`/`Write`/`Seek`.
     pub read_idx: usize,
 }
 
@@ -146,10 +180,18 @@ impl BiosParameterBlock {
         self.extended_flags & 0x80 == 0
     }
 
+    /// The number of bytes each cluster spans in the fake File Allocation Table.
+    ///
+    /// In a normal FAT32 filesystem, all files smaller than a single cluster
+    /// would still take up this many bytes on disk, since the File Allocation Table
+    /// cannot more granularly allocate the disk space.
     pub fn bytes_per_cluster(&self) -> u32 {
         self.bytes_per_sector as u32 * self.sectors_per_cluster as u32
     }
 }
+
+/// Calculates a sane default to use for the size of each File Allocation Table
+/// based on the values of the passed in preamble.
 pub fn default_sectors_per_fat(bpb: &BiosParameterBlock) -> u32 {
     // Adapted from the fatfs crate.
     // Not completely sure how it works to be honest. TODO: Figure that out.

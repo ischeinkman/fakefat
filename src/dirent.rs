@@ -1,8 +1,13 @@
 use crate::datetime::{Date, Time};
 use crate::shortname::ShortName;
 use core::ops::BitAnd;
+
+/// All directory entries, whether a child entry, Long File Name chain link,
+/// or just empty, span exactly 32 bytes.
 pub const ENTRY_SIZE: usize = 32;
 
+/// An entry in a directory that represents a child item, as opposed to a Long
+/// File Name.
 #[derive(Clone, Debug, Default, Copy)]
 pub struct FileDirEntry {
     pub(crate) name: ShortName,
@@ -157,6 +162,7 @@ impl From<FileAttributes> for u8 {
     }
 }
 
+/// An entry in a Long File Name chain.
 #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
 pub struct LfnDirEntry {
     pub(crate) entry_num: u8,
@@ -201,6 +207,8 @@ impl LfnDirEntry {
     }
 }
 
+/// An entry allocated in a given directory's cluster chain that has not yet
+/// been filled with either a child entry or part of a Long File Name chain.
 #[derive(Copy, Clone, Default, Eq, PartialEq, Debug)]
 pub struct EmptyDirEntry {}
 impl EmptyDirEntry {

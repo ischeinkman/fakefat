@@ -1,17 +1,24 @@
-use core::str::from_utf8_unchecked;
 use core::cmp;
+use core::str::from_utf8_unchecked;
 
+/// Represents a single name allowable in a normal directory entry, which is
+/// an 8 ASCII character name and a 3 ASCII character extention.
 #[derive(Copy, Clone, Debug)]
 pub struct ShortName {
-    pub data : [u8 ; 11],
+    /// The characters in this name.
+    pub data: [u8; 11],
+
+    /// Whether the non-extension portion is lowercase.
     pub lower_name: bool,
+
+    /// Whether the extension portion is lowercase.
     pub lower_ext: bool,
 }
 
 impl Default for ShortName {
     fn default() -> Self {
         ShortName {
-            data : [b' '; 11],
+            data: [b' '; 11],
             lower_name: false,
             lower_ext: false,
         }
@@ -20,7 +27,7 @@ impl Default for ShortName {
 
 impl PartialEq<ShortName> for ShortName {
     fn eq(&self, other: &Self) -> bool {
-        self.name() == other.name() && self.ext() == other.ext() 
+        self.name() == other.name() && self.ext() == other.ext()
     }
 }
 
@@ -45,33 +52,39 @@ impl ShortName {
     pub fn read_byte(self, idx: usize) -> u8 {
         if idx == 0 && self.data[0] == 0xE5 {
             0x05
-        }
-        else if idx < self.data.len() {
+        } else if idx < self.data.len() {
             self.data[idx]
-        }
-        else {
+        } else {
             0
         }
     }
 
+    /// The length of the non-extension portion of this `ShortName`.
     pub fn name_len(self) -> usize {
-        (&self.data[..8]).iter().take_while(|&&c| !is_end_marker(c.into())).count()
+        (&self.data[..8])
+            .iter()
+            .take_while(|&&c| !is_end_marker(c.into()))
+            .count()
     }
 
+    /// The length of the extension portion of this `ShortName`.
     pub fn ext_len(self) -> usize {
-        (&self.data[8..]).iter().take_while(|&&c| !is_end_marker(c.into())).count()
+        (&self.data[8..])
+            .iter()
+            .take_while(|&&c| !is_end_marker(c.into()))
+            .count()
     }
 
+    /// The non-extention portion of this `ShortName`.
     pub fn name(&self) -> &str {
-        unsafe {
-            from_utf8_unchecked(&self.data[..self.name_len()])
-        }
+        unsafe { from_utf8_unchecked(&self.data[..self.name_len()]) }
     }
+
+    /// The extention portion of this `ShortName`.
     pub fn ext(&self) -> &str {
-        unsafe {
-            from_utf8_unchecked(&self.data[8..8 + self.ext_len()])
-        }
+        unsafe { from_utf8_unchecked(&self.data[8..8 + self.ext_len()]) }
     }
+
     pub fn case_flag(self) -> u8 {
         match (self.lower_name, self.lower_ext) {
             (true, true) => 0x18,
@@ -82,11 +95,19 @@ impl ShortName {
     }
 
     pub fn to_str(&self) -> &str {
-        unsafe {
-            from_utf8_unchecked(&self.data)
-        }
+        unsafe { from_utf8_unchecked(&self.data) }
     }
 
+    /// Attempts to create a `ShortName` out of the passed in `name`.
+    ///
+    /// Returns `None` if `name` is not a valid `ShortName`, which could be for
+    /// any of the following reasons:
+    ///
+    /// *  The non-extension portion of `name` is longer than 8 characters.
+    /// *  The extension portion of `name` is longer than 3 characters.
+    /// *  The non-extension portion of `name` does not all have the same case.
+    /// *  The extension portion of `name` does not all have the same case.
+    /// *  Any of the characters is not one in the list allowed by the FAT filesystem spec.
     pub fn from_str<T: AsRef<str>>(name: T) -> Option<ShortName> {
         let name: &str = name.as_ref();
         if name.len() > ShortName::SHORT_NAME_FULL_LENGTH || name.is_empty() {
@@ -134,9 +155,12 @@ impl ShortName {
         Some(retval)
     }
 
+    /// Converts a passed in `name` to a ShortName, hashing the long name if it
+    /// is not valid. `duplicate_count` represents the offset to add to the hash,
+    /// for use when we expect a collision between multiple long names.
     pub fn convert_str<T: AsRef<str>>(name: T, duplicate_count: u8) -> ShortName {
         let mut retval = ShortName::default();
-        
+
         let name: &str = name.as_ref();
         if let Some(r) = ShortName::from_str(name) {
             return r;
@@ -182,6 +206,8 @@ impl ShortName {
         retval
     }
 
+    /// Calculates a checksum from this `ShortName` to associate it with a series
+    /// of Long Name entries.
     pub fn lfn_checksum(&self) -> u8 {
         let mut retval: u8 = 0;
         for c in self.data.iter() {
@@ -232,15 +258,14 @@ fn case_val(inp: char) -> u8 {
     }
 }
 
-fn to_valid_shortname<'a>(raw: &'a str) -> impl Iterator<Item=char> +'a {
-    raw.chars()
-        .filter_map(|c| {
-            if is_end_marker(c) {
-                None
-            } else if !is_valid_char(c) {
-                Some('_')
-            } else {
-                Some(c.to_ascii_uppercase())
-            }
-        })
+fn to_valid_shortname<'a>(raw: &'a str) -> impl Iterator<Item = char> + 'a {
+    raw.chars().filter_map(|c| {
+        if is_end_marker(c) {
+            None
+        } else if !is_valid_char(c) {
+            Some('_')
+        } else {
+            Some(c.to_ascii_uppercase())
+        }
+    })
 }
