@@ -243,7 +243,9 @@ mod alloc_mapper {
             if !self.path_mapping.contains_key(path) {
                 self.path_mapping.insert(path.to_owned(), Vec::new());
             }
-            self.path_mapping.get_mut(path).map(|v| v.push(cluster));
+            if let Some(v) = self.path_mapping.get_mut(path) {
+                v.push(cluster);
+            }
             self.cluster_mapping.insert(cluster, path.to_owned());
         }
 

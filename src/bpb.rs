@@ -117,7 +117,7 @@ impl ReadByte for BiosParameterBlock {
             return 0xaa;
         }
         let idx = idx - 11;
-        let retval = match idx {
+        match idx {
             0 => ((self.bytes_per_sector & 0xFF) as u8),
             1 => (((self.bytes_per_sector >> 8) & 0xFF) as u8),
             2 => self.sectors_per_cluster,
@@ -173,9 +173,7 @@ impl ReadByte for BiosParameterBlock {
             //79 => 0xaa,
             //80 => 0x55,
             _b => 0,
-        };
-
-        retval
+        }
     }
 }
 
@@ -210,7 +208,8 @@ impl BiosParameterBlock {
     /// would still take up this many bytes on disk, since the File Allocation Table
     /// cannot more granularly allocate the disk space.
     pub fn bytes_per_cluster(&self) -> u32 {
-        self.bytes_per_sector as u32 * self.sectors_per_cluster as u32
+        u32::from(self.bytes_per_sector) * 
+        u32::from(self.sectors_per_cluster)
     }
 }
 
@@ -219,9 +218,9 @@ impl BiosParameterBlock {
 pub fn default_sectors_per_fat(bpb: &BiosParameterBlock) -> u32 {
     // Adapted from the fatfs crate.
     // Not completely sure how it works to be honest. TODO: Figure that out.
-    let not_reserved = bpb.total_sectors_32 - bpb.reserved_sectors as u32;
+    let not_reserved = bpb.total_sectors_32 - u32::from(bpb.reserved_sectors);
     let t1: u64 = u64::from(not_reserved) + u64::from(2 * u32::from(bpb.sectors_per_cluster));
-    let bytes_per_cluster = bpb.sectors_per_cluster as u32 * bpb.bytes_per_sector as u32;
+    let bytes_per_cluster = u32::from(bpb.sectors_per_cluster) * u32::from(bpb.bytes_per_sector);
     let t2 = u64::from(bytes_per_cluster / 4 + u32::from(bpb.fats));
     let sectors_per_fat = (t1 + t2 - 1) / t2;
     sectors_per_fat as u32

@@ -7,7 +7,7 @@ use crate::shortname::ShortName;
 /// Note that if `name` can be represented by a normal `ShortName`, this function
 /// will return 0.
 pub fn lfn_count_for_name(name: &str) -> usize {
-    if ShortName::from_str(name).is_some() {
+    if ShortName::wrap_str(name).is_some() {
         return 0;
     }
     name.len() / 13 + if name.len() % 13 != 0 { 1 } else { 0 }

@@ -1,7 +1,7 @@
 use crate::bpb::BiosParameterBlock;
 
-const BAD_ENTRY: u32 = 0x0FFFFFF7;
-const END_OF_CHAIN: u32 = 0x0FFFFFFF;
+const BAD_ENTRY: u32 = 0x0FFF_FFF7;
+const END_OF_CHAIN: u32 = 0x0FFF_FFFF;
 const FREE_ENTRY: u32 = 0;
 
 /// A single entry in the File Allocation Table, which corresponds to where
@@ -27,7 +27,7 @@ impl From<u32> for FatEntryValue {
         match inner {
             FREE_ENTRY => FatEntryValue::Free,
             BAD_ENTRY => FatEntryValue::Bad,
-            0x0FFFFFF8..=0x0FFFFFFF => FatEntryValue::End,
+            0x0FFF_FFF8..=0x0FFF_FFFFF => FatEntryValue::End,
             n => FatEntryValue::Next(n),
         }
     }

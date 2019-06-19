@@ -45,11 +45,10 @@ mod with_alloc {
 
     impl Default for PathBuff {
         fn default() -> Self {
-            let retval = PathBuff {
+            PathBuff {
                 bytes: vec![b'/'],
                 is_file: false,
-            };
-            retval
+            }
         }
     }
 

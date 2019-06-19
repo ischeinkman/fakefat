@@ -97,9 +97,9 @@ impl Date {
         let epoch_year = self.year - 1980;
         let year_part = epoch_year << 9;
 
-        let month_part = (self.month as u16) << 5;
+        let month_part = u16::from(self.month) << 5;
 
-        let day_part = self.day as u16;
+        let day_part = u16::from(self.day);
 
         year_part | month_part | day_part
     }
@@ -239,9 +239,9 @@ impl Time {
     /// Encodes the standard portion of this time's FAT filesystem-encoded
     /// representation.
     pub fn fat_encode_simple(self) -> u16 {
-        let hour_part = (self.hour as u16) << 11;
-        let min_part = (self.minute as u16) << 5;
-        let sec_part = (self.second / 2) as u16;
+        let hour_part = u16::from(self.hour) << 11;
+        let min_part = u16::from(self.minute) << 5;
+        let sec_part = u16::from(self.second / 2);
         hour_part | min_part | sec_part
     }
 
@@ -261,11 +261,10 @@ impl Time {
         let second = (time_part % 60) as u8;
         let tenths = ((millis_since_epoch % 1000) / 100) as u8;
 
-        let time = Time::default()
+        Time::default()
             .with_hour(hour)
             .with_minute(minute)
             .with_second(second)
-            .with_tenths(tenths);
-        time
+            .with_tenths(tenths)
     }
 }

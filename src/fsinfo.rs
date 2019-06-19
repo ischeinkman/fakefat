@@ -10,8 +10,8 @@ pub struct FsInfoSector {
 impl Default for FsInfoSector {
     fn default() -> FsInfoSector {
         FsInfoSector {
-            free_count: 0xFFFFFFFF,
-            next_free: 0xFFFFFFFF,
+            free_count: 0xFFFF_FFFF,
+            next_free: 0xFFFF_FFFF,
         }
     }
 }

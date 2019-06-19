@@ -123,7 +123,7 @@ impl ShortName {
     /// *  The non-extension portion of `name` does not all have the same case.
     /// *  The extension portion of `name` does not all have the same case.
     /// *  Any of the characters is not one in the list allowed by the FAT filesystem spec.
-    pub fn from_str<T: AsRef<str>>(name: T) -> Option<ShortName> {
+    pub fn wrap_str<T: AsRef<str>>(name: T) -> Option<ShortName> {
         let name: &str = name.as_ref();
         if name.len() > ShortName::SHORT_NAME_FULL_LENGTH || name.is_empty() {
             return None;
@@ -177,7 +177,7 @@ impl ShortName {
         let mut retval = ShortName::default();
 
         let name: &str = name.as_ref();
-        if let Some(r) = ShortName::from_str(name) {
+        if let Some(r) = ShortName::wrap_str(name) {
             return r;
         }
         let ext_idx = name
@@ -186,19 +186,15 @@ impl ShortName {
             .map(|(idx, _)| idx);
         let (name_part_raw, ext_part_raw) = ext_idx.map_or((name, ""), |idx| name.split_at(idx));
         let name_part = to_valid_shortname(name_part_raw);
-        let mut name_part_idx = 0;
-        for c in name_part {
+        for (name_part_idx, c) in name_part.enumerate() {
             retval.data[name_part_idx] = char_to_byte(c);
-            name_part_idx += 1;
             if name_part_idx > 7 {
                 break;
             }
         }
         let ext_part = to_valid_shortname(ext_part_raw);
-        let mut ext_part_idx = 0;
-        for c in ext_part {
+        for (ext_part_idx, c) in ext_part.enumerate() {
             retval.data[ext_part_idx + 8] = char_to_byte(c);
-            ext_part_idx += 1;
             if ext_part_idx + 8 >= retval.data.len() {
                 break;
             }

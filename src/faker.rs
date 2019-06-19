@@ -130,18 +130,17 @@ impl<T: FileSystemOps> FakeFat<T> {
             bpb.bytes_per_cluster() as usize,
         );
         let total_clusters = (bpb.root_dir_first_cluster + max_cluster + 1).max(0xAB_CDEF);
-        let total_sectors = bpb.sectors_per_cluster as u32 * total_clusters;
+        let total_sectors = u32::from(bpb.sectors_per_cluster) * total_clusters;
         bpb.total_sectors_32 = total_sectors;
         let spf = default_sectors_per_fat(&bpb);
         bpb.sectors_per_fat_32 = spf;
-        let retval = Self {
+        Self {
             bpb,
             fsinfo: FsInfoSector::default(),
             fs,
             mapper,
             read_idx: 0,
-        };
-        retval
+        }
     }
 
     fn fat_start(&self) -> usize {
@@ -159,11 +158,9 @@ impl<T: FileSystemOps> FakeFat<T> {
     pub fn read_byte(&mut self, idx: usize) -> u8 {
         // The first 1024 bytes are the BPB and the FSInfo
         if idx < BiosParameterBlock::SIZE {
-            let retval = self.bpb.read_byte(idx);
-            retval
+            self.bpb.read_byte(idx)
         } else if idx < BiosParameterBlock::SIZE + FsInfoSector::SIZE {
-            let retval = self.fsinfo.read_byte(idx - BiosParameterBlock::SIZE);
-            retval
+            self.fsinfo.read_byte(idx - BiosParameterBlock::SIZE)
         }
         // Next comes the table of allocations and chains, aka the File Allocation Table.
         else if idx > self.fat_start() && idx < self.fat_end() {
@@ -188,8 +185,7 @@ impl<T: FileSystemOps> FakeFat<T> {
             let entry_bytes: u32 = cur_value.into();
             let offset = idx % 4;
             let shift = offset * 8;
-            let retval = ((entry_bytes & (0xFF << shift)) >> shift) as u8;
-            retval
+            ((entry_bytes & (0xFF << shift)) >> shift) as u8
         }
         // Finally comes the raw data itself.
         else {
@@ -255,11 +251,11 @@ impl<T: FileSystemOps> FakeFat<T> {
 
                     // Just some debug checks.
                     if name_ents.len() == 0 {
-                        let tshort = ShortName::from_str(&full_name);
+                        let tshort = ShortName::wrap_str(&full_name);
                         debug_assert!(tshort.is_some());
                         debug_assert_eq!(tshort.unwrap(), file_ent.name);
                     } else {
-                        debug_assert!(ShortName::from_str(&full_name).is_none());
+                        debug_assert!(ShortName::wrap_str(&full_name).is_none());
                     }
 
                     if entry_offset == name_ents.len() {
