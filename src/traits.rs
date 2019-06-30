@@ -104,17 +104,30 @@ pub trait FileOps {
     ///
     /// In essence, combines both `Seek::seek` and `Read::read` into a single function.
     fn read_at(&mut self, offset: usize, buffer: &mut [u8]) -> usize;
+
+
+    /// Reads a single byte from the file at the given point. 
+    /// 
+    /// Returns either the byte read or `None` if the `read_at` call did not 
+    /// read any bytes. 
+    fn read_byte(&mut self, offset : usize) -> Option<u8> {
+        let mut buffer = [0 ; 1];
+        let read = self.read_at(offset, &mut buffer);
+        if read == 0 {
+            None
+        }
+        else {
+            Some(buffer[0])
+        }
+    }
 }
 
 /// Operations that must be implemented by the real "file system" that will be exposed
 /// as a FAT32 file system. 
 pub trait FileSystemOps {
 
-    /// The directory entry struct that this FileSystem uses. 
-    type DirEntryType: DirEntryOps;
-    
     /// The directory struct that this FileSystem uses. 
-    type DirectoryType: DirectoryOps<EntryType = Self::DirEntryType>;
+    type DirectoryType: DirectoryOps;
     
     /// The file struct that this FileSystem uses. 
     type FileType: FileOps;

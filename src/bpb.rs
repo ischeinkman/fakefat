@@ -211,6 +211,19 @@ impl BiosParameterBlock {
         u32::from(self.bytes_per_sector) * 
         u32::from(self.sectors_per_cluster)
     }
+    
+    /// Returns the starting address of the first File Allocation Table. 
+    pub fn fat_start(&self) -> usize {
+        self.reserved_sectors as usize * self.bytes_per_sector as usize
+    }
+    
+    /// Returns the first index after the end of the final File Allocation Table. 
+    pub fn fat_end(&self) -> usize {
+        self.fat_start()
+            + (self.fats as usize)
+                * (self.sectors_per_fat_32 as usize)
+                * (self.bytes_per_sector as usize)
+    }
 }
 
 /// Calculates a sane default to use for the size of each File Allocation Table

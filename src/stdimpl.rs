@@ -36,7 +36,6 @@ impl DirectoryOps for PathBuf {
 pub struct StdFileSystem {}
 
 impl FileSystemOps for StdFileSystem {
-    type DirEntryType = DirEntry;
     type DirectoryType = PathBuf;
     type FileType = File;
 
