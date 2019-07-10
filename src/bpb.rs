@@ -26,8 +26,8 @@ pub struct BiosParameterBlock {
     /// defaults to 8.
     pub sectors_per_cluster: u8,
 
-    /// The number of sectors which are set aside for the File Allocation Tables and
-    /// preamble. Defaults to 8, since we want to round to the nearest cluster count.
+    /// The number of sectors which are set aside for the preamble.
+    /// Defaults to 8, since we want to round to the nearest cluster count.
     pub reserved_sectors: u16,
 
     /// The number of mirrored File Allocation Tables to use in this fake filesystem;
@@ -40,7 +40,7 @@ pub struct BiosParameterBlock {
     pub sectors_per_track: u16,
     /// Not sure; defaults to 64.
     pub heads: u16,
-    /// Not sure; defaults to 0. 
+    /// Not sure; defaults to 0.
     pub hidden_sectors: u32,
 
     /// The size of the filesystem in sectors, including all FATs and the preamble.
@@ -50,8 +50,8 @@ pub struct BiosParameterBlock {
     /// By default calculated using `default_sectors_per_fat`.
     pub sectors_per_fat_32: u32,
 
-    /// Extra filesystem flags. 
-    /// 
+    /// Extra filesystem flags.
+    ///
     /// Currently only the mirroring flag bit (`0x80`) is used by this crate.
     pub extended_flags: u16,
 
@@ -62,15 +62,15 @@ pub struct BiosParameterBlock {
     /// the free clusters.
     pub fs_info_sector: u16,
 
-    /// Not sure; defaults to 6. 
-    /// 
-    /// Since the first 8 sectors are allocated as the filesystem header, this 
+    /// Not sure; defaults to 6.
+    ///
+    /// Since the first 8 sectors are allocated as the filesystem header, this
     /// may be a copy of the raw BIOS bytes that are located at the head of all
-    /// single-partition SCSI drive, but this is not yet confirmed. 
+    /// single-partition SCSI drive, but this is not yet confirmed.
     pub backup_boot_sector: u16,
     /// Not sure; defaults to `0x80`.  
     pub drive_num: u8,
-    /// Not sure; defaults to 0. 
+    /// Not sure; defaults to 0.
     pub volume_id: u32,
 
     /// The label of this filesystem volume.
@@ -178,12 +178,11 @@ impl ReadByte for BiosParameterBlock {
 }
 
 impl BiosParameterBlock {
-
-    /// Constructs a new `BiosParameterBlock` with the given values for 
-    /// `total_sectors` and `bytes_per_sector` and default values for everything else. 
-    /// 
+    /// Constructs a new `BiosParameterBlock` with the given values for
+    /// `total_sectors` and `bytes_per_sector` and default values for everything else.
+    ///
     /// The value of `sectors_per_fat_32` is calculated via the `default_sectors_per_fat`
-    /// function and the provided values. 
+    /// function and the provided values.
     pub fn from_sector_information(
         total_sectors: u32,
         bytes_per_sector: u16,
@@ -197,7 +196,7 @@ impl BiosParameterBlock {
     }
 
     /// Assuming a preamble with more than 1 File Allocation Table, returns whether
-    /// writes to 1 FAT are automatically duplicated across all other FATs. 
+    /// writes to 1 FAT are automatically duplicated across all other FATs.
     pub fn is_mirroring_enabled(&self) -> bool {
         self.extended_flags & 0x80 == 0
     }
@@ -208,16 +207,15 @@ impl BiosParameterBlock {
     /// would still take up this many bytes on disk, since the File Allocation Table
     /// cannot more granularly allocate the disk space.
     pub fn bytes_per_cluster(&self) -> u32 {
-        u32::from(self.bytes_per_sector) * 
-        u32::from(self.sectors_per_cluster)
+        u32::from(self.bytes_per_sector) * u32::from(self.sectors_per_cluster)
     }
-    
-    /// Returns the starting address of the first File Allocation Table. 
+
+    /// Returns the starting address of the first File Allocation Table.
     pub fn fat_start(&self) -> usize {
         self.reserved_sectors as usize * self.bytes_per_sector as usize
     }
-    
-    /// Returns the first index after the end of the final File Allocation Table. 
+
+    /// Returns the first index after the end of the final File Allocation Table.
     pub fn fat_end(&self) -> usize {
         self.fat_start()
             + (self.fats as usize)
@@ -228,13 +226,38 @@ impl BiosParameterBlock {
 
 /// Calculates a sane default to use for the size of each File Allocation Table
 /// based on the values of the passed in preamble.
+///
+/// Currently, this is function uses the formula `(total_sectors_32 - reserved_sectors + 2 * sectors_per_cluster)/(fats + bytes_per_cluster/4)`.
+///
+/// # Explanation
+/// Each FAT32 filesystem is divided between its reserved sectors, its File Allocation Tables, and its data section. Each File Allocation Table needs
+/// to have enough entries to store the number of clusters in the data section + 2: entry 0 and entry 1 hold special marker values and are used as a general
+/// chain ending. For a File Allocation Table with a 32-bit entry size, this means that each FAT must be 4 * (data_section_size/cluster_size + 2) bytes big.
+/// From this we can use algebra to eventually reach the expression for the minimum size of each fat:
+///
+/// ```latex
+///    total_b = n *fat_b + reserved_b + data_b \\
+///    clusters = 2 + data_b/cluster_b \\
+///    fat_b = 4_b * clusters \\
+///    fat_s = fat_b/sector_b \\
+///    ----------------\\
+///    fat_b = 4_b * (2 + data_b/cluster_b) \\
+///    \frac{fat_b}{4_b} - 2 = data_b/cluster_b \\
+///    cluster_b(\frac{fat_b}{4_b} - 2) = data_b \\
+///    ----------------\\
+///    total_b = n*fat_b + reserved_b + data_b \\
+///    total_b - n*fat_b - reserved_b = data_b \\
+///    ----------------\\
+///    total_b - n*fat_b - reserved_b = cluster_b(\frac{fat_b}{4_b} - 2) \\
+///    total_b - reserved_b + 2*cluster_b = \frac{cluster_b}{4_b}fat_b + n*fat_b \\
+///    (total_b - reserved_b + 2*cluster_b) = (\frac{cluster_b}{4_b} + n)*fat_b \\
+///    \frac{total_b - reserved_b + 2*cluster_b}{n + cluster_b/4_b} = fat_b \\
+///    \frac{total_s - reserved_s + 2*cluster_s}{(n + cluster_b/4_b)} = fat_s
+///
+/// ```
 pub fn default_sectors_per_fat(bpb: &BiosParameterBlock) -> u32 {
-    // Adapted from the fatfs crate.
-    // Not completely sure how it works to be honest. TODO: Figure that out.
-    let not_reserved = bpb.total_sectors_32 - u32::from(bpb.reserved_sectors);
-    let t1: u64 = u64::from(not_reserved) + u64::from(2 * u32::from(bpb.sectors_per_cluster));
-    let bytes_per_cluster = u32::from(bpb.sectors_per_cluster) * u32::from(bpb.bytes_per_sector);
-    let t2 = u64::from(bytes_per_cluster / 4 + u32::from(bpb.fats));
-    let sectors_per_fat = (t1 + t2 - 1) / t2;
-    sectors_per_fat as u32
+    let top = bpb.total_sectors_32 - u32::from(bpb.reserved_sectors)
+        + 2 * u32::from(bpb.sectors_per_cluster);
+    let bottom = u32::from(bpb.fats) + bpb.bytes_per_cluster() / 4;
+    top / bottom
 }
