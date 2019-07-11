@@ -46,7 +46,7 @@ mod with_alloc {
     impl Default for PathBuff {
         fn default() -> Self {
             PathBuff {
-                bytes: vec![b'/'],
+                bytes: Vec::from([b'/'].as_ref()),
                 is_file: false,
             }
         }
