@@ -20,6 +20,7 @@ pub struct FakeFat<T: FileSystemOps> {
     fs: T,
     mapper: ClusterMapper,
     read_idx: usize,
+    prefix : PathBuff,
 }
 
 use core::ops::Index;
@@ -38,12 +39,13 @@ fn traverse<T: FileSystemOps>(
         .map(|ent| 1 + lfn_count_for_name(ent.name().as_ref()))
         .sum();
     let needed_bytes = entry_count.max(1) * ENTRY_SIZE;
-    let needed_clusters = needed_bytes / bytes_per_cluster
+    let needed_clusters_raw = needed_bytes / bytes_per_cluster
         + if needed_bytes % bytes_per_cluster == 0 {
             0
         } else {
             1
         };
+    let needed_clusters = needed_clusters_raw.saturating_sub(mapper.get_chain_for_path(cur.to_str()).len());
     let mut cur_cluster = 0;
     let mut clusters = 0;
     while clusters < needed_clusters {
@@ -77,14 +79,15 @@ fn traverse<T: FileSystemOps>(
             r
         };
         let meta = ent.meta();
-        let needed_clusters = meta.size as usize / bytes_per_cluster
+        let needed_subclusters_raw = meta.size as usize / bytes_per_cluster
             + if meta.size as usize % bytes_per_cluster == 0 {
                 0
             } else {
                 1
             };
+        let needed_subclusters = needed_subclusters_raw.saturating_sub(mapper.get_chain_for_path(path.to_str()).len());
         let mut clusters = 0;
-        while clusters < needed_clusters {
+        while clusters < needed_subclusters {
             let mut my_offset = cur_cluster + 12;
             while mapper.is_allocated(my_offset) {
                 my_offset += 1;
@@ -140,6 +143,7 @@ impl<T: FileSystemOps> FakeFat<T> {
             fs,
             mapper,
             read_idx: 0,
+            prefix : path_prefix,
         }
     }
 
