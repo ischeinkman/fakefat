@@ -36,6 +36,18 @@ pub trait ClusterMapperOps {
 
     /// Returns whether a given `cluster` is currently in any allocated cluster chain.
     fn is_allocated(&self, cluster: u32) -> bool;
+
+    /// Attempts to find the chain containing the given cluster, returning `None` otherwise. 
+    fn get_chain_with_cluster(&self, cluster: u32) -> Option<Self::ChainIterator> {
+        self.get_path_for_cluster(cluster)
+            .map(|p| self.get_chain_for_path(p))
+    }
+
+    /// Gets the first cluster in the chain associated with a given path, or 
+    /// `None` if the path has not yet been associated with a chain. 
+    fn get_chain_head_for_path(&self, path: &str) -> Option<u32> {
+        self.get_chain_for_path(path).into_iter().next()
+    }
 }
 
 #[cfg(not(feature = "alloc"))]
@@ -101,9 +113,19 @@ mod nop_mapper {
         }
     }
 
+    #[derive(Copy, Clone)]
     pub struct ChainIter {
         chain: [u32; size_constants::MAX_CHAIN_LENGTH],
         idx: usize,
+    }
+
+    impl Default for ChainIter {
+        fn default() -> Self {
+            ChainIter {
+                chain: [FatEntryValue::End.into(); size_constants::MAX_CHAIN_LENGTH],
+                idx: 0,
+            }
+        }
     }
 
     impl Iterator for ChainIter {

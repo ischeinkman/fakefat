@@ -224,3 +224,68 @@ impl ReadByte for EmptyDirEntry {
         }
     }
 }
+
+/// An entry in a Fat32 directory. 
+/// 
+/// A FAT32 directory can be thought of as a number of 32-byte "slots" to represent
+/// a number of children items. Each child is composed of zero or more "file name"-style
+/// entries, followed by the actual "child" entry containing a variety of metadata
+/// and a pointer to the beginning of the content body. A slot's current "kind" is determined
+/// by status flags in the slot's index-11 byte: 
+/// 
+/// * If the most-significant bit is set to 1, the slot is empty. 
+/// * If the entirety of the least significant nibble is set to 0xF, the slot is part of a file name chain. 
+/// * Otherwise, it is a standard child entry. 
+#[derive(Copy, Clone, Debug)]
+pub enum Fat32DirectoryEntry {
+
+    /// A directory entry containing metadata for a child item. 
+    File(FileDirEntry),
+
+    /// A directory entry containing part of a file name chain. 
+    LongFileName(LfnDirEntry), 
+
+    /// A directory entry containing no data. 
+    Empty(EmptyDirEntry), 
+}
+
+impl Fat32DirectoryEntry {
+
+    /// Constructs a new empty entry. 
+    pub const fn empty() -> Self {
+        Fat32DirectoryEntry::Empty(EmptyDirEntry{})
+    }
+}
+
+impl Default for Fat32DirectoryEntry {
+    fn default() -> Self {
+        Fat32DirectoryEntry::empty()
+    }
+}
+
+impl ReadByte for Fat32DirectoryEntry {
+    const SIZE : usize = ENTRY_SIZE;
+    fn read_byte(&self, idx: usize) -> u8 {
+        match self {
+            Fat32DirectoryEntry::File(f) => f.read_byte(idx), 
+            Fat32DirectoryEntry::LongFileName(f) => f.read_byte(idx), 
+            Fat32DirectoryEntry::Empty(f) => f.read_byte(idx), 
+        }
+    }
+}
+
+impl From<FileDirEntry> for Fat32DirectoryEntry {
+    fn from(inner : FileDirEntry) -> Self {
+        Fat32DirectoryEntry::File(inner)
+    }
+}
+impl From<LfnDirEntry> for Fat32DirectoryEntry {
+    fn from(inner : LfnDirEntry) -> Self {
+        Fat32DirectoryEntry::LongFileName(inner)
+    }
+}
+impl From<EmptyDirEntry> for Fat32DirectoryEntry {
+    fn from(inner : EmptyDirEntry) -> Self {
+        Fat32DirectoryEntry::Empty(inner)
+    }
+}

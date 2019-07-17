@@ -1,6 +1,7 @@
 use crate::bpb::{default_sectors_per_fat, BiosParameterBlock};
+use crate::changeset::{ChangeSet, ChangeSetOps};
 use crate::clustermapping::{ClusterMapper, ClusterMapperOps};
-use crate::dirent::{EmptyDirEntry, FileDirEntry, LfnDirEntry, ENTRY_SIZE};
+use crate::dirent::{FileDirEntry, LfnDirEntry, ENTRY_SIZE};
 use crate::fat::{idx_to_cluster, FatEntryValue};
 use crate::fsinfo::FsInfoSector;
 use crate::longname::{construct_name_entries, lfn_count_for_name};
@@ -19,8 +20,12 @@ pub struct FakeFat<T: FileSystemOps> {
     fsinfo: FsInfoSector,
     fs: T,
     mapper: ClusterMapper,
+    changes: ChangeSet,
+
+    #[allow(unused)]
     read_idx: usize,
-    prefix : PathBuff,
+    #[allow(unused)]
+    prefix: PathBuff,
 }
 
 use core::ops::Index;
@@ -45,7 +50,8 @@ fn traverse<T: FileSystemOps>(
         } else {
             1
         };
-    let needed_clusters = needed_clusters_raw.saturating_sub(mapper.get_chain_for_path(cur.to_str()).len());
+    let needed_clusters = needed_clusters_raw
+        .saturating_sub(mapper.get_chain_for_path(cur.to_str()).into_iter().count());
     let mut cur_cluster = 0;
     let mut clusters = 0;
     while clusters < needed_clusters {
@@ -85,7 +91,8 @@ fn traverse<T: FileSystemOps>(
             } else {
                 1
             };
-        let needed_subclusters = needed_subclusters_raw.saturating_sub(mapper.get_chain_for_path(path.to_str()).len());
+        let needed_subclusters = needed_subclusters_raw
+            .saturating_sub(mapper.get_chain_for_path(path.to_str()).into_iter().count());
         let mut clusters = 0;
         while clusters < needed_subclusters {
             let mut my_offset = cur_cluster + 12;
@@ -137,15 +144,18 @@ impl<T: FileSystemOps> FakeFat<T> {
         bpb.total_sectors_32 = total_sectors;
         let spf = default_sectors_per_fat(&bpb);
         bpb.sectors_per_fat_32 = spf;
+        let cluster_size = bpb.bytes_per_cluster();
         Self {
             bpb,
             fsinfo: FsInfoSector::default(),
             fs,
             mapper,
+            changes: ChangeSet::new(cluster_size),
             read_idx: 0,
-            prefix : path_prefix,
+            prefix: path_prefix,
         }
     }
+
 
     /// Reads a single byte out of the FAT32 device, exactly `idx` bytes from the
     /// head of the device.
@@ -155,96 +165,50 @@ impl<T: FileSystemOps> FakeFat<T> {
             FakerAddress::FsInfo(fs_idx) => self.fsinfo.read_byte(fs_idx),
             FakerAddress::Fat { cluster, byte } => {
                 let cur_value = {
-                    // Is it associated to a path?
-                    let cur_path = self.mapper.get_path_for_cluster(cluster);
-                    if let Some(cp) = cur_path {
-                        // If so, get the path's chain and find the next link, if there is one.
-                        // Otherwise return the Chain End marker value.
-                        let cur_chain = self.mapper.get_chain_for_path(cp);
+                    if let Some(changed) = self.changes.cluster_entry(cluster) {
+                        changed
+                    } else if let Some(cur_chain) = self.mapper.get_chain_with_cluster(cluster) {
                         let next_link = cur_chain.into_iter().skip_while(|&l| l != cluster).next();
                         next_link.map(|c| c.into()).unwrap_or(FatEntryValue::End)
                     } else {
-                        // If not, the cluster is free.
                         FatEntryValue::Free
                     }
                 };
 
-                // Get the actual byte we need from the 4 byte entry.
                 let entry_bytes: u32 = cur_value.into();
                 let shift = byte * 8;
                 ((entry_bytes & (0xFF << shift)) >> shift) as u8
             }
             FakerAddress::RawData { cluster, offset } => {
-                match FakerDataAddress::resolve_raw_data(
-                    cluster,
-                    offset,
-                    &self.bpb,
-                    &self.mapper,
-                    &mut self.fs,
-                ) {
-                    None => 0,
-                    Some(FakerDataAddress::File { mut file, offset }) => {
-                        file.read_byte(offset).unwrap_or(0)
-                    }
-                    Some(FakerDataAddress::Directory {
-                        directory,
-                        entry,
+                if let Some(buffer) = self.changes.cluster_data(cluster) {
+                    buffer[offset]
+                } else {
+                    match FakerDataAddress::resolve_raw_data(
+                        cluster,
                         offset,
-                    }) => {
-                        // Directories are composed of 1 shortname-styled entry per subitem
-                        // Plus an arbitrary number of LFN entries.
-                        // We "build" all of them here to figure out which of all the entries we are reading from.
-                        // Note that thanks to how Rust iterators work, this is done lazily even without an std!
-                        let sys_entries = directory.entries();
-                        let fat_entries = sys_entries.into_iter().map(|ent| {
-                            let dirents = file_to_direntries(ent.name().as_ref(), ent.meta());
-                            (ent, dirents)
-                        });
-                        let mut cur_idx = 0;
-
-                        // Go through each subitems combined entries
-                        for (ent, (mut file_ent, name_ents)) in fat_entries {
-                            let full_name = ent.name();
-
-                            // Skip until we reach the correct LFN-shortname combo
-                            if 1 + name_ents.len() + cur_idx <= entry {
-                                cur_idx += 1 + name_ents.len();
-                                continue;
-                            }
-
-                            // Calculate the entry in this lfn-shortname list we need,
-                            // and the byte within that entry.
-                            let entry_offset = entry - cur_idx;
-
-                            if entry_offset == name_ents.len() {
-                                let path = self.mapper.get_path_for_cluster(cluster).unwrap();
-                                // The shortname entry is considered to be 1 after the final lfn entry.
-                                let mut full_path = PathBuff::default();
-                                full_path.add_subdir(path);
-                                if file_ent.attrs.is_directory() {
-                                    full_path.add_subdir(full_name.as_ref());
-                                } else {
-                                    full_path.add_file(full_name.as_ref());
-                                }
-
-                                file_ent.first_cluster = self
-                                    .mapper
-                                    .get_chain_for_path(full_path.to_str())
-                                    .into_iter()
-                                    .next()
-                                    .map(|c| c + 2 as u32) // Add 2 since FAT32 has 2 reserved clusters? I think?
-                                    .unwrap();
-                                return file_ent.read_byte(offset);
-                            } else {
-                                // The LFN entries are actually in reverse order to the string itself.
-                                let name_ent_idx = name_ents.len() - entry_offset - 1;
-                                return name_ents[name_ent_idx].read_byte(offset);
-                            }
+                        &self.bpb,
+                        &self.mapper,
+                        &mut self.fs,
+                    ) {
+                        None => 0,
+                        Some(FakerDataAddress::File { mut file, offset }) => {
+                            file.read_byte(offset).unwrap_or(0)
                         }
-
-                        // If we couldn't find the path for the entry, the entry is empty.
-                        let entry_byte = offset;
-                        EmptyDirEntry::default().read_byte(entry_byte)
+                        Some(FakerDataAddress::Directory {
+                            directory,
+                            entry,
+                            offset,
+                        }) => DirectoryNewtype::from(directory)
+                            .fat_entries()
+                            .skip(entry)
+                            .map(fix_first_entry(
+                                &self.mapper,
+                                self.mapper.get_path_for_cluster(cluster).unwrap(),
+                            ))
+                            .map(|(fixed, _)| fixed)
+                            .next()
+                            .unwrap_or(Fat32DirectoryEntry::empty())
+                            .read_byte(offset),
                     }
                 }
             }
@@ -310,15 +274,12 @@ impl<D: DirectoryOps, F: FileOps> FakerDataAddress<F, D> {
         mapper: &MapType,
         fs: &mut FS,
     ) -> Option<Self> {
-        let path = mapper.get_path_for_cluster(cluster)?;
         // We need to go from offset in the fake device to offset in the real file or directory.
         // To do so, we first convert from device offset to offset in this cluster chain.
-        let cluster_chain = mapper.get_chain_for_path(path);
-        let clusters_previous = cluster_chain
-            .into_iter()
-            .take_while(|&c| c != cluster)
-            .count();
+        let cluster_chain = mapper.get_chain_with_cluster(cluster).into_iter().flatten();
+        let clusters_previous = cluster_chain.take_while(|&c| c != cluster).count();
         let byte_offset = clusters_previous * (bpb.bytes_per_cluster() as usize) + offset;
+        let path = mapper.get_path_for_cluster(cluster)?;
         let meta = fs.get_metadata(path)?;
         if meta.is_directory {
             Some(FakerDataAddress::Directory {
@@ -385,6 +346,73 @@ mod stdio {
     }
 
 }
+use crate::dirent::Fat32DirectoryEntry;
+
+struct DirectoryNewtype<T: DirectoryOps>(T);
+impl<T: DirectoryOps> DirectoryNewtype<T> {
+    pub fn fat_entries(&self) -> impl Iterator<Item = (Fat32DirectoryEntry, Option<T::EntryType>)> {
+        let sys_entries = self.0.entries();
+        let fat_entries = sys_entries.into_iter().map(|ent| {
+            let dirents = file_to_direntries(ent.name().as_ref(), ent.meta());
+            (ent, dirents)
+        });
+        let unflattened = fat_entries.map(|(backing_ent, (file_fat_ent, name_ents))| {
+            let name_ent_itr = name_ents
+                .iter()
+                .map(|ent| (Fat32DirectoryEntry::LongFileName(ent), None));
+            let tail = (file_fat_ent.into(), Some(backing_ent));
+            name_ent_itr.chain(Some(tail))
+        });
+        unflattened.flatten()
+    }
+}
+
+fn fix_first_entry<'a, EntryType: DirEntryOps>(
+    mapper: &'a ClusterMapper,
+    base_path: &str,
+) -> impl Fn((Fat32DirectoryEntry, Option<EntryType>)) -> ((Fat32DirectoryEntry, Option<EntryType>)) + 'a
+{
+    let base_pathbuff = {
+        let mut tmp = PathBuff::default();
+        tmp.add_subdir(base_path);
+        tmp
+    };
+    move |pair| {
+        if let (Fat32DirectoryEntry::File(file_ent), Some(backing)) = pair {
+            let full_name = backing.name();
+            let mut full_path = base_pathbuff.clone();
+            if file_ent.attrs.is_directory() {
+                full_path.add_subdir(full_name.as_ref());
+            } else {
+                full_path.add_file(full_name.as_ref());
+            }
+            let mut new_ent = file_ent;
+            new_ent.first_cluster = mapper
+                .get_chain_head_for_path(full_path.to_str())
+                .map(|c| c + 2 as u32) // Add 2 since FAT32 has 2 reserved clusters? I think?
+                .unwrap_or(FatEntryValue::Bad.into());
+            (Fat32DirectoryEntry::File(new_ent), Some(backing))
+        } else {
+            pair
+        }
+    }
+}
+
+impl<T: DirectoryOps> From<T> for DirectoryNewtype<T> {
+    fn from(unwrapped: T) -> DirectoryNewtype<T> {
+        DirectoryNewtype(unwrapped)
+    }
+}
+impl<T: DirectoryOps> AsMut<T> for DirectoryNewtype<T> {
+    fn as_mut(&mut self) -> &mut T {
+        &mut self.0
+    }
+}
+impl<T: DirectoryOps> AsRef<T> for DirectoryNewtype<T> {
+    fn as_ref(&self) -> &T {
+        &self.0
+    }
+}
 
 fn file_to_direntries(name: &str, meta: FileMetadata) -> (FileDirEntry, LfnChain) {
     //TODO: check for duplications.
@@ -400,7 +428,7 @@ fn file_to_direntries(name: &str, meta: FileMetadata) -> (FileDirEntry, LfnChain
     fileent.name = short_name;
     let lfn_length = lfn_count_for_name(name);
     let mut allocation = LfnChain::default();
-    construct_name_entries(name, fileent, &mut allocation);
+    construct_name_entries(name, fileent, &mut allocation.allocation);
     allocation.len = lfn_length;
     (fileent, allocation)
 }
@@ -415,6 +443,12 @@ impl LfnChain {
     fn len(&self) -> usize {
         self.len
     }
+    fn iter(self) -> LfnChainIter {
+        LfnChainIter {
+            wrapped: self,
+            idx: self.len(),
+        }
+    }
 }
 
 impl Index<usize> for LfnChain {
@@ -427,6 +461,30 @@ impl Index<usize> for LfnChain {
 
 impl AsMut<[LfnDirEntry]> for LfnChain {
     fn as_mut(&mut self) -> &mut [LfnDirEntry] {
-        &mut self.allocation
+        let len = self.len();
+        &mut self.allocation[..len]
+    }
+}
+
+impl AsRef<[LfnDirEntry]> for LfnChain {
+    fn as_ref(&self) -> &[LfnDirEntry] {
+        &self.allocation[..self.len()]
+    }
+}
+
+struct LfnChainIter {
+    wrapped: LfnChain,
+    idx: usize,
+}
+
+impl Iterator for LfnChainIter {
+    type Item = LfnDirEntry;
+    fn next(&mut self) -> Option<LfnDirEntry> {
+        if self.idx == 0 {
+            None
+        } else {
+            self.idx -= 1;
+            Some(self.wrapped.allocation[self.idx])
+        }
     }
 }

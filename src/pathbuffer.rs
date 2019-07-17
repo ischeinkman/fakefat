@@ -13,6 +13,8 @@ mod with_alloc {
     use core::str::from_utf8_unchecked;
 
     use core::fmt;
+
+    #[derive(Hash, Clone)]
     pub struct PathBuff {
         bytes: Vec<u8>,
         is_file: bool,
@@ -66,10 +68,19 @@ mod fixed_size {
     }
 
     use sizes::ELEMENTS;
+    
+    #[derive(Clone)]
     pub struct PathBuff {
         data: [u8; ELEMENTS],
         len: usize,
         is_file: bool,
+    }
+
+    use core::hash::{Hash, Hasher};
+    impl Hash for PathBuff {
+        fn hash<H : Hasher>(&self, hasher : &mut H) {
+            self.to_str().hash(hasher);
+        }
     }
 
     impl PathBuff {
@@ -77,12 +88,11 @@ mod fixed_size {
             debug_assert!(!self.is_file);
             let comp_bytes = component.as_bytes();
             debug_assert!(ELEMENTS - self.len >= comp_bytes.len());
-            let offset = self.len;
-            for idx in 0..comp_bytes.len() {
-                let c = comp_bytes[idx];
-                self.data[offset + idx] = c;
+            let data_slice = &mut self.data[self.len .. self.len + comp_bytes.len()];
+            data_slice.copy_from_slice(comp_bytes);
+            if !self.data[self.len + comp_bytes.len() - 1] == b'/' {
+                self.data[self.len + comp_bytes.len()] = b'/';
             }
-            self.data[offset + comp_bytes.len()] = b'/';
             self.len += comp_bytes.len() + 1;
         }
 
@@ -90,11 +100,8 @@ mod fixed_size {
             debug_assert!(!self.is_file);
             let comp_bytes = file_name.as_bytes();
             debug_assert!(ELEMENTS - self.len >= comp_bytes.len());
-            let offset = self.len;
-            for idx in 0..comp_bytes.len() {
-                let c = comp_bytes[idx];
-                self.data[offset + idx] = c;
-            }
+            let data_slice = &mut self.data[self.len .. self.len + comp_bytes.len()];
+            data_slice.copy_from_slice(comp_bytes);
             self.len += comp_bytes.len();
             self.is_file = true;
         }
