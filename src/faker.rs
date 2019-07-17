@@ -157,6 +157,87 @@ impl<T: FileSystemOps> FakeFat<T> {
     }
 
 
+    /// Writes a single byte into the FAT32 device, exactly `idx` bytes from the
+    /// head of the device.
+    ///
+    /// #Panics
+    /// This function panics if the address being written to is read-only or is
+    /// part of the FAT preamble.
+    pub fn write_byte(&mut self, idx: usize, new_byte: u8) {
+        match FakerAddress::from_raw_idx(idx, &self.bpb) {
+            FakerAddress::Fat { cluster, byte } => {
+                if self.changes.cluster_entry(cluster).is_none() {
+                    let chain_opt = self.mapper.get_chain_with_cluster(cluster);
+
+                    let entry_raw =
+                        chain_opt.map(|it| it.into_iter().skip_while(|c| *c != cluster).next());
+                    let old_entry = match entry_raw {
+                        Some(Some(next)) => FatEntryValue::Next(next),
+                        Some(None) => FatEntryValue::End,
+                        None => FatEntryValue::Free,
+                    };
+
+                    let cluster_data_buff = self.changes.insert_cluster(cluster, old_entry);
+                    match FakerDataAddress::resolve_raw_data(
+                        cluster,
+                        0,
+                        &self.bpb,
+                        &self.mapper,
+                        &mut self.fs,
+                    ) {
+                        Some(FakerDataAddress::File { mut file, offset }) => {
+                            let _read = file.read_at(
+                                offset,
+                                &mut cluster_data_buff[..self.bpb.bytes_per_cluster() as usize],
+                            );
+                        }
+                        Some(FakerDataAddress::Directory {
+                            directory,
+                            entry,
+                            offset,
+                        }) => {
+                            let mut read_bytes = 0;
+                            let entries = DirectoryNewtype::from(directory)
+                                .fat_entries()
+                                .skip(entry)
+                                .map(fix_first_entry(
+                                    &self.mapper,
+                                    self.mapper.get_path_for_cluster(cluster).unwrap(),
+                                ))
+                                .map(|(fixed, _)| fixed);
+                            for ent in entries {
+                                let start_idx = read_bytes;
+                                let end_idx = (start_idx + Fat32DirectoryEntry::SIZE)
+                                    .min(self.bpb.bytes_per_cluster() as usize);
+                                let current_buffer = &mut cluster_data_buff[start_idx..end_idx];
+                                let current_read = ent.read_at(
+                                    (start_idx + offset) % Fat32DirectoryEntry::SIZE,
+                                    current_buffer,
+                                );
+                                read_bytes += current_read;
+                                if read_bytes >= self.bpb.bytes_per_cluster() as usize {
+                                    break;
+                                }
+                            }
+                        }
+                        None => {}
+                    }
+                }
+                let existing: u32 = self.changes.cluster_entry(cluster).unwrap().into();
+                let shift = byte * 8;
+                let existing_masked = existing & !(0xFF << shift);
+                let newval = existing_masked | u32::from(new_byte) << shift;
+                self.changes.set_cluster_entry(cluster, newval.into());
+            }
+            _ => {
+                panic!(
+                    "ERROR: Attempting to write {} to address {}, but this address is read-only.",
+                    new_byte, idx
+                );
+            }
+        }
+    }
+
     /// Reads a single byte out of the FAT32 device, exactly `idx` bytes from the
     /// head of the device.
     pub fn read_byte(&mut self, idx: usize) -> u8 {
